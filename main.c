@@ -200,8 +200,14 @@ int save_arg(char **re, int idx, char *buf, int start, int end)
 		int i = 0;
 
 	printf("%d, %d \n", start, end);
+
 	if (end - start > 0)
 		re[idx] = (char *)malloc(sizeof(char) * (end - start + 1));
+	else
+	{
+		re[idx] = NULL;
+		return (0);
+	}
 	if (!re)
 		return (0);
 	while (start < end)
@@ -218,7 +224,7 @@ int save_cmd(char **re, int idx, char *buf, int start, int end)
 {
 	int i = 0;
 
-	printf("%d, %d \n", start, end);
+	printf("cmd%d, %d \n", start, end);
 	if (end - start > 0)
 		re[idx] = (char *)malloc(sizeof(char) * (end - start + 1));
 	if (!re)
@@ -296,11 +302,19 @@ int		parse_token(t_cmd *cmd, char *buf,int start, int end)
 		idx++;
 		break ;
 	}
-	i++;
+	while (i < end)
+		if (buf[i] == ' ')
+				i++;
 	save_arg(re, idx, buf, i , end);
 	printf("%s\n", re[idx]);
+	//int ex;
+	// while (re[ex] != NULL)
+	// {
+	// 	if (!ft_strncmp(re[ex],"cd",2))
+			exec_cd(re);
+	// 	else
 
-	exec_cd(re);
+	// }
 	return (0);
 }
 

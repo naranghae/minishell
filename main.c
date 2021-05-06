@@ -131,47 +131,11 @@ void	free_split(char **s)
 	free(s);
 }
 
-// void	lst_free(t_list **lst)
-// {
-// 	t_list *nod;
-// 	t_list *next;
-
-// 	nod = *lst;
-// 	while (nod)
-// 	{
-// 		next = nod->next;
-// 		free(nod->obj);
-// 		free(nod);
-// 		nod = next;
-// 	}
-// }
-
-// t_list	*lstlast(t_list *lst)
-// {
-// 	if (!lst)
-// 		return (NULL);
-// 	while (lst->next)
-// 		lst = lst->next;
-// 	return (lst);
-// }
-
-// void		cmd_lst_add(t_list **lst, t_list *new, int type)
-// {
-// 	t_list *last;
-
-// 	new->type = type;
-// 	if (!(*lst))
-// 		*lst = new;
-// 	last = lstlast(*lst);
-// 	last->next = new;
-// 	new->next = NULL;
-// }
-
 int		is_inquote(char *buf, int start, int end)
 {
 	int double_q;
 	int single_q;
-	
+
 	double_q = 0;
 	single_q = 0;
 	while (start != end)
@@ -197,7 +161,7 @@ int		is_inquote(char *buf, int start, int end)
 int ft_doublestrlen(char **s)
 {
 	int i;
-	
+
 	i = 0;
 	while (s[i] != NULL)
 	{
@@ -210,7 +174,7 @@ int exec_cd(char **av)
 {
 	char buf[1024];
 	int  ac;
-	
+
 	ac = strlen(*av);
 	printf("ac = %d, 0 : %s 1 :%s\n",ac, av[0],av[1]);
 	if (ac != 2)
@@ -227,14 +191,14 @@ int exec_cd(char **av)
 
 int save_col(t_list *lst,char *buf,int end)
 {
-	
+
 	return (0);
 }
 
 int save_arg(char **re, int idx, char *buf, int start, int end)
 {
 		int i = 0;
-	
+
 	printf("%d, %d \n", start, end);
 	if (end - start > 0)
 		re[idx] = (char *)malloc(sizeof(char) * (end - start + 1));
@@ -253,7 +217,7 @@ int save_arg(char **re, int idx, char *buf, int start, int end)
 int save_cmd(char **re, int idx, char *buf, int start, int end)
 {
 	int i = 0;
-	
+
 	printf("%d, %d \n", start, end);
 	if (end - start > 0)
 		re[idx] = (char *)malloc(sizeof(char) * (end - start + 1));
@@ -285,7 +249,7 @@ int     find_token(char *buf)
 	int i;
 	int start;
 	int re;
-	
+
 	i = 0;
 	start = 0;
 	re = 0;
@@ -309,7 +273,7 @@ int		parse_token(t_cmd *cmd, char *buf,int start, int end)
 	char **re;
 	int i;
 	int idx;
-	
+
 	re = (char **)malloc(sizeof(char *) * find_token(buf) * 2);
 	printf("find_token_re: %d\n", find_token(buf));
 	idx = 0;
@@ -334,7 +298,7 @@ int		parse_token(t_cmd *cmd, char *buf,int start, int end)
 	}
 	i++;
 	save_arg(re, idx, buf, i , end);
-			printf("%s\n", re[idx]);
+	printf("%s\n", re[idx]);
 
 	exec_cd(re);
 	return (0);
@@ -346,7 +310,7 @@ int parsing_cmd(char *buf, t_cmd *cmd)
 	t_list *lst;
 	int i;
 	int start;
-	
+
 	i = 0;
 	start = 0;
 	while (buf[i] != '\0')// ; 로 안끝나는경우도 생각
@@ -363,14 +327,14 @@ int parsing_cmd(char *buf, t_cmd *cmd)
 	return (1);
 }
 
-int main(int ac, char **av)
+int main(int ac, char **av, char **envp)
 {
 	char buf[1024];
 	t_cmd cmd;
-	
+
 	while (1)
 	{
-		write(1,"hyochanyoung>>",14);
+		write(1,"hyochanyoung$ ",14);
 		int end = read(0, buf, 1024);
 		buf[end] = '\0';
 		write(1, buf, strlen(buf));

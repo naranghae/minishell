@@ -337,9 +337,8 @@ int		parse_token(t_cmd *cmd, char *buf,int start, int end)
 		idx++;
 		break ;
 	}
-	while (i < end)
-		if (buf[i] == ' ')
-				i++; 
+	while (i < end && buf[i] == ' ')
+			i++; 
 	save_arg(re, idx, buf, i , end);
 	printf("%s\n", re[idx]);
 	//int ex;

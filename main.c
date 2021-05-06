@@ -206,20 +206,21 @@ int ft_doublestrlen(char **s)
 	return (i);
 }
 
-int exec_cd(char **word)
+int exec_cd(char **av)
 {
 	char buf[1024];
 	int  ac;
 	
-	ac = ft_doublestrlen(word);
+	ac = strlen(*av);
+	printf("ac = %d, 0 : %s 1 :%s\n",ac, av[0],av[1]);
 	if (ac != 2)
 		return (0);
-	// printf("dir name: %s\n", av[1]);
+	printf("dir name: %s\n", av[1]);
 	printf("before dir: %s\n", getcwd(buf, 1024));
-	// // if(chdir(av[1]) == -1)
-	// 	printf("failed, cd\n");
-	// else
-	// 	printf("after dir: %s\n", getcwd(buf, 1024));
+	if(chdir(av[1]) == -1)
+		printf("failed, cd\n");
+	else
+		printf("after dir: %s\n", getcwd(buf, 1024));
 	return (0);
 }
 
@@ -331,10 +332,11 @@ int		parse_token(t_cmd *cmd, char *buf,int start, int end)
 		idx++;
 		break ;
 	}
+	i++;
 	save_arg(re, idx, buf, i , end);
 			printf("%s\n", re[idx]);
 
-	//뒤에건 싹다 한개에 넣기
+	exec_cd(re);
 	return (0);
 }
 

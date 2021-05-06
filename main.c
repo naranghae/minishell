@@ -1,5 +1,5 @@
-#include <fcntl.h>
 #include <stdio.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -230,7 +230,26 @@ int save_col(t_list *lst,char *buf,int end)
 	return (0);
 }
 
-int save_token(char **re, int idx, char *buf, int start, int end)
+int save_arg(char **re, int idx, char *buf, int start, int end)
+{
+		int i = 0;
+	
+	printf("%d, %d \n", start, end);
+	if (end - start > 0)
+		re[idx] = (char *)malloc(sizeof(char) * (end - start + 1));
+	if (!re)
+		return (0);
+	while (start < end)
+	{
+		re[idx][i] = buf[start];
+		i++;
+		start++;
+	}
+	re[idx][i] = '\0';
+	return (start);
+}
+
+int save_cmd(char **re, int idx, char *buf, int start, int end)
 {
 	int i = 0;
 	
@@ -290,13 +309,14 @@ int		parse_token(t_cmd *cmd, char *buf,int start, int end)
 	int i;
 	int idx;
 	
-	re = (char **)malloc(sizeof(char *) * find_token(buf));
+	re = (char **)malloc(sizeof(char *) * find_token(buf) * 2);
+	printf("find_token_re: %d\n", find_token(buf));
 	idx = 0;
 	i = start;
 	// while (i != end)
 	// 	if (buf[i] == ' ')
 	// 		i++;
-	int end_token = find_end(buf, i, end);
+	int end_token;
 	while (i < end)
 	{
 		if (!is_inquote(buf, start, i))
@@ -305,10 +325,16 @@ int		parse_token(t_cmd *cmd, char *buf,int start, int end)
 				i++;
 				continue ;
 			}
-		i = save_token(re,idx,buf, i ,end_token) + 1;
+		end_token = find_end(buf, i, end);
+		i = save_cmd(re,idx,buf, i ,end_token);//+1
 		printf("%s\n", re[idx]);
 		idx++;
+		break ;
 	}
+	save_arg(re, idx, buf, i , end);
+			printf("%s\n", re[idx]);
+
+	//뒤에건 싹다 한개에 넣기
 	return (0);
 }
 

@@ -387,6 +387,8 @@ int main(int ac, char **av)
 		buf[end] = '\0';
 		write(1, buf, strlen(buf));
 		parsing_cmd(buf, &cmd);
+		
 	}
+	printf("pullmergetest");
 	return (0);
 }

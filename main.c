@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -6,117 +7,89 @@
 
 typedef struct		s_list
 {
-	void			*obj;
-	int				type;
-	struct s_lst	*next;
+	char 			**cmd;
+	int				has_pip;
+	int				has_red;
+	struct s_list	*next;
 }					t_list;
 
-typedef struct		s_cmd
+t_list	*ft_lstnew(char **cmd)
 {
-	int level;
-	t_list *lst;
-}					t_cmd;
+	t_list *new;
 
-int					ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n && s1[i] != '\0' && s2[i] != '\0')
-	{
-		if ((unsigned char)s1[i] > (unsigned char)s2[i])
-			return (1);
-		else if (s1[i] < s2[i])
-			return (-1);
-		i++;
-	}
-	if (i == n || (s1[i] == '\0' && s2[i] == '\0'))
+	new = (t_list *)malloc(sizeof(t_list));
+	if (!new)
 		return (0);
-	else if (s1[i] == '\0' && s2[i] != '\0')
-		return (-1);
-	else
+	new->cmd = cmd;
+	new->has_pip = 0;
+	new->has_red = 0;
+	new->next = NULL;
+	return (new);
+}
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next != NULL)
+	{
+		lst = lst->next;
+	}
+	return (lst);
+}
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list *tmp;
+
+	if (!*lst)
+		*lst = new;
+	tmp = ft_lstlast(*lst);
+	tmp->next = new;
+	new->next = NULL;
+}
+
+int		in_singlequote(char *buf, int start, int end)
+{
+	int single_q;
+	
+	single_q = 0;
+	while (start != end)
+	{
+		if (buf[start] == '\'')
+			single_q++;
+		start++;
+	}
+	if (single_q % 2 !=0) //둘중 하나라도 홀수면 인쿼트 = 쿼트안에있다
 		return (1);
-}
-
-
-static int		ft_find_c(char const *s, char c)
-{
-	int i;
-	int re;
-
-	i = 0;
-	re = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] != c)
-		{
-			while (s[i] != c && s[i] != '\0')
-				i++;
-			re++;
-		}
-		if (s[i])
-			i++;
-	}
-	return (re);
-}
-
-static void		ft_put_split(char const *s, char **re, int k, int j)
-{
-	int		i;
-
-	i = 0;
-	while (k < j && s[k])
-	{
-		(*re)[i] = s[k];
-		k++;
-		i++;
-	}
-	(*re)[i] = '\0';
-}
-
-static char		**ft_freee(char **re)
-{
-	int		i;
-
-	i = 0;
-	while (re[i])
-	{
-		free(re[i]);
-		i++;
-	}
-	free(re);
-	return (0);
-}
-
-char			**ft_split(char const *s, char c)
-{
-	char	**re;
-	int		i;
-	int		j;
-	int		k;
-
-	i = 0;
-	k = 0;
-	if (!s || !(re = (char **)malloc(sizeof(char *) * (ft_find_c(s, c) + 1))))
+	else
 		return (0);
-	while (i < ft_find_c(s, c) && (size_t)k < strlen(s) && s[k])
-	{
-		while (s[k] == c && s[k])
-			k++;
-		j = k;
-		while (s[j] != c && s[j])
-			j++;
-		if (!(re[i] = (char *)malloc(sizeof(char) * (j - k) + 1)))
-			return (ft_freee(re));
-		ft_put_split(s, &re[i], k, j);
-		k = j;
-		i++;
-	}
-	re[i] = 0;
-	return (re);
 }
 
+int		in_doublequote(char *buf, int start, int end)
+{
+	int double_q;
+	
+	double_q = 0;
+	while (start != end)
+	{
+		if (buf[start] == '"')
+			double_q++;
+		start++;
+	}
+	if (double_q % 2 != 0 ) //나머지가 0이면 짝수 0이아니면 홀수 홀수면 인쿼트
+		return (1);
+	else
+		return (0);
+}
 
+int		is_inquote(char *buf, int start, int end)
+{
+	if (in_doublequote(buf, start, end) || in_singlequote(buf, start, end) ) //둘중 하나라도 인쿼트 = 쿼트안에있다
+		return (1);
+	else
+		return (0);
+}
 
 void	free_split(char **s)
 {
@@ -131,262 +104,163 @@ void	free_split(char **s)
 	free(s);
 }
 
-// void	lst_free(t_list **lst)
-// {
-// 	t_list *nod;
-// 	t_list *next;
-
-// 	nod = *lst;
-// 	while (nod)
-// 	{
-// 		next = nod->next;
-// 		free(nod->obj);
-// 		free(nod);
-// 		nod = next;
-// 	}
-// }
-
-// t_list	*lstlast(t_list *lst)
-// {
-// 	if (!lst)
-// 		return (NULL);
-// 	while (lst->next)
-// 		lst = lst->next;
-// 	return (lst);
-// }
-
-// void		cmd_lst_add(t_list **lst, t_list *new, int type)
-// {
-// 	t_list *last;
-
-// 	new->type = type;
-// 	if (!(*lst))
-// 		*lst = new;
-// 	last = lstlast(*lst);
-// 	last->next = new;
-// 	new->next = NULL;
-// }
-
-int		is_inquote(char *buf, int start, int end)
+size_t		ft_strlen(const char *str)
 {
-	int double_q;
-	int single_q;
-	
-	double_q = 0;
-	single_q = 0;
-	while (start != end)
-	{
-		if (buf[start] == '\'')
-			single_q++;
-		else if (buf[start] == '"')
-			double_q++;
-		start++;
-	}
-	if (double_q % 2 != 0 || single_q % 2 !=0 ) //둘중 하나라도 홀수면 인쿼트 = 쿼트안에있다
-		return (1);
-	else
-		return (0);
+	size_t len;
+
+	len = 0;
+	while (str[len] != '\0')
+		len++;
+	return (len);
 }
 
-// char *save_col(t_list *lst,char *buf, int offset)
-// {
-// 	lst_add();
-// 	return (0);
-// }
-
-int ft_doublestrlen(char **s)
+char	*ft_strdup(const char *s1)
 {
-	int i;
-	
+	char	*re;
+	size_t	i;
+
 	i = 0;
-	while (s[i] != NULL)
-	{
-		i++;
-	}
-	return (i);
-}
-
-int exec_cd(char **av)
-{
-	char buf[1024];
-	int  ac;
-	
-	ac = strlen(*av);
-	printf("ac = %d, 0 : %s 1 :%s\n",ac, av[0],av[1]);
-	if (ac != 2)
-		return (0);
-	printf("dir name: %s\n", av[1]);
-	printf("before dir: %s\n", getcwd(buf, 1024));
-	if(chdir(av[1]) == -1)
-		printf("failed, cd\n");
-	else
-		printf("after dir: %s\n", getcwd(buf, 1024));
-	return (0);
-}
-
-
-int save_col(t_list *lst,char *buf,int end)
-{
-	
-	return (0);
-}
-
-int save_arg(char **re, int idx, char *buf, int start, int end)
-{
-		int i = 0;
-	
-	printf("arg%d, %d \n", start, end);
-	if (end - start > 0)
-		re[idx] = (char *)malloc(sizeof(char) * (end - start + 1));
-	else
-	{
-		re[idx] = NULL;
-		return (0);
-	}
+	re = (char *)malloc(sizeof(char) * ft_strlen(s1) + 1);
 	if (!re)
 		return (0);
-	while (start < end)
+	while (s1[i] != '\0')
 	{
-		re[idx][i] = buf[start];
-		i++;
-		start++;
-	}
-	re[idx][i] = '\0';
-	return (start);
-}
-
-int save_cmd(char **re, int idx, char *buf, int start, int end)
-{
-	int i = 0;
-	
-	printf("cmd%d, %d \n", start, end);
-	if (end - start > 0)
-		re[idx] = (char *)malloc(sizeof(char) * (end - start + 1));
-	if (!re)
-		return (0);
-	while (start < end)
-	{
-		re[idx][i] = buf[start];
-		i++;
-		start++;
-	}
-	re[idx][i] = '\0';
-	return (start);
-}
-
-int find_end(char *buf, int start, int end)
-{
-	while (start != end)
-	{
-		if (buf[start] == ' ')
-			return (start);
-		start++;
-	}
-	return (start);
-}
-
-int     find_token(char *buf)
-{
-	int i;
-	int start;
-	int re;
-	
-	i = 0;
-	start = 0;
-	re = 0;
-	while (buf[i] != '\0')// ; 로 안끝나는경우도 생각
-	{
-		if (buf[i] == ';' || buf[i + 1] == '\0' || buf[i] == '|')
-		{
-			if (!is_inquote(buf, start, i))
-				{
-					re++;
-				}
-				start = i;
-		}
+		re[i] = s1[i];
 		i++;
 	}
+	re[i] = '\0';
 	return (re);
 }
-int		parse_token(t_cmd *cmd, char *buf,int start, int end)
+
+char		*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	**word;
-	char **re;
-	int i;
-	int idx;
-	
-	re = (char **)malloc(sizeof(char *) * find_token(buf) * 2);
-	printf("find_token_re: %d\n", find_token(buf));
-	idx = 0;
-	i = start;
-	// while (i != end)
-	// 	if (buf[i] == ' ')
-	// 		i++;
-	int end_token;
-	while (i < end)
-	{
-		if (!is_inquote(buf, start, i))
-			if (buf[i] == ' ')
-			{
-				i++;
-				continue ;
-			}
-		end_token = find_end(buf, i, end);
-		i = save_cmd(re,idx,buf, i ,end_token);//+1
-		printf("%s\n", re[idx]);
-		idx++;
-		break ;
-	}
-	while (i < end && buf[i] == ' ')
-			i++; 
-	save_arg(re, idx, buf, i , end);
-	printf("%s\n", re[idx]);
-	//int ex;
-	// while (re[ex] != NULL)
-	// {
-	// 	if (!ft_strncmp(re[ex],"cd",2))
-			exec_cd(re);
-	// 	else 
-			
-	// }
-	return (0);
+	size_t	i;
+	char	*re;
+
+	i = 0;
+	if (!s)
+		return (0);
+	if (start >= ft_strlen(s))
+		return (ft_strdup(""));
+	re = (char *)malloc(sizeof(char) * len + 1);
+	if (!re)
+		return (0);
+	if (start >= ft_strlen(s))
+		return (0);
+	while (i < len)
+		re[i++] = s[start++];
+	re[i] = '\0';
+	return (re);
 }
 
-int parsing_cmd(char *buf, t_cmd *cmd)
-{
+int mini_trim(char *buf, int start, int end)
+{	
+	while (buf[start] == ' ' && start != end)
+		start++;
+	return (start);
+}
 
-	t_list *lst;
+void    first_parse(t_list **list, char *buf,int start,int end)
+{
+	char **re;
+	int idx;
+	int len;
+	int tmp;
+	
+	idx = 0;
+	len = 0;
+	re = (char **)malloc(sizeof(char *) * 2);
+	if (!re)
+		return ;//(0);
+	while (buf[start] == ' ' && start != end)
+		start++;
+	tmp = start;
+	while (start != end && buf[start++] != ' ')
+		len++;
+	start = tmp;;
+	re[idx++] = ft_substr(buf, start,len);
+	start += len;
+	while (buf[start] == ' ' && start != end)
+		start++;
+	re[idx] = ft_substr(buf, start, end - start);
+	ft_lstadd_back(list, ft_lstnew(re));
+	if (buf[end] == '|') // 추후에 함수로 빼서 더많은 정보들저장 가능 ex) 인자로 buf[end] 정보 넘겨서 파이프저장
+		(*list)->has_pip = 1;
+	
+	// return (re);
+}
+
+// erro_semi(t_list *list)
+// {
+
+// 	while ()
+// }
+
+
+
+t_list *save_list(t_list *list, char **first_parsed)
+{
+	ft_lstadd_back(&list, ft_lstnew(first_parsed));
+//	erro_semi(list);//짝수에 크기가 0 이면 구문오류 맨뒤에서부터 아닌거까지 세미나 파이프 오류 코드가능 빈개 하나면정상 빈개 두개면 ;오류 세개이상이면 ;;오류
+	while (list!= NULL)
+	{
+		printf("0: %s 1: %s\n", list->cmd[0],list->cmd[1] );
+		list = list->next;
+	}
+//	free_split(first_parsed);
+	return (list);
+}
+
+void change_single_qute(t_list **list)
+{
+	
+}
+
+t_list *parsing_cmd(char *buf)
+{
+	t_list *list;
 	int i;
 	int start;
+	//char **first_parsed;
 	
 	i = 0;
 	start = 0;
+	list = (t_list *)malloc(sizeof(t_list));
+	list = NULL;	
 	while (buf[i] != '\0')// ; 로 안끝나는경우도 생각
 	{
 		if (buf[i] == ';' || buf[i + 1] == '\0' || buf[i] == '|')
 		{
 			if (!is_inquote(buf, start, i))
-				if (parse_token(cmd, buf,start, i))
-					return (0);
-				start = i+1;
+			{
+				first_parse(&list, buf, start, i++);
+				change_single_qute(&list);
+				//free(first_parsed);
+				start = i;
+				continue ;
+			}
 		}
 		i++;
 	}
-	return (1);
+	while (list!= NULL)
+	{
+		printf("0: %s 1: %s 3: %d\n", list->cmd[0],list->cmd[1], list->has_pip );
+		list = list->next;
+	}
+	return (list);
 }
 
 int main(int ac, char **av)
 {
 	char buf[1024];
-	t_cmd cmd;
+	t_list  *list;
 	
 	while (1)
 	{
 		write(1,"hyochanyoung>>",14);
 		int end = read(0, buf, 1024);
 		buf[end] = '\0';
-		write(1, buf, strlen(buf));
-		parsing_cmd(buf, &cmd);
+		list = parsing_cmd(buf);
 		
 	}
 	printf("pullmergetest");

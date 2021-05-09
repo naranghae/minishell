@@ -114,6 +114,7 @@ size_t		ft_strlen(const char *str)
 	return (len);
 }
 
+
 char	*ft_strdup(const char *s1)
 {
 	char	*re;
@@ -152,6 +153,36 @@ char		*ft_substr(char const *s, unsigned int start, size_t len)
 	re[i] = '\0';
 	return (re);
 }
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char		*re;
+	size_t		i;
+	size_t		j;
+	size_t		size;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (0);
+	size = ft_strlen(s1) + ft_strlen(s2);
+	if (!(re = (char *)malloc(size + 1)))
+		return (0);
+	while (s1[i] != '\0')
+	{
+		re[i] = s1[i];
+		i++;
+	}
+	re[i] = '\0';
+	while (s2[j] != '\0')
+	{
+		re[i + j] = s2[j];
+		j++;
+	}
+	re[i + j] = '\0';
+	return (re);
+}
+
 
 int mini_trim(char *buf, int start, int end)
 {	
@@ -213,7 +244,34 @@ t_list *save_list(t_list *list, char **first_parsed)
 
 void change_single_qute(t_list **list)
 {
-	
+	int i;
+	int start;
+	int end;
+
+	while ((*list) != NULL)
+	{
+		i = 0;
+		while ((*list)->cmd[1][i] != '\0')
+		{
+			if (/*!in_singlequote() &&*/ (*list)->cmd[1][i] == '\'')
+				{
+					(*list)->cmd[1][i++] = '\0';
+					start = i;
+					while ((*list)->cmd[1][i] != '\0' && (*list)->cmd[1][i] != '\'')
+						i++;
+					if ((*list)->cmd[1][i] != '\0')
+					{
+						end = i;
+						(*list)->cmd[1][end] = '\0';
+						(*list)->cmd[1] = ft_strjoin((*list)->cmd[1],ft_strjoin((*list)->cmd[1] + start, (*list)->cmd[1] + end + 1));
+						i = end - 1;
+						continue ;
+;					}
+				}
+			i++;
+		}
+		(*list) = (*list)->next;
+	}
 }
 
 t_list *parsing_cmd(char *buf)
@@ -234,6 +292,8 @@ t_list *parsing_cmd(char *buf)
 			if (!is_inquote(buf, start, i))
 			{
 				first_parse(&list, buf, start, i++);
+				// 에러처리 -> 크기가없는거 들어올때
+				// not in quote일때 공배제거 먼저해야할듯..?
 				change_single_qute(&list);
 				//free(first_parsed);
 				start = i;

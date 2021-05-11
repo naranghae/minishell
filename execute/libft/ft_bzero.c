@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanykim <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 18:34:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/10 11:39:25 by chanykim         ###   ########.fr       */
+/*   Created: 2020/10/05 17:12:23 by chanykim          #+#    #+#             */
+/*   Updated: 2020/10/05 17:29:24 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_header.h"
+#include "libft.h"
 
-void	prompt(void)
+void	ft_bzero(void *s, size_t n)
 {
-	write(1,"hyochanyoung$ ",14);
+	unsigned char	*str;
+	size_t			i;
+
+	str = (unsigned char *)s;
+	i = 0;
+	while (i < n)
+	{
+		str[i] = 0;
+		i++;
+	}
 }

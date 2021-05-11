@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanykim <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 18:34:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/10 11:39:25 by chanykim         ###   ########.fr       */
+/*   Created: 2020/10/06 19:05:00 by chanykim          #+#    #+#             */
+/*   Updated: 2020/10/06 19:36:20 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_header.h"
+#include "libft.h"
 
-void	prompt(void)
+int		ft_isalnum(int c)
 {
-	write(1,"hyochanyoung$ ",14);
+	return (ft_isdigit(c) || ft_isalpha(c));
 }

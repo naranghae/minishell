@@ -1,18 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanykim <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 18:34:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/10 11:39:25 by chanykim         ###   ########.fr       */
+/*   Created: 2020/10/07 19:00:03 by chanykim          #+#    #+#             */
+/*   Updated: 2020/10/09 21:18:52 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_header.h"
+#include "libft.h"
 
-void	prompt(void)
+char	*ft_strrchr(const char *s, int c)
 {
-	write(1,"hyochanyoung$ ",14);
+	int i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	while (i >= 0)
+	{
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i--;
+	}
+	return (NULL);
 }

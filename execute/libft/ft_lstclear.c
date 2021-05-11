@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanykim <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 18:34:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/10 11:39:25 by chanykim         ###   ########.fr       */
+/*   Created: 2020/10/09 20:00:26 by chanykim          #+#    #+#             */
+/*   Updated: 2020/10/09 20:28:46 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_header.h"
+#include "libft.h"
 
-void	prompt(void)
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	write(1,"hyochanyoung$ ",14);
+	t_list *tmp;
+
+	if (!(del && lst && *lst))
+		return ;
+	while (*lst)
+	{
+		tmp = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = tmp;
+	}
 }

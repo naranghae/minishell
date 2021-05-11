@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanykim <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 18:34:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/10 11:39:25 by chanykim         ###   ########.fr       */
+/*   Created: 2020/10/07 20:21:04 by chanykim          #+#    #+#             */
+/*   Updated: 2020/10/07 20:29:23 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_header.h"
+#include "libft.h"
 
-void	prompt(void)
+void	*ft_calloc(size_t count, size_t size)
 {
-	write(1,"hyochanyoung$ ",14);
+	void	*ptr;
+
+	if (!(ptr = (void *)malloc(count * size)))
+		return (NULL);
+	ft_bzero(ptr, count * size);
+	return (ptr);
 }

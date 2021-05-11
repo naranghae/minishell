@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanykim <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 18:34:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/10 11:39:25 by chanykim         ###   ########.fr       */
+/*   Created: 2020/10/05 16:46:01 by chanykim          #+#    #+#             */
+/*   Updated: 2020/10/05 17:31:12 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_header.h"
+#include "libft.h"
 
-void	prompt(void)
+void	*ft_memset(void *ptr, int value, size_t num)
 {
-	write(1,"hyochanyoung$ ",14);
+	size_t			i;
+	unsigned char	*str;
+
+	i = 0;
+	str = (unsigned char*)ptr;
+	while (i < num)
+	{
+		str[i] = (unsigned char)value;
+		i++;
+	}
+	return (ptr);
 }

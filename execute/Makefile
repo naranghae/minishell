@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/07 18:37:13 by chanykim         ###   ########.fr        #
+#    Updated: 2021/05/10 19:00:29 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,21 +19,29 @@ CFLAGS			= -Wall -Wextra -Werror -g
 NAME			= minishell
 AR				= ar rcs
 INCDIR	= ./includes/
+LIBDIR	= ./libft/
+LIBNAME	= libft.a
 OBJS 			= $(SRCS:.c=.o)
 
 %.o:	%.c
 		${CC} ${CFLAGS} -I$(INCDIR) -c $< -o $@
 
-$(NAME): 		$(OBJS)
-		${CC} ${CFLAGS} -I$(INCDIR) -o $(NAME) $(OBJS)
+$(NAME): 		$(OBJS) $(LIBNAME)
+		${CC} ${CFLAGS} -I$(INCDIR) -o $(NAME) $(OBJS) $(LIBNAME)
+
+$(LIBNAME):
+			@$(MAKE) -C $(LIBDIR) bonus
+			@cp $(addprefix $(LIBDIR), $(LIBNAME)) $(LIBNAME)
 
 all : $(NAME)
 
 clean :
+			$(MAKE) clean -C $(LIBDIR)
 			$(RM) $(OBJS)
 
 fclean : clean
-			$(RM) $(NAME)
+			@$(MAKE) fclean -C $(LIBDIR)
+			$(RM) $(NAME) $(LIBNAME)
 
 re : fclean all
 

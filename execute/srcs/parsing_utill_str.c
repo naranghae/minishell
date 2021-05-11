@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   parsing_utill_str.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/07 18:34:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 17:42:57 by chanykim         ###   ########.fr       */
+/*   Created: 2021/05/11 17:32:57 by chanykim          #+#    #+#             */
+/*   Updated: 2021/05/11 17:42:36 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell_header.h"
+#include "minishell_parsing.h"
 
-void	prompt(void)
+int mini_trim(char *buf, int start, int end)
 {
-	write(1,"hyochanyoung$ ",14);
+	while (buf[start] == ' ' && start != end)
+		start++;
+	return (start);
 }

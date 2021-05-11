@@ -6,43 +6,52 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/10 19:00:29 by chanykim         ###   ########.fr        #
+#    Updated: 2021/05/11 18:20:58 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= main.c \
-				  built_in/env.c srcs/prompt.c
-
-CC				= gcc
-RM				= rm -f
-CFLAGS			= -Wall -Wextra -Werror -g
 NAME			= minishell
-AR				= ar rcs
-INCDIR	= ./includes/
-LIBDIR	= ./libft/
-LIBNAME	= libft.a
-OBJS 			= $(SRCS:.c=.o)
 
-%.o:	%.c
-		${CC} ${CFLAGS} -I$(INCDIR) -c $< -o $@
+CC				= gcc -g3 -fsanitize=address
 
-$(NAME): 		$(OBJS) $(LIBNAME)
-		${CC} ${CFLAGS} -I$(INCDIR) -o $(NAME) $(OBJS) $(LIBNAME)
+CFLAGS			= -Wall -Wextra -Werror
 
-$(LIBNAME):
-			@$(MAKE) -C $(LIBDIR) bonus
-			@cp $(addprefix $(LIBDIR), $(LIBNAME)) $(LIBNAME)
+LIBFTD = ./includes/libft
+
+LIBFT = libft.a
+
+SRCD = ./srcs/
+
+SRC=	main.c\
+		env.c\
+		prompt.c\
+		signal.c\
+		parsing_change.c\
+		parsing_utill_free.c\
+		parsing_utill_inquote.c\
+		parsing_utill_list.c\
+		parsing_utill_str.c\
+		parsing.c
+
+SRCM = $(addprefix $(SRCD), $(SRC))
+
+INCLUDE = -I $(LIBFTD) -I ./includes
 
 all : $(NAME)
 
 clean :
-			$(MAKE) clean -C $(LIBDIR)
-			$(RM) $(OBJS)
+		$(MAKE) -C $(LIBFTD) clean
 
 fclean : clean
-			@$(MAKE) fclean -C $(LIBDIR)
-			$(RM) $(NAME) $(LIBNAME)
+		$(MAKE) -C $(LIBFTD) fclean
+		rm -rf $(NAME)
 
 re : fclean all
 
-.PHONY: all clean fclean re
+$(NAME) : $(LIBFTD)/$(LIBFT)
+		$(CC) $(CFLAGS) -L $(LIBFTD) -lft $(INCLUDE) -o $@ $(SRCM)
+
+$(LIBFTD)/$(LIBFT) :
+	$(MAKE) -C $(LIBFTD) all
+
+.PHONY : all clean fclean re

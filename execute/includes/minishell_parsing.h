@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 20:26:21 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/11 20:55:59 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,6 @@ t_cmd				*parsing_cmd(char *buf);
 t_cmd				*last_cmd(t_cmd *lst);
 void				add_back_cmd(t_cmd **lst, t_cmd *new);
 t_cmd				*new_cmd(char **cmd);
+void				exec_cmd(t_cmd **cmd, t_env **env_set, char **envp);
+void				exec_not_built_in(t_cmd *exec_cmd, t_env *exec_env, char **envp);
 #endif

@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/11 18:20:58 by chanykim         ###   ########.fr        #
+#    Updated: 2021/05/11 20:54:34 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRC=	main.c\
 		parsing_utill_inquote.c\
 		parsing_utill_list.c\
 		parsing_utill_str.c\
-		parsing.c
+		parsing.c\
+		exec.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

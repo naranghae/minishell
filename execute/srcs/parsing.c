@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 20:27:50 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/11 21:17:28 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ t_cmd *parsing_cmd(char *buf)
 		i++;
 	}
 	//first_parse(&list, buf, start, ft_strlen(buf));
-	printf("%s %s\n", list->cmd[0], list->cmd[1]);
-	while (list!= NULL)
-	{
-		printf("0: %s 1: %s 3: %d\n", list->cmd[0],list->cmd[1], list->has_pip);
-		list = list->next;
-	}
+	// printf("%s %s\n", list->cmd[0], list->cmd[1]);
+	// while (list!= NULL)
+	// {
+	// 	printf("0: %s 1: %s 3: %d\n", list->cmd[0],list->cmd[1], list->has_pip);
+	// 	list = list->next;
+	// }
 	return (list);
 }

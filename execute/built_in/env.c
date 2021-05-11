@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:22:34 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 13:25:55 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/11 13:49:25 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	ft_strdual_save(t_env *env_parse, char *str, int c)
 			env_parse->name = ft_substr(str, 0, i);
 			env_parse->contents = ft_substr(str, i + 1, ft_strlen(str) - (i + 1));
 			env_parse->next = NULL;
-			printf("%s = %s\n", env_parse->name, env_parse->contents);
+			//printf("%s = %s\n", env_parse->name, env_parse->contents);
 		}
 	}
 }

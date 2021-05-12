@@ -1,114 +1,27 @@
+<<<<<<< HEAD:old/src/parsing.c
 #include "minishell.h"
+=======
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+>>>>>>> a772f7d4b18ac8319a235aaac37f7ccfe6c4ea18:main.c
 
 
-int					ft_strncmp(const char *s1, const char *s2, size_t n)
+char		*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t	i;
+	size_t	j;
+	char	*str;
 
+	if (!s)
+		return (NULL);
+	if (!(str = (char *)malloc(sizeof(*s) * (len + 1))))
+		return (NULL);
 	i = 0;
-	while (i < n && s1[i] != '\0' && s2[i] != '\0')
-	{
-		if ((unsigned char)s1[i] > (unsigned char)s2[i])
-			return (1);
-		else if (s1[i] < s2[i])
-			return (-1);
-		i++;
-	}
-	if (i == n || (s1[i] == '\0' && s2[i] == '\0'))
-		return (0);
-	else if (s1[i] == '\0' && s2[i] != '\0')
-		return (-1);
-	else
-		return (1);
-}
-
-
-static int		ft_find_c(char const *s, char c)
-{
-	int i;
-	int re;
-
-	i = 0;
-	re = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] != c)
-		{
-			while (s[i] != c && s[i] != '\0')
-				i++;
-			re++;
-		}
-		if (s[i])
-			i++;
-	}
-	return (re);
-}
-
-static void		ft_put_split(char const *s, char **re, int k, int j)
-{
-	int		i;
-
-	i = 0;
-	while (k < j && s[k])
-	{
-		(*re)[i] = s[k];
-		k++;
-		i++;
-	}
-	(*re)[i] = '\0';
-}
-
-static char		**ft_freee(char **re)
-{
-	int		i;
-
-	i = 0;
-	while (re[i])
-	{
-		free(re[i]);
-		i++;
-	}
-	free(re);
-	return (0);
-}
-
-char			**ft_split(char const *s, char c)
-{
-	char	**re;
-	int		i;
-	int		j;
-	int		k;
-
-	i = 0;
-	k = 0;
-	if (!s || !(re = (char **)malloc(sizeof(char *) * (ft_find_c(s, c) + 1))))
-		return (0);
-	while (i < ft_find_c(s, c) && (size_t)k < strlen(s) && s[k])
-	{
-		while (s[k] == c && s[k])
-			k++;
-		j = k;
-		while (s[j] != c && s[j])
-			j++;
-		if (!(re[i] = (char *)malloc(sizeof(char) * (j - k) + 1)))
-			return (ft_freee(re));
-		ft_put_split(s, &re[i], k, j);
-		k = j;
-		i++;
-	}
-	re[i] = 0;
-	return (re);
-}
-
-
-
-void	free_split(char **s)
-{
-	int i;
-
-	i = 0;
+	j = 0;
 	while (s[i])
 	{
+<<<<<<< HEAD:old/src/parsing.c
 		free(s[i]);
 		i++;
 	}
@@ -282,22 +195,32 @@ int     find_token(char *buf)
 	while (buf[i] != '\0')// ; 로 안끝나는경우도 생각
 	{
 		if (buf[i] == ';' || buf[i + 1] == '\0' || buf[i] == '|')
+=======
+		if (i >= start && j < len)
+>>>>>>> a772f7d4b18ac8319a235aaac37f7ccfe6c4ea18:main.c
 		{
-			if (!is_inquote(buf, start, i))
-				{
-					re++;
-				}
-				start = i;
+			str[j] = s[i];
+			j++;
 		}
 		i++;
 	}
+<<<<<<< HEAD:old/src/parsing.c
 	return (re );
 }
 int		parse_token(t_list *list, char *buf,int start, int end)
+=======
+	str[j] = '\0';
+	return (str);
+}
+
+int		main(void)
+>>>>>>> a772f7d4b18ac8319a235aaac37f7ccfe6c4ea18:main.c
 {
-	char	**word;
-	char **re;
+	char *str;
+	char *name;
+	char *contents;
 	int i;
+<<<<<<< HEAD:old/src/parsing.c
 	int idx;
 	
 	re = (char **)malloc(sizeof(char *) * ((find_token(buf) ) * 2 + 1));
@@ -340,9 +263,25 @@ int parsing_cmd(char *buf, t_list *list)
 	i = 0;
 	start = 0;
 	while (buf[i] != '\0')//; 로 안끝나는경우도 생각
+=======
+	str = (char *)malloc(sizeof(char) * 10);
+	name = (char *)malloc(sizeof(char) * 5);
+	contents = (char *)malloc(sizeof(char) * 4);
+	for(int i = 0;i < 10;i++)
 	{
-		if (buf[i] == ';' || buf[i + 1] == '\0' || buf[i] == '|')
+		if (i == 5)
+			str[i] = '=';
+		else
+			str[i] = 'a';
+	}
+	printf("%s\n", str);
+	i = -1;
+	while (str[++i] != '\0')
+>>>>>>> a772f7d4b18ac8319a235aaac37f7ccfe6c4ea18:main.c
+	{
+		if (str[i] == '=')
 		{
+<<<<<<< HEAD:old/src/parsing.c
 			if (!is_inquote(buf, start, i))
 				if (parse_token(list, buf,start, i))
 					return (0);
@@ -351,4 +290,13 @@ int parsing_cmd(char *buf, t_list *list)
 		i++;
 	}
 	return (1);
+=======
+			name = ft_substr(str, 0, i);
+			contents = ft_substr(str, i + 1, strlen(str) - (i + 1));
+		}
+	}
+	printf("name: %s\n", name);
+	printf("contents: %s\n", contents);
+	return (0);
+>>>>>>> a772f7d4b18ac8319a235aaac37f7ccfe6c4ea18:main.c
 }

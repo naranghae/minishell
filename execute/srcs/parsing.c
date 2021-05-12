@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/12 11:56:25 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/12 13:51:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int     count_parsing(char *buf,int start,int end)
 	int idx;
 	int len;
 	int tmp;
-	
+
 	re = 0;
 	idx = 0;
 	len = 0;
-	
+
 	while (buf[start] == ' ' && start != end)
 		start++;
 	tmp = start;
@@ -62,7 +62,6 @@ void    first_parse(t_cmd **list, char *buf,int start,int end)
 	idx = 0;
 	len = 0;
 	re = (char **)malloc(sizeof(char *) * (count_parsing(buf,start,end) + 1));
-	printf("n:%d\n",count_parsing(buf,start,end));
 	if (!re)
 		return ;//(0);
 	while (buf[start] == ' ' && start != end)
@@ -85,7 +84,6 @@ void    first_parse(t_cmd **list, char *buf,int start,int end)
 	add_back_cmd(list, new_cmd(re));
 	if (buf[end] == '|') // 추후에 함수로 빼서 더많은 정보들저장 가능 ex) 인자로 buf[end] 정보 넘겨서 파이프저장
 		(*list)->has_pip = 1;
-printf("n:%d\n",count_parsing(buf,start,end));
 	// return (re);
 }
 
@@ -97,7 +95,6 @@ t_cmd *parsing_cmd(char *buf)
 	//char **first_parsed;
 	i = 0;
 	start = 0;
-	printf("%s\n", buf);
 	list = (t_cmd *)malloc(sizeof(t_cmd));
 	list = NULL;
 	while (buf[i] != '\0')// ; 로 안끝나는경우도 생각

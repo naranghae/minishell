@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 21:17:32 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/12 13:53:39 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ int		main(int argc, char **argv, char **envp)
 	}
 	env_set = parsing_env(envp);
 	env_set = env_set->next;
-	signal_func();
+	//signal_func();
 	while (1)
 	{
 		prompt();
 		end = read(0, buf, 1024);
 		buf[end] = '\0';
 		cmd = parsing_cmd(buf);
-		printf("%s\n", env_set->name);
 		exec_cmd(&cmd, &env_set, envp);
 	}
 	return (0);

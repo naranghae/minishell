@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 21:17:28 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/12 11:56:25 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,33 @@ t_cmd *save_list(t_cmd *list, char **first_parsed)
 	return (list);
 }
 
+int     count_parsing(char *buf,int start,int end)
+{
+	int re;
+	int idx;
+	int len;
+	int tmp;
+	
+	re = 0;
+	idx = 0;
+	len = 0;
+	
+	while (buf[start] == ' ' && start != end)
+		start++;
+	tmp = start;
+	while (start != end && buf[start++] != ' ')
+		len++;
+	start = tmp;
+	re++;
+	start += len;
+	while (buf[start] == ' ' && start != end)
+		start++;
+	if (end - start > 0)
+		re++;
+	return (re);
+}
+
+
 void    first_parse(t_cmd **list, char *buf,int start,int end)
 {
 	char **re;
@@ -34,7 +61,8 @@ void    first_parse(t_cmd **list, char *buf,int start,int end)
 
 	idx = 0;
 	len = 0;
-	re = (char **)malloc(sizeof(char *) * 2);
+	re = (char **)malloc(sizeof(char *) * (count_parsing(buf,start,end) + 1));
+	printf("n:%d\n",count_parsing(buf,start,end));
 	if (!re)
 		return ;//(0);
 	while (buf[start] == ' ' && start != end)
@@ -47,11 +75,17 @@ void    first_parse(t_cmd **list, char *buf,int start,int end)
 	start += len;
 	while (buf[start] == ' ' && start != end)
 		start++;
-	re[idx] = ft_substr(buf, start, end - start);
+	if (end - start > 0)
+	{
+		re[idx++] = ft_substr(buf, start, end - start);
+		re[idx] = NULL;
+	}
+	else
+		re[idx] = NULL;
 	add_back_cmd(list, new_cmd(re));
 	if (buf[end] == '|') // 추후에 함수로 빼서 더많은 정보들저장 가능 ex) 인자로 buf[end] 정보 넘겨서 파이프저장
 		(*list)->has_pip = 1;
-
+printf("n:%d\n",count_parsing(buf,start,end));
 	// return (re);
 }
 

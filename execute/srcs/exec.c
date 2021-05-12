@@ -18,9 +18,14 @@ void	exec_not_built_in(t_cmd *exec_cmd, t_env *exec_env, char **envp)
 	while (path[i] != NULL)
 	{
 		join = ft_strjoin(path[i], "/");
-		printf("cat: %s1\n", join);
-		if (execve(ft_strjoin(join, exec_cmd->cmd[0]), exec_cmd->cmd, envp))
-			return ;
+		//printf("cat: %s\n", join);
+		// if (execve(ft_strjoin(join, exec_cmd->cmd[0]), exec_cmd->cmd, envp) != -1)
+		// 	return ;
+		printf("0: %s$\n", exec_cmd->cmd[0]);
+		printf("1: %s$\n", exec_cmd->cmd[1]);
+		//printf("2: %s$\n", exec_cmd->cmd[2]);
+		printf("cat: %s1\n", ft_strjoin(join, exec_cmd->cmd[0]));
+		execve(ft_strjoin(join, exec_cmd->cmd[0]), exec_cmd->cmd, envp);
 		i++;
 	}
 	exit(write(1,"error",5) * 0);

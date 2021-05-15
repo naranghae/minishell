@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/14 11:31:18 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:22:24 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ typedef struct		s_cmd
 	int				has_pip;
 	int				has_red;
 	int				fd[2];
+	struct s_cmd	*prev;
 	struct s_cmd	*next;
+	struct s_cmd	*tail;
 }					t_cmd;
 
 int					in_singlequote(char *buf, int start, int end);
@@ -36,6 +38,8 @@ t_cmd				*parsing_cmd(char *buf);
 t_cmd				*last_cmd(t_cmd *lst);
 void				add_back_cmd(t_cmd **lst, t_cmd *new);
 t_cmd				*new_cmd(char **cmd);
-void				exec_cmd(t_cmd **cmd, t_env **env_set, char **envp);
+void				init_cmd(t_cmd **head, t_cmd **tail);
+void				exec_cmd(t_cmd **cmd, char **envp, char **path);
+int					exec(t_cmd **cmd, t_env **env_set, char **envp);
 void				exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp);
 #endif

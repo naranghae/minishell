@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/14 11:16:18 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:22:36 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		main(int argc, char **argv, char **envp)
 		end = read(0, buf, 1024);
 		buf[end] = '\0';
 		cmd = parsing_cmd(buf);
-		exec_cmd(&cmd, &env_set, envp);
+		exec(&cmd, &env_set, envp);
 	}
 	return (0);
 }

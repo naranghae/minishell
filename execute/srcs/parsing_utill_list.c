@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utill_list.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 20:08:20 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/15 19:55:09 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ void	add_back_cmd(t_cmd **lst, t_cmd *new)
 {
 	t_cmd *tmp;
 
-	if (!*lst)
-		*lst = new;
-	tmp = last_cmd(*lst);
-	tmp->next = new;
-	new->next = NULL;
-
+	tmp = (*lst)->tail;
+	tmp->prev->next = new;
+	new->prev = tmp->prev;
+	tmp->prev = new;
+	new->next = tmp;
 }
+
 
 t_cmd	*new_cmd(char **cmd)
 {
@@ -46,5 +46,19 @@ t_cmd	*new_cmd(char **cmd)
 	new->has_pip = 0;
 	new->has_red = 0;
 	new->next = NULL;
+	new->prev = NULL;
+	new->tail = NULL;
 	return (new);
+}
+
+void	init_cmd(t_cmd **head, t_cmd **tail)
+{
+
+	*head = new_cmd(NULL);
+	*tail = new_cmd(NULL);
+	(*head)->next = (*tail);
+	(*head)->prev = (*head);
+	(*tail)->next = (*tail);
+	(*tail)->prev = (*head);
+	(*head)->tail = (*tail);
 }

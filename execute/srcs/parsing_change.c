@@ -20,10 +20,12 @@ void change_single_qute(t_cmd **list)// 추후에 또 나눠야함 cmd[0]도 사
 	int end;
 	t_cmd *tmp;
 
-	idx = 0;
-	tmp = (*list);
-	while (tmp != NULL)
+	tmp = (*list)->next;
+	while (tmp != (*list)->tail)
 	{
+	idx = 0;
+		//printf("list0 %s list1 %s \n",  tmp->cmd[0], tmp->cmd[1]);
+		//printf("idx %d , cmd [idx] : %s\n", idx, tmp->cmd[idx]);
 		while (tmp->cmd[idx]!= NULL)
 		{
 			i = 0;
@@ -40,8 +42,8 @@ void change_single_qute(t_cmd **list)// 추후에 또 나눠야함 cmd[0]도 사
 							end = i;
 							tmp->cmd[idx][end] = '\0';
 							tmp->cmd[idx] = ft_strjoin(tmp->cmd[idx],ft_strjoin(tmp->cmd[idx] + start, tmp->cmd[idx] + end + idx));
-							 printf("joinre : %s\n", tmp->cmd[idx]);
-							i = end - idx;
+							// printf("joinre : %s\n", tmp->cmd[idx]);
+							i = end - 1;
 							continue ;
 						}
 					}

@@ -193,6 +193,11 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 	// }
 }
 
+// void	exec_built_in(exec_cmd, path, envp)
+// {
+	
+// }
+
 void	exec_cmd(t_cmd **cmd, char **envp, char **path)
 {
 	t_cmd	*exec_cmd;

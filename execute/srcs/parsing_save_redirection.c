@@ -10,12 +10,14 @@ void	save_red_cmd(t_cmd **tmp, int i, int idx)
 	{
 		len = 0;
 		type = 0;
-		while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<')
+		while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0')
 			i++;
 		if ((*tmp)->cmd[idx][i] == '<')
 			type = OUT;
 		else if ((*tmp)->cmd[idx][i] == '>')
 			type = IN;
+		if ((*tmp)->cmd[idx][i] == '\0')
+			return ;
 		if ((*tmp)->cmd[idx][++i] == '>' && type == IN)
 			type += (++i);
 		while ((*tmp)->cmd[idx][i] == ' ' && (*tmp)->cmd[idx][i] != '\0')

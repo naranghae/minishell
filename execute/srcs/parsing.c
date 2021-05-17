@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/15 20:05:06 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/17 11:42:03 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ t_cmd *parsing_cmd(char *buf)
 		}
 		i++;
 	}
-				change_single_qute(&head);
+	change_single_qute(&head);
 	//first_parse(&head, buf, start, ft_strlen(buf));
 	// printf("%s %s\n", head->cmd[0], head->cmd[1]);
 	// while (head!= NULL)

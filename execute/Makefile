@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
+#    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/12 11:57:00 by hyopark          ###   ########.fr        #
+#    Updated: 2021/05/17 15:09:41 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ LIBFT = libft.a
 SRCD = ./srcs/
 
 SRC=	main.c\
-		env.c\
+		env_setting.c\
 		prompt.c\
 		signal.c\
 		parsing_change.c\
@@ -32,7 +32,9 @@ SRC=	main.c\
 		parsing_utill_list.c\
 		parsing_utill_str.c\
 		parsing.c\
-		exec.c
+		exec.c \
+		exec_cd.c \
+		exec_env.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

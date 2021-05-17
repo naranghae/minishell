@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utill_list.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/15 19:55:09 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/17 11:37:10 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ t_cmd	*new_cmd(char **cmd)
 
 void	init_cmd(t_cmd **head, t_cmd **tail)
 {
-
 	*head = new_cmd(NULL);
 	*tail = new_cmd(NULL);
 	(*head)->next = (*tail);

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 18:02:40 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/17 16:17:36 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct			s_env
 	struct	s_env		*next;
 }						t_env;
 
-void					print_env(char **env);
 void					prompt(void);
 t_env					*parsing_env(char **env);
 t_env					*new_env(void);

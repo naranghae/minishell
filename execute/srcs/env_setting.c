@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_setting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:22:34 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 18:00:42 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/17 16:26:24 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,6 @@ void	add_back_env(t_env **lst, t_env *new)
 		else
 			*lst = new;
 	}
-}
-
-void	print_env(char **env)
-{
-	int	i;
-
-	i = -1;
-	while (env[++i] != NULL)
-		printf("%s\n", env[i]);
 }
 
 void	save_env(t_env *env_parse, char *str, int c)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/15 19:22:24 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/17 17:32:08 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ t_cmd				*last_cmd(t_cmd *lst);
 void				add_back_cmd(t_cmd **lst, t_cmd *new);
 t_cmd				*new_cmd(char **cmd);
 void				init_cmd(t_cmd **head, t_cmd **tail);
-void				exec_cmd(t_cmd **cmd, char **envp, char **path);
+void				exec_cmd(t_cmd **cmd, char **envp, char **path, t_env **env_set);
 int					exec(t_cmd **cmd, t_env **env_set, char **envp);
 void				exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp);
+void				exec_cd(t_cmd *exec_cmd);
+void				exec_env(t_cmd *exec_cmd, t_env **env);
 #endif

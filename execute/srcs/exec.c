@@ -221,5 +221,6 @@ int		exec(t_cmd **cmd, t_env **env_set, char **envp)
 		exec_env = exec_env->next;
 	}
 	exec_cmd(cmd, envp, path);
+	free_split(path);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/15 20:05:06 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/16 16:57:59 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,15 @@ void    first_parse(t_cmd **list, char *buf,int start,int end)
 	re = (char **)malloc(sizeof(char *) * (count_parsing(buf, start, end) + 1));
 	if (!re)
 		return ;//(0);
-	while (buf[start] == ' ' && start != end)
+	while (buf[start] == ' ' && start != end)//앞공백제거
 		start++;
 	tmp = start;
-	while (start != end && buf[start++] != ' ')
+	while (start != end && buf[start++] != ' ')//명령어 크기 재기
 		len++;
 	start = tmp;
-	re[idx++] = ft_substr(buf, start,len);
+	re[idx++] = ft_substr(buf, start,len);//명령어저장
 	start += len;
-	while (buf[start] == ' ' && start != end)
+	while (buf[start] == ' ' && start != end)//
 		start++;
 	if (end - start > 0)
 	{
@@ -114,7 +114,8 @@ t_cmd *parsing_cmd(char *buf)
 		}
 		i++;
 	}
-				change_single_qute(&head);
+	change_single_qute(&head);
+	save_redirection(&head);
 	//first_parse(&head, buf, start, ft_strlen(buf));
 	// printf("%s %s\n", head->cmd[0], head->cmd[1]);
 	// while (head!= NULL)

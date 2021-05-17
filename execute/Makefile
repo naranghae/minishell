@@ -6,7 +6,7 @@
 #    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/12 11:57:00 by hyopark          ###   ########.fr        #
+#    Updated: 2021/05/16 17:57:57 by hyopark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC=	main.c\
 		parsing_utill_inquote.c\
 		parsing_utill_list.c\
 		parsing_utill_str.c\
+		parsing_save_redirection.c\
 		parsing.c\
 		exec.c
 

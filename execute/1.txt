@@ -1,0 +1,8 @@
+1.txt
+Makefile
+a.txt
+includes
+libft.a
+minishell
+minishell.dSYM
+srcs

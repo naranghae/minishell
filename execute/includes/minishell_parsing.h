@@ -6,15 +6,15 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/17 16:40:27 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/17 20:55:05 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_PARSING_H
 # define MINISHELL_PARSING_H
-# define IN 0
-# define OUT 1
-# define APPEND 2
+# define IN 1
+# define OUT 2
+# define APPEND 3
 
 #include "minishell_header.h"
 
@@ -37,6 +37,13 @@ typedef struct		s_cmd
 	struct s_cmd	*tail;
 }					t_cmd;
 
+void	pipe_fork(t_cmd *exec_cmd,pid_t *pid);
+void pre_exec_cd(t_cmd *exec_cmd, pid_t pid);
+void pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env **env_set);
+void	close_pipe(pid_t *pid, t_cmd *exec_cmd, int res, int status);
+
+
+
 int					in_singlequote(char *buf, int start, int end);
 int					in_doublequote(char *buf, int start, int end);
 int					is_inquote(char *buf, int start, int end);
@@ -54,7 +61,7 @@ t_red				*new_red(char *file_name, int type);
 void				init_cmd(t_cmd **head, t_cmd **tail);
 void				save_redirection(t_cmd **list);
 void				save_red_cmd(t_cmd **tmp,int i, int idx);
-void				exec_cmd(t_cmd **cmd, char **envp, char **path);
+void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path);
 int					exec(t_cmd **cmd, t_env **env_set, char **envp);
 void				exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp);
 #endif

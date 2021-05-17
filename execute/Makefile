@@ -6,7 +6,7 @@
 #    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/16 17:57:57 by hyopark          ###   ########.fr        #
+#    Updated: 2021/05/17 20:48:22 by hyopark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,11 @@ SRC=	main.c\
 		parsing_utill_str.c\
 		parsing_save_redirection.c\
 		parsing.c\
-		exec.c
+		exec.c\
+		exec_cd.c\
+		exec_env.c\
+		exec_not_built_in.c\
+		exec_util.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

@@ -1,212 +1,61 @@
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-/*
-void	pipe_built_in(t_cmd *exec_cmd, t_env *exec_env, char **envp, int *fd)
+
+void	exec_built_in(t_cmd *exec_cmd, t_env **envp)
 {
-	pid_t	pid;
-	char	**path;
-	int		i;
-	char	*join;
-	char	*pathjoin;
-
-	i = 0;
-
-	while (exec_env != NULL)
-	{
-		if (!ft_strncmp(exec_env->name, "PATH", 4))
-			path = ft_split(exec_env->contents,':');
-		exec_env = exec_env->next;
-	}
-	while (path[i] != NULL)
-	{
-		join = ft_strjoin(path[i], "/");
-		pathjoin = ft_strjoin(join, exec_cmd->cmd[0]);
-	}
-}
-
-void	exec_not_built_in(t_cmd *exec_cmd, t_env *exec_env, char **envp)
-{
-	char	**path;
-	int		i;
-	char	*join;
-	char	*pathjoin;
-	pid_t	pid;
-	int		status;
-	int		fd[2];
-
-	i = 0;
-	if (exec_cmd->has_pip > 0)
-	{
-		if (pipe(fd) < 0){
-			printf("pipe error\n");
-			return ;
-		}
-		pipe_built_in(exec_cmd, exec_env, envp, fd);
-	}
-	else{
-		pid = fork();
-		if (pid < 0)
-		{
-			printf("fork failed!\n");
-			return ;
-		}
-		else if (pid == 0)
-		{
-			while (exec_env != NULL)
-			{
-				if (!ft_strncmp(exec_env->name, "PATH", 4))
-					path = ft_split(exec_env->contents,':');
-				exec_env = exec_env->next;
-			}
-			while (path[i] != NULL)
-			{
-				join = ft_strjoin(path[i], "/");
-				pathjoin = ft_strjoin(join, exec_cmd->cmd[0]);
-				execve(pathjoin, exec_cmd->cmd, envp);
-				free(join);
-				free(pathjoin);
-				i++;
-			}
-			exit(write(1,"error\n",6) * 0);
-		}
-		else if (pid > 0)
-		{
-			waitpid(pid, &status, WUNTRACED);
-		}
-	}
-}
-*/
-
-
-void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
-{
-	pid_t	pid;
-	int		res = 0;
-	int		status;
-	int		i;
-	char	*join;
-	char	*pathjoin;
-	
-	i = 0;
+	pid_t pid;
 	if (exec_cmd->has_pip)
-		if (pipe(exec_cmd->fd) < 0)
-			exit(0);
-			//exit_fatal();
-	pid = fork();
-	if (pid < 0)
-		exit(0);
-		//exit_fatal();
-	else if (pid == 0)
-	{
-		if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-			exit(0);
-			//exit_fatal();
-		if (exec_cmd->prev && exec_cmd->prev->has_pip && dup2(exec_cmd->prev->fd[0], 0) < 0)
-			exit(0);
-			//exit_fatal();
-			while (path[i] != NULL)
-		{
-			join = ft_strjoin(path[i], "/");
-			pathjoin = ft_strjoin(join, exec_cmd->cmd[0]);
-			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-				exit(write(1,"error\n",6) * 0);
-			//if (exec_cmd->cmd && )
-			res = execve(pathjoin, exec_cmd->cmd, envp);
-			free(path[i]);
-			free(join);
-			free(pathjoin);
-			i++;
-		}
-			
-		// if ((res = execve(exec_cmd->cmd[0], exec_cmd->cmd, envp)) < 0)
-		// {
-		// 	exit(0);
-		// 	// ft_putstr("error: cannot execute ");
-		// 	// ft_putstr(exec_cmd->cmd[0]);
-		// 	// ft_putstr("\n");
-		// }
-		exit(res);
-	}
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			res = WEXITSTATUS(status);
-		if (exec_cmd->has_pip)
-		{
-			close(exec_cmd->fd[1]);
-			if (!exec_cmd->next)
-				close(exec_cmd->fd[0]);
-		}
-		if (exec_cmd->prev && exec_cmd->prev->has_pip)
-			close(exec_cmd->prev->fd[0]);
-	}
-
-
-
-	// int		i;
-	// char	*join;
-	// char	*pathjoin;
-	// pid_t	pid;
-	// int		status;
-	// int		res;
-
-	// i = 0;
-	// if (exec_cmd->has_pip > 0)
-	// {
-	// 	if (pipe(exec_cmd->fd) < 0){
-	// 		printf("pipe error\n");
-	// 		return ;
-	// 	}
-	// }
-	// pid = fork();
-	// if (pid < 0)
-	// {
-	// 	printf("fork failed!\n");
-	// 	return ;
-	// }
-	// else if (pid == 0)
-	// {
-	// 	while (path[i] != NULL)
-	// 	{
-	// 		join = ft_strjoin(path[i], "/");
-	// 		pathjoin = ft_strjoin(join, exec_cmd->cmd[0]);
-	// 		if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-	// 			exit(write(1,"error\n",6) * 0);
-	// 		//if (exec_cmd->cmd && )
-	// 		res = execve(pathjoin, exec_cmd->cmd, envp);
-	// 		free(path[i]);
-	// 		free(join);
-	// 		free(pathjoin);
-	// 		i++;
-	// 	}
-	// 	exit(write(1,"error\n",6) * 0);
-	// }
-	// else if (pid > 0)
-	// {
-	// 	waitpid(pid, &status, 0);
-	// 	if (exec_cmd->cmd)
-	// 		close(exec_cmd->fd[0]);
-	// 	if (exec_cmd->has_pip)
-	// 		close(exec_cmd->fd[1]);
-	// }
+		pipe_fork(exec_cmd, &pid);
+	// if (exec_cmd->red->type != 0)
+	// 	exec_red();
+	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 2))
+		pre_exec_cd(exec_cmd, pid);
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
+	// 	pre_exec_echo();
+	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
+		pre_exec_env(exec_cmd, &pid,envp);
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
+	// 	pre_exec_exit();
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
+	// 	pre_exec_export();
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
+	// 	pre_exec_unset();
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
+	// 	pre_exec_pwd();
+	else
+		return ;
 }
 
-// void	exec_built_in(exec_cmd, path, envp)
-// {
-	
-// }
+int		is_built_in(t_cmd *exec_cmd)
+{
+	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 2))
+		return (1);
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
+	// 	return (1);
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
+	// 	return (1);
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
+	// 	return (1);
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
+	// 	return (1);
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
+	// 	return (1);
+	// else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
+		// return (1);
+	else
+		return (0);
+}
 
-void	exec_cmd(t_cmd **cmd, char **envp, char **path)
+void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 {
 	t_cmd	*exec_cmd;
 
 	exec_cmd = (*cmd)->next;
 	while (exec_cmd != (*cmd)->tail)
 	{
-		if (!ft_strncmp(exec_cmd->cmd[0], "cd", 2))
-			{printf("cd\n");}
+		if (is_built_in(exec_cmd))
+			exec_built_in(exec_cmd, env_set);
 		else
 			exec_not_built_in(exec_cmd, path, envp);
 		exec_cmd = exec_cmd->next;
@@ -225,7 +74,7 @@ int		exec(t_cmd **cmd, t_env **env_set, char **envp)
 			path = ft_split(exec_env->contents,':'); //leaks
 		exec_env = exec_env->next;
 	}
-	exec_cmd(cmd, envp, path);
+	exec_cmd(cmd, env_set, envp, path);
 	free_split(path);
 	return (0);
 }

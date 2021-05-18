@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 14:05:34 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/17 17:41:52 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/18 11:21:57 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	exec_env(t_cmd *exec_cmd, t_env **env)
 	t_env	*exec_env;
 	int		res;
 	int		status;
-	pid_t	pid;
 
 	res = 0;
 	if (exec_cmd->has_pip)

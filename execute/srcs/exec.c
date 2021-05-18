@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/17 14:56:18 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/17 17:42:39 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/18 11:42:15 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void	exec_cmd(t_cmd **cmd, char **envp, char **path, t_env **env_set)
 			exec_not_built_in(exec_cmd, path, envp);
 		exec_cmd = exec_cmd->next;
 	}
-
 }
 
 int		exec(t_cmd **cmd, t_env **env_set, char **envp)

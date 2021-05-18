@@ -56,7 +56,7 @@ void pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env  **env)
 	status = 0;
 	if (exec_cmd->has_pip)
 	{
-		if (pid == 0)
+		if (*pid == 0)
 		{
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
 				exit(0);
@@ -64,8 +64,8 @@ void pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env  **env)
 				exit(0);
 			exit(exec_env(env));
 		}
-		else if (pid > 0)
-		close_pipe(pid, exec_cmd, res, status);
+		else if (*pid > 0)
+			close_pipe(pid, exec_cmd, res, status);
 	}
 	else
 		exec_env(env);

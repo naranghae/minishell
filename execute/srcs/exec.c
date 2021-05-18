@@ -33,8 +33,8 @@ int		is_built_in(t_cmd *exec_cmd)
 		return (1);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
 	// 	return (1);
-	// else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
-	// 	return (1);
+	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
+		return (1);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
 	// 	return (1);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))

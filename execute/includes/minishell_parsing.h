@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/18 11:03:13 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/18 14:58:27 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct		s_red
 {
 	int				type;
 	char			*file_name;
+	int			fd;
 	struct s_red	*next;
 }					t_red;
 

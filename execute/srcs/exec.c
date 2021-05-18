@@ -100,6 +100,8 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
+	if (exec_cmd->cmd[0] == NULL)
+		return ;
 	while (exec_cmd != (*cmd)->tail)
 	{
 		if (exec_cmd->red!= NULL)

@@ -24,7 +24,7 @@ void	save_red_cmd(t_cmd **tmp, int i, int idx)
 	{
 		len = 0;
 		type = 0;
-		while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0')
+		while (!is_inquote((*tmp)->cmd[idx], 0, i)&& (*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0')
 			i++;
 		if ((*tmp)->cmd[idx][i] == '<')
 			type = IN;
@@ -48,7 +48,7 @@ void	save_red_cmd(t_cmd **tmp, int i, int idx)
 
 }
 
-void	save_redirection(t_cmd **list)
+void	save_redirection(t_cmd **list)//ls> filename 안돌아감 ls>filename, ls >filename 은 다됌
 {
 	t_cmd *tmp;
 

@@ -6,13 +6,13 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/18 13:51:31 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/18 19:21:14 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 
-t_cmd *save_list(t_cmd *list, char **first_parsed)
+t_cmd	*save_list(t_cmd *list, char **first_parsed)
 {
 	add_back_cmd(&list, new_cmd(first_parsed));
 //	erro_semi(list);//짝수에 크기가 0 이면 구문오류 맨뒤에서부터 아닌거까지 세미나 파이프 오류 코드가능 빈개 하나면정상 빈개 두개면 ;오류 세개이상이면 ;;오류
@@ -25,7 +25,7 @@ t_cmd *save_list(t_cmd *list, char **first_parsed)
 	return (list);
 }
 
-int     count_parsing(char *buf,int start,int end)
+int		count_parsing(char *buf,int start,int end)
 {
 	int re;
 	int idx;
@@ -39,7 +39,7 @@ int     count_parsing(char *buf,int start,int end)
 	while (buf[start] == ' ' && start != end)
 		start++;
 	tmp = start;
-	while (start != end && buf[start++] != ' ')
+	while (start != end && buf[start++] != ' ' && buf[start] != '<' && buf[start] != '>')
 		len++;
 	start = tmp;
 	re++;
@@ -52,7 +52,7 @@ int     count_parsing(char *buf,int start,int end)
 }
 
 
-void    first_parse(t_cmd **list, char *buf,int start,int end)
+void	first_parse(t_cmd **list, char *buf,int start,int end)
 {
 	char **re;
 	int idx;
@@ -61,14 +61,13 @@ void    first_parse(t_cmd **list, char *buf,int start,int end)
 
 	idx = 0;
 	len = 0;
-//	printf ("mal: %d\n",count_parsing(buf, start, end));
 	re = (char **)malloc(sizeof(char *) * (count_parsing(buf, start, end) + 1));
 	if (!re)
 		return ;//(0);
 	while (buf[start] == ' ' && start != end)//앞공백제거
 		start++;
 	tmp = start;
-	while (start != end && buf[start++] != ' ')//명령어 크기 재기
+	while (start != end && buf[start] != ' ' && buf[start] != '<' && buf[start++] != '>')//명령어 크기 재기
 		len++;
 	start = tmp;
 	re[idx++] = ft_substr(buf, start,len);//명령어저장
@@ -85,8 +84,34 @@ void    first_parse(t_cmd **list, char *buf,int start,int end)
 	add_back_cmd(list, new_cmd(re));
 	if (buf[end] == '|') // 추후에 함수로 빼서 더많은 정보들저장 가능 ex) 인자로 buf[end] 정보 넘겨서 파이프저장
 		(*list)->tail->prev->has_pip = 1;
-	// return (re);
 }
+
+char	*remove_empty(char *buf, int start, int end)
+{
+	char *re;
+	int re_i;
+	
+	re_i = start;
+	re = buf;
+	while (buf[start] != '\0')
+	{
+		if (!is_inquote(buf, start, end) &&buf[start] == ' ')
+		{
+			re[re_i++] = ' ';
+			while (buf[start] == ' ' && buf[start] != '\0') 
+				start++;
+			continue ;
+		}
+		else 
+			re[re_i++] = buf[start];
+		start++;
+		
+	}
+	re[re_i] = '\0';
+	return (re);
+}
+
+//check_syntax(buf);
 
 t_cmd *parsing_cmd(char *buf)
 {
@@ -98,6 +123,9 @@ t_cmd *parsing_cmd(char *buf)
 	i = 0;
 	start = 0;
 	init_cmd(&head, &tail);
+	buf = remove_empty(buf, 0, ft_strlen (buf));
+	printf("%s\n",buf);
+	//check_syntax();
 	while (buf[i] != '\0')// ; 로 안끝나는경우도 생각
 	{
 		if (buf[i] == ';' || buf[i + 1] == '\0' || buf[i] == '|')
@@ -114,8 +142,9 @@ t_cmd *parsing_cmd(char *buf)
 		}
 		i++;
 	}
-	change_single_qute(&head);
 	save_redirection(&head);
+	change_single_qute(&head);
+	//tokenize(&head);
 	//first_parse(&head, buf, start, ft_strlen(buf));
 	// printf("%s %s\n", head->cmd[0], head->cmd[1]);
 	// while (head!= NULL)

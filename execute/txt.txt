@@ -1,0 +1,13 @@
+'
+12.txt
+3
+Makefile
+a
+a.txt
+includes
+libft.a
+minishell
+minishell.dSYM
+srcs
+txt.txt
+txtx.txt

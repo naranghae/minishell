@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/18 14:58:27 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/18 17:32:49 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ t_cmd				*new_cmd(char **cmd);
 t_red				*new_red(char *file_name, int type);
 void				init_cmd(t_cmd **head, t_cmd **tail);
 void				save_redirection(t_cmd **list);
-void				save_red_cmd(t_cmd **tmp,int i, int idx);
-void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path);
+void				save_red_cmd(t_cmd **tmp, int i, int idx);
+void				exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path);
 int					exec(t_cmd **cmd, t_env **env_set, char **envp);
 void				exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp);
 #endif

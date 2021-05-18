@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/17 16:17:36 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/18 17:58:38 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,22 @@
 # include <errno.h>
 # include "../libft/libft.h"
 
+
+typedef struct			s_envlist
+{
+	char				**envp;
+	t_list				*env;
+}						t_envlist;
+
 typedef struct			s_env
 {
 	char				*name;
 	char				*contents;
-	struct	s_env		*next;
 }						t_env;
 
+void					print_env(char **env);
 void					prompt(void);
-t_env					*parsing_env(char **env);
-t_env					*new_env(void);
+t_envlist				*parsing_env(char **env);
 void					signal_func(void);
 
 #endif

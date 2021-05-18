@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/17 15:09:41 by chanykim         ###   ########.fr        #
+#    Updated: 2021/05/18 19:25:14 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ LIBFT = libft.a
 SRCD = ./srcs/
 
 SRC=	main.c\
-		env_setting.c\
+		env.c\
 		prompt.c\
 		signal.c\
 		parsing_change.c\
@@ -31,10 +31,14 @@ SRC=	main.c\
 		parsing_utill_inquote.c\
 		parsing_utill_list.c\
 		parsing_utill_str.c\
+		parsing_save_redirection.c\
 		parsing.c\
-		exec.c \
-		exec_cd.c \
-		exec_env.c
+		exec.c\
+		exec_cd.c\
+		exec_env.c\
+		exec_not_built_in.c\
+		exec_util.c\
+		exec_export.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 
@@ -55,6 +59,6 @@ $(NAME) : $(LIBFTD)/$(LIBFT)
 		$(CC) $(CFLAGS) -L $(LIBFTD) -lft $(INCLUDE) -o $@ $(SRCM)
 
 $(LIBFTD)/$(LIBFT) :
-	$(MAKE) -C $(LIBFTD) all
+	$(MAKE) -C $(LIBFTD) all bonus
 
 .PHONY : all clean fclean re

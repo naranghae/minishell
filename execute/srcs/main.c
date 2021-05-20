@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/19 17:36:06 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/20 19:34:06 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ int		main(int argc, char **argv, char **envp)
 		buf[end] = '\0';
 		cmd = parsing_cmd(buf);
 		if (cmd == 0)
-		{
-			printf ("asdasd\n");
 			continue ;
-		}
 		exec(&cmd, &env_set, envp);
 	}
 	return (0);

@@ -24,16 +24,11 @@ void change_single_qute(t_cmd **list)// 추후에 또 나눠야함 cmd[0]도 사
 	while (tmp != (*list)->tail)
 	{
 	idx = 0;
-		//printf("list0 %s list1 %s \n",  tmp->cmd[0], tmp->cmd[1]);
-		//printf("idx %d , cmd [idx] : %s\n", idx, tmp->cmd[idx]);
 		while (tmp->cmd[idx]!= NULL)
 		{
-	printf("tmp->cmd[idx] : %s \n", tmp->cmd[idx]);
 			i = 0;
 			while (tmp->cmd[idx][i] != '\0')
 			{
-				printf("i : %d tmp->cmd[idx][i] : %c \n", i,tmp->cmd[idx][i]);
-
 				if (!in_singlequote(tmp->cmd[idx],0,ft_strlen(tmp->cmd[idx])) && tmp->cmd[idx][i] == '\'')
 					{
 						tmp->cmd[idx][i++] = '\0';

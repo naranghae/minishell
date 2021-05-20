@@ -104,7 +104,7 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 		return ;
 	while (exec_cmd != (*cmd)->tail)
 	{
-		if (exec_cmd->red!= NULL)
+		if (exec_cmd->red!= NULL && exec_cmd->red->type != 0)
 			exec_redirection(exec_cmd);
 		if (is_built_in(exec_cmd))
 			exec_built_in(exec_cmd, env_set);

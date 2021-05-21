@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/18 13:51:31 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/21 18:27:29 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void    first_parse(t_cmd **list, char *buf,int start,int end)
 	// return (re);
 }
 
-t_cmd *parsing_cmd(char *buf)
+t_cmd	*parsing_cmd(char *buf)
 {
 	t_cmd *head;
 	t_cmd *tail;

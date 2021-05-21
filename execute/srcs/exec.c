@@ -2,12 +2,9 @@
 #include "minishell_parsing.h"
 
 
-void	exec_built_in(t_cmd *exec_cmd, t_envlist *env_info)
+void	exec_built_in(t_cmd *exec_cmd, t_env **env_info)
 {
 	pid_t pid;
-	t_list	*exec_env;
-
-	exec_env = env_info->env;
 	if (exec_cmd->has_pip)
 		pipe_fork(exec_cmd, &pid);
 	// if (exec_cmd->red->type != 0)
@@ -17,11 +14,11 @@ void	exec_built_in(t_cmd *exec_cmd, t_envlist *env_info)
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
 	// 	pre_exec_echo();
 	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
-		pre_exec_env(exec_cmd, &pid, exec_env);
+		pre_exec_env(exec_cmd, &pid, env_info);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
 	// 	pre_exec_exit();
 	else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
-		pre_exec_export(exec_cmd, &pid, env_info);
+		pre_exec_export(exec_cmd, &pid, *env_info);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
 	// 	pre_exec_unset();
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
@@ -40,8 +37,8 @@ int		is_built_in(t_cmd *exec_cmd)
 		return (1);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
 	// 	return (1);
-	//else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
-	//	return (1);
+	else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
+		return (1);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
 	// 	return (1);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
@@ -92,25 +89,21 @@ void close_fd(t_red *red)
 		red = red->next;
 	}
 }
-
-void	exec_cmd(t_cmd **cmd, t_envlist *env_info, char **envp, char **path)
+void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 {
 	t_cmd	*exec_cmd;
-
 	int tmp_in;
 	int tmp_out;
 
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
-	if (exec_cmd->cmd[0] == NULL)
-		return ;
 	while (exec_cmd != (*cmd)->tail)
 	{
 		if (exec_cmd->red!= NULL)
 			exec_redirection(exec_cmd);
 		if (is_built_in(exec_cmd))
-			exec_built_in(exec_cmd, env_info);
+			exec_built_in(exec_cmd, env_set);
 		else
 			exec_not_built_in(exec_cmd, path, envp);
 		if (exec_cmd->red!= NULL)
@@ -121,23 +114,21 @@ void	exec_cmd(t_cmd **cmd, t_envlist *env_info, char **envp, char **path)
 		}
 		exec_cmd = exec_cmd->next;
 	}
-}
 
-int		exec(t_cmd **cmd, t_envlist *env_info)
+}
+int		exec(t_cmd **cmd, t_env **env_info, char **envp)
 {
-	t_list	*exec_env;
-	t_env	*env;
+	t_env	*exec_env;
 	char	**path;
 
-	exec_env = env_info->env;
-	while (exec_env->next)
+	exec_env = *env_info;
+	while (exec_env != NULL)
 	{
-		env = (t_env *)(exec_env->content);
-		if (!ft_strncmp(env->name, "PATH", 4))
-			path = ft_split(env->contents,':'); //leaks
+		if (!ft_strncmp(exec_env->name, "PATH", 4))
+			path = ft_split(exec_env->contents,':');
 		exec_env = exec_env->next;
 	}
-	exec_cmd(cmd, env_info, env_info->envp, path);
+	exec_cmd(cmd, env_info, envp, path);
 	free_split(path);
 	return (0);
 }

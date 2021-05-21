@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/18 19:25:14 by chanykim         ###   ########.fr        #
+#    Updated: 2021/05/20 16:10:52 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ SRC=	main.c\
 		exec_cd.c\
 		exec_env.c\
 		exec_not_built_in.c\
-		exec_util.c\
+		exec_util.c \
 		exec_export.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
@@ -59,6 +59,6 @@ $(NAME) : $(LIBFTD)/$(LIBFT)
 		$(CC) $(CFLAGS) -L $(LIBFTD) -lft $(INCLUDE) -o $@ $(SRCM)
 
 $(LIBFTD)/$(LIBFT) :
-	$(MAKE) -C $(LIBFTD) all bonus
+	$(MAKE) -C $(LIBFTD) all
 
 .PHONY : all clean fclean re

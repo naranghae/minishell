@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/18 19:26:41 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/21 18:25:44 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 int		main(int argc, char **argv, char **envp)
 {
-	t_envlist	*env_info;
-	t_cmd		*cmd;
-	char		buf[1024];
-	int			end;
+	t_env	*env_info;
+	t_cmd	*cmd;
+	char	buf[1024];
+	int		end;
 
 	(void)argv;
 	if (argc > 1)
@@ -27,6 +27,7 @@ int		main(int argc, char **argv, char **envp)
 		return (0);
 	}
 	env_info = parsing_env(envp);
+	env_info = env_info->next;
 	//signal_func();
 	while (1)
 	{
@@ -34,7 +35,9 @@ int		main(int argc, char **argv, char **envp)
 		end = read(0, buf, 1024);
 		buf[end] = '\0';
 		cmd = parsing_cmd(buf);
-		exec(&cmd, env_info);
+		if (!cmd)
+			continue ;
+		exec(&cmd, &env_info, envp);
 	}
 	return (0);
 }

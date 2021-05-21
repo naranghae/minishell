@@ -11,7 +11,9 @@ void	tokenize_red(t_cmd **tmp, int i, int idx)
 			while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0')
 				i++;
 			(*tmp)->cmd[idx][i] = '\0';
-			ft_strtrim((*tmp)->cmd[idx]," ");
+			printf ("2%s2\n",(*tmp)->cmd[idx]);
+			(*tmp)->cmd[idx] = ft_strtrim((*tmp)->cmd[idx]," ");
+			printf ("1%s1\n",(*tmp)->cmd[idx]);
 			break ;
 		}
 		if (ft_strlen((*tmp)->cmd[idx]) == 0)

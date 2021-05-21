@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/18 17:32:49 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/21 16:00:18 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,7 @@ void				save_red_cmd(t_cmd **tmp, int i, int idx);
 void				exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path);
 int					exec(t_cmd **cmd, t_env **env_set, char **envp);
 void				exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp);
+void	free_cmd(t_cmd **cmd);
+int		check_in_quote(char *buf, int start, int end);
+
 #endif

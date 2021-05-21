@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/20 20:16:41 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/21 16:08:43 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		count_parsing(char *buf,int start,int end)
 }
 
 
-void	first_parse(t_cmd **list, char *buf,int start,int end)
+void	 first_parse(t_cmd **list, char *buf,int start,int end)
 {
 	char **re;
 	int idx;
@@ -75,8 +75,12 @@ void	first_parse(t_cmd **list, char *buf,int start,int end)
 	while (start != end && (buf[start] == '<' || buf[start] == '>') && ++start)//명령어 크기 재기
 		len++;
 	while (start != end && (is_inquote(buf,start,end) || (buf[start] != ' ' && buf[start] != '<' && buf[start] != '>')) &&  ++start)//명령어 크기 재기
+	{
+		if (is_inquote(buf, tmp, start) && (buf[start] == ' ' || buf[start] == '"'))
+			break ;
 		len++;
-		// printf ("start : %d ,end : %d len : %d\n", tmp,end,len);
+	}
+		 printf ("start : %d ,end : %d len : %d\n", tmp,end,len);
 	start = tmp;
 	re[idx++] = ft_substr(buf, tmp, len);//명령어저장
 	start += len;
@@ -169,21 +173,6 @@ int		check_quote(char *buf, int len)
 		return (0);
 	else
 		return (1);
-	
-	// while (buf[i] != '\0')
-	// {
-	// 	printf("1%d,2%d\n", !is_inquote(buf, i, len) , buf[i] == '\'');
-	// 	if (!is_inquote(buf, i, len) && buf[i] == '\'')
-	// 		single_q++;
-	// 	else if (!is_inquote(buf, i, len) && buf[i] == '"')
-	// 		double_q++;
-	// 	i++;
-	// }
-	// printf ("s%d d%d\n", single_q, double_q);
-	// if (single_q % 2 != 0 || double_q % 2 != 0)
-	// 	return (1);
-	// else
-	// 	return (0);
 }
 
 int check_syntax(char *buf, int i)
@@ -219,41 +208,6 @@ int check_syntax(char *buf, int i)
 	return (1);
 }
 
-
-
-	// char check;
-	// int len;
-	
-	// len = ft_strlen(buf) - 1;
-	// if (len == 0)
-	// 	return (0);
-	// if (!check_quote(buf, len))
-	// 	return (printf("error : match quote\n") * 0);
-	// // printf ("len%d\n",len);
-	// check = buf[i];
-	// while (++i != len)
-	// {
-	// 	if (is_inquote(buf, 0, len) || buf[i] == ' ' /*|| buf[i] == '\'' || buf[i] == '"'*/)
-	// 	{
-	// 		i++;
-	// 		check = buf[i];
-	// 		continue ;
-	// 	}
-	// 	if (check == buf[i] )
-	// 		return(printf ("syntax error near unexpected token '%c%c'\n", check, check) * 0);
-	// 	check = buf[i];
-	// 	//i++;
-	// }
-	// // if (i>=len)
-	// // 	return ;
-	// // printf ("%d,%d %c\n", (check == '\'' || check == '"'), !is_inquote(buf, 0, len), check);
-	// // if (is_inquote(buf, 0, len) && (check == '\'' || check == '"'))
-	// // 	return(printf("no one quote'\n") * 0);
-	// if (!is_inquote(buf, 0, len) && (check == ';' || check == '|'))
-	// 	return(printf("syntax error near unexpected token \'%c'\n", check) * 0);
-	// return (1);
-// }
-
 t_cmd *parsing_cmd(char *buf)
 {
 	t_cmd *head;
@@ -269,17 +223,14 @@ t_cmd *parsing_cmd(char *buf)
 		return (0);
 	while (buf[i] != '\0')// ; 로 안끝나는경우도 생각
 	{
-		if (buf[i] == ';' || buf[i + 1] == '\0' || buf[i] == '|')
+		if (check_in_quote(buf, start, i) && (buf[i] == ';' || buf[i + 1] == '\0' || buf[i] == '|'))
 		{
-			if (!is_inquote(buf, start, i))
-			{
 				first_parse(&head, buf, start, i++);
 				// 에러처리 -> 크기가없는거 들어올때
 				// not in quote일때 공배제거 먼저해야할듯..?
 				//free(first_parsed);
 				start = i;
 				continue ;
-			}
 		}
 		i++;
 	}

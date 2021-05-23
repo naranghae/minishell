@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/21 10:45:39 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/23 16:38:11 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int		main(int argc, char **argv, char **envp)
 		printf("1\n");
 		if (cmd == 0)
 			continue ;
-		exec(&cmd, &env_set, envp);
-		// free_cmd(&cmd);
+		// exec(&cmd, &env_set, envp);
+		free_cmd(&cmd);
 	}
 	return (0);
 }

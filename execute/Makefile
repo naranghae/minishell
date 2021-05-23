@@ -6,13 +6,13 @@
 #    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/21 10:42:29 by hyopark          ###   ########.fr        #
+#    Updated: 2021/05/23 15:42:33 by hyopark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 
-CC				= gcc -g3 -fsanitize=address
+CC				= gcc -g3 #-fsanitize=address
 
 CFLAGS			= -Wall -Wextra -Werror
 

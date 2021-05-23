@@ -1,8 +1,1 @@
-Makefile
-a.txt
-b.txt
-includes
-libft.a
-minishell
-minishell.dSYM
-srcs
+no cmd

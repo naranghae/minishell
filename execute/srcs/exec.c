@@ -11,8 +11,8 @@ void	exec_built_in(t_cmd *exec_cmd, t_env **env_info)
 	// 	exec_red();
 	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 2))
 		pre_exec_cd(exec_cmd, pid);
-	// else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
-	// 	pre_exec_echo();
+	else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
+		pre_exec_echo(exec_cmd, &pid);
 	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
 		pre_exec_env(exec_cmd, &pid, env_info);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
@@ -31,8 +31,8 @@ int		is_built_in(t_cmd *exec_cmd)
 {
 	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 2))
 		return (1);
-	// else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
-	// 	return (1);
+	else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
+		return (1);
 	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
 		return (1);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
@@ -79,6 +79,8 @@ void exec_redirection(t_cmd *exec_cmd)
 		}
 		tmp = tmp->next;
 	}
+	// dup2(tmp_out, 1);
+	// close (*fd);
 }
 
 void close_fd(t_red *red)
@@ -101,6 +103,8 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
+	if (exec_cmd->cmd[0] == NULL || ft_strlen(exec_cmd->cmd[0]) < 1)
+		return ;
 	while (exec_cmd != (*cmd)->tail)
 	{
 		if (exec_cmd->red!= NULL)

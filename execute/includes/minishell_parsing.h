@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/24 17:37:49 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 18:40:17 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,34 +19,27 @@
 #include "minishell_header.h"
 
 
-typedef struct				s_red
+typedef struct		s_red
 {
-	int						type;
-	char					*file_name;
-	int						fd;
-	struct s_red			*next;
-}							t_red;
+	int				type;
+	char			*file_name;
+	int			fd;
+	struct s_red	*next;
+}					t_red;
 
-typedef struct				s_cmd
+typedef struct		s_cmd
 {
-	char 					**cmd;
-	int						has_pip;
-	t_red					*red;
-	int						fd[2];
-	struct s_cmd			*prev;
-	struct s_cmd			*next;
-	struct s_cmd			*tail;
-}							t_cmd;
-
-typedef struct				s_exportError
-{
-	int						idx;
-	char					**cmdError;
-	struct s_exportError	*next;
-}							t_exportError;
-
+	char 			**cmd;
+	int				has_pip;
+	t_red			*red;
+	int				fd[2];
+	struct s_cmd	*prev;
+	struct s_cmd	*next;
+	struct s_cmd	*tail;
+}					t_cmd;
 
 void				pipe_fork(t_cmd *exec_cmd,pid_t *pid);
+void				pre_exec_echo(t_cmd *exec_cmd, pid_t *pid);
 void				close_pipe(pid_t *pid, t_cmd *exec_cmd, int res, int status);
 int					in_singlequote(char *buf, int start, int end);
 int					in_doublequote(char *buf, int start, int end);
@@ -65,11 +58,15 @@ t_red				*new_red(char *file_name, int type);
 void				init_cmd(t_cmd **head, t_cmd **tail);
 void				save_redirection(t_cmd **list);
 void				save_red_cmd(t_cmd **tmp,int i, int idx);
-void				exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path);
 int					exec(t_cmd **cmd, t_env **env_set, char **envp);
 void				exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp);
 void 				pre_exec_cd(t_cmd *exec_cmd, pid_t pid);
 void 				pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env **env_set);
 void				pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info);
 char				**getEnvp(t_env **env_set);
+void				save_red_cmd(t_cmd **tmp, int i, int idx);
+void				exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path);
+void				free_cmd(t_cmd **cmd);
+int					check_in_quote(char *buf, int start, int end);
+
 #endif

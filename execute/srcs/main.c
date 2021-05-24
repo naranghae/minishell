@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/21 18:25:44 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 18:43:35 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int		main(int argc, char **argv, char **envp)
 		prompt();
 		end = read(0, buf, 1024);
 		buf[end] = '\0';
+		printf("0\n");
 		cmd = parsing_cmd(buf);
 		if (!cmd)
 			continue ;

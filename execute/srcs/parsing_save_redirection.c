@@ -1,13 +1,19 @@
 #include "minishell_parsing.h"
 void	tokenize_red(t_cmd **tmp, int i, int idx)
 {
-
+	if (idx == 0 && ((*tmp)->cmd[idx][i] != '>' || (*tmp)->cmd[idx][i] != '<' ||((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i+1] != '>')))
+	{
+		(*tmp)->cmd[idx] = "";
+		return ;
+	}
 		while ((*tmp)->cmd[idx][i] != '\0')
 		{
 			while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0')
 				i++;
 			(*tmp)->cmd[idx][i] = '\0';
-			ft_strtrim((*tmp)->cmd[idx]," ");
+			printf ("2%s2\n",(*tmp)->cmd[idx]);
+			(*tmp)->cmd[idx] = ft_strtrim((*tmp)->cmd[idx]," ");
+			printf ("1%s1\n",(*tmp)->cmd[idx]);
 			break ;
 		}
 		if (ft_strlen((*tmp)->cmd[idx]) == 0)
@@ -24,7 +30,7 @@ void	save_red_cmd(t_cmd **tmp, int i, int idx)
 	{
 		len = 0;
 		type = 0;
-		while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0')
+		while (is_inquote((*tmp)->cmd[idx], i, ft_strlen((*tmp)->cmd[idx])) || ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0'))
 			i++;
 		if ((*tmp)->cmd[idx][i] == '<')
 			type = IN;
@@ -44,11 +50,13 @@ void	save_red_cmd(t_cmd **tmp, int i, int idx)
 		}
 		add_back_red(&((*tmp)->red), new_red(ft_substr((*tmp)->cmd[idx], start , len), type));
 	}
-	tokenize_red(tmp, 0, idx);
+	if (type)
+		tokenize_red(tmp, 0, idx);
 
 }
 
-void	save_redirection(t_cmd **list)
+
+void	save_redirection(t_cmd **list)//ls> filename 안돌아감 ls>filename, ls >filename 은 다됌
 {
 	t_cmd *tmp;
 

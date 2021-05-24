@@ -103,6 +103,7 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
+	//change_double_qute();
 	if (exec_cmd->cmd[0] == NULL || ft_strlen(exec_cmd->cmd[0]) < 1)
 		return ;
 	while (exec_cmd != (*cmd)->tail)
@@ -133,6 +134,7 @@ int		exec(t_cmd **cmd, t_env **env_info, char **envp)
 	char	**path;
 
 	exec_env = *env_info;
+	
 	while (exec_env != NULL)
 	{
 		if (!ft_strncmp(exec_env->name, "PATH", 4))

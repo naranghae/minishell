@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/24 18:46:19 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 20:27:31 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void				free_split(char **s);
 int					mini_trim(char *buf, int start, int end);
 void				first_parse(t_cmd **list, char *buf,int start,int end);
 t_cmd				*save_list(t_cmd *list, char **first_parsed);
-void				change_single_qute(t_cmd **list);
-t_cmd				*parsing_cmd(char *buf);
+void				change_single_qute(t_cmd *tmp, int idx, int i);
+void				change_qute(t_cmd **list, t_env *env, int type);
+t_cmd				*parsing_cmd(char *buf, t_env *env);
 t_red				*last_red(t_red *lst);
 void				add_back_cmd(t_cmd **lst, t_cmd *new);
 void				add_back_red(t_red **lst, t_red *new);

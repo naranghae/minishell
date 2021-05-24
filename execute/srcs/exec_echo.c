@@ -10,11 +10,8 @@ int exec_echo(t_cmd *exec_cmd)
 		printf("\n");
 	else if (exec_cmd->cmd[1] && !ft_strncmp(exec_cmd->cmd[1],"-n", 2))
 	{
-	printf ("cmp : %d s : %s\n",!ft_strncmp(exec_cmd->cmd[1],"-n ", 3), exec_cmd->cmd[1]);
 		if(!ft_strncmp(exec_cmd->cmd[1],"-n ", 3))
-		{
-			printf("1231sdasdasdasdasdasdasd asd asdasgfadfg23%s", exec_cmd->cmd[1]);
-		}
+			write(1, exec_cmd->cmd[1] + 3, ft_strlen( exec_cmd->cmd[1] + 3));
 		else
 			printf("");
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/24 18:43:35 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 20:26:54 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		main(int argc, char **argv, char **envp)
 		end = read(0, buf, 1024);
 		buf[end] = '\0';
 		printf("0\n");
-		cmd = parsing_cmd(buf);
+		cmd = parsing_cmd(buf, env_info);
 		if (!cmd)
 			continue ;
 		exec(&cmd, &env_info, envp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/24 18:44:11 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 20:40:23 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ while (start != end && (is_inquote(buf,start,end) || (buf[start] != ' ' && buf[s
 		len++;
 	}
 	//start = tmp;
-	re++;
+	if (start != tmp)
+		re++;
 	//start += len;
 	while (buf[start] == ' ' && start != end)
 		start++;
@@ -66,6 +67,9 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 
 	idx = 0;
 	len = 0;
+	printf ("cp : %d\n", count_parsing(buf, start, end));
+	if (count_parsing(buf, start, end) == 0)
+		return ;
 	re = (char **)malloc(sizeof(char *) * (count_parsing(buf, start, end) + 1));
 	if (!re)
 		return ;//(0);
@@ -88,12 +92,12 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 		start++;
 				// printf ("start : %d ,end : %d len : %d\n", start,end,len);
 
-	if (end - start > 1)
+	if (end - start > 0)
 	// {
 		re[idx++] = ft_substr(buf, start, end - start);
 	// 	re[idx] = NULL;
 	// }
-	// else
+	//else
 		re[idx] = NULL;
 	add_back_cmd(list, new_cmd(re));
 	// if (end - start > 0)
@@ -104,7 +108,7 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 		printf("firstpasing\n");
 	while (re[j] != NULL)
 	{
-		printf("i : %d re: %s\n",j,re[j]);
+	printf("re: %s\n",re[j]);
 	j++;
 	}
 	if (buf[end] == '|') // 추후에 함수로 빼서 더많은 정보들저장 가능 ex) 인자로 buf[end] 정보 넘겨서 파이프저장
@@ -115,7 +119,7 @@ char	*remove_empty(char *buf, int start, int end)
 {
 	char *re;
 	int re_i;
-
+	
 	re_i = start;
 	re = buf;
 	while (buf[start] != '\0')
@@ -123,11 +127,11 @@ char	*remove_empty(char *buf, int start, int end)
 		if (!is_inquote(buf, start, end) &&buf[start] == ' ')
 		{
 			re[re_i++] = ' ';
-			while (buf[start] == ' ' && buf[start] != '\0')
+			while (buf[start] == ' ' && buf[start] != '\0') 
 				start++;
 			continue ;
 		}
-		else
+		else 
 			re[re_i++] = buf[start];
 		start++;
 	}
@@ -163,11 +167,15 @@ int		check_quote(char *buf, int len)
 		}
 		else if (buf[i] == '"')
 		{
+			i++;
 			double_q = 1;
 			while (buf[i] != '\0' && buf[i++] != '"')
-			i++;
+				i++;
 			if (buf[i] == '"')
+			{
 				double_q = 0;
+				i++;
+			}
 			continue ;
 		}
 		i++;
@@ -180,7 +188,7 @@ int		check_quote(char *buf, int len)
 }
 
 int check_syntax(char *buf, int i, int len, int istoken)
-{
+{	
 	if (len == 0)
 		return (0);
 	if (!check_quote(buf, len))
@@ -195,7 +203,7 @@ int check_syntax(char *buf, int i, int len, int istoken)
 			istoken = -1;
 		if (istoken < 1 && (buf[i] == ';' || buf[i] == '|'))
 		{
-			if (istoken == -1 && (buf[i - 1] == ';' || buf[i - 1] == '|'))
+			if (istoken == 2 && (buf[i - 1] == ';' || buf[i - 1] == '|'))
 				return(printf("syntax error near unexpected token \'%c%c'\n", buf[i], buf[i]) * 0);
 			else if (istoken == -1 && (buf[i + 1] == ';' || buf[i + 1] == '|'))
 				return(printf("syntax error near unexpected token \'%c%c'\n", buf[i], buf[i]) * 0);
@@ -207,7 +215,7 @@ int check_syntax(char *buf, int i, int len, int istoken)
 	return (1);
 }
 
-t_cmd	*parsing_cmd(char *buf)
+t_cmd *parsing_cmd(char *buf, t_env *env)
 {
 	t_cmd *head;
 	t_cmd *tail;
@@ -234,6 +242,6 @@ t_cmd	*parsing_cmd(char *buf)
 		i++;
 	}
 	save_redirection(&head);
-	change_single_qute(&head);
+	change_qute(&head, env, 1);
 	return (head);
 }

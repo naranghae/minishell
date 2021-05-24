@@ -94,7 +94,10 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 	t_cmd	*exec_cmd;
 	int tmp_in;
 	int tmp_out;
+	char **envpp;
 
+	(void)envp;
+	envp = NULL;
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
@@ -105,7 +108,11 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 		if (is_built_in(exec_cmd))
 			exec_built_in(exec_cmd, env_set);
 		else
-			exec_not_built_in(exec_cmd, path, envp);
+		{
+			envpp = getEnvp(env_set);
+			exec_not_built_in(exec_cmd, path, envpp);
+			free_split(envpp);
+		}
 		if (exec_cmd->red!= NULL)
 		{
 			dup2(tmp_out, 1);

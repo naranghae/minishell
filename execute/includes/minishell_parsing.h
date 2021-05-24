@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/21 18:07:00 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 17:37:49 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,5 @@ void				exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp);
 void 				pre_exec_cd(t_cmd *exec_cmd, pid_t pid);
 void 				pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env **env_set);
 void				pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info);
+char				**getEnvp(t_env **env_set);
 #endif

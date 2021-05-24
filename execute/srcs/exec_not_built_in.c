@@ -1,15 +1,54 @@
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
+char	**getEnvp(t_env **env_set)
+{
+	int		i;
+	int		k;
+	char	*ejoin;
+	char	*envjoin;
+	char	**envpp;
+	t_env	*envParse;
+	t_env	*envCount;
+
+	i = 0;
+	k = 0;
+	envParse = *env_set;
+	envCount = *env_set;
+	while (envCount != NULL)
+	{
+		if (envCount->contents)
+			i++;
+		envCount = envCount->next;
+	}
+	envpp = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!envpp)
+		return (NULL);
+	while (envParse != NULL)
+	{
+		if (envParse->contents)
+		{
+			ejoin = ft_strjoin(envParse->name, "=");
+			envjoin = ft_strjoin(ejoin, envParse->contents);
+			envpp[k++] = envjoin;
+			//printf("%s\n", envpp[k - 1]);
+			free(ejoin);
+		}
+		envParse = envParse->next;
+	}
+	envpp[k] = NULL;
+	return (envpp);
+}
+
 void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 {
 	pid_t	pid;
 	int		res = 0;
 	int		status;
 	int		i;
-	char	*join;
+	char	*pjoin;
 	char	*pathjoin;
-	
+
 	i = 0;
 	pid = 0;
 	status = 0;
@@ -30,14 +69,13 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			//exit_fatal();
 		while (path[i] != NULL)
 		{
-			join = ft_strjoin(path[i], "/");
-			pathjoin = ft_strjoin(join, exec_cmd->cmd[0]);
+			pjoin = ft_strjoin(path[i], "/");
+			pathjoin = ft_strjoin(pjoin, exec_cmd->cmd[0]);
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
 				exit(write(1,"error\n",6) * 0);
-			//if (exec_cmd->cmd && )
 			res = execve(pathjoin, exec_cmd->cmd, envp);
 			free(path[i]);
-			free(join);
+			free(pjoin);
 			free(pathjoin);
 			i++;
 		}

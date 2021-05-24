@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/24 18:44:39 by chanykim         ###   ########.fr        #
+#    Updated: 2021/05/24 18:46:36 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC=	main.c\
 		exec.c\
 		exec_cd.c\
 		exec_echo.c\
+		exec_export.c\
 		exec_env.c\
 		exec_not_built_in.c\
 		exec_util.c

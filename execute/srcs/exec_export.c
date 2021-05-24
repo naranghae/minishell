@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/21 18:51:53 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 20:42:31 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,18 +157,72 @@ int		parsingEnv(char *cmd, t_env *env_info)
 	return (0);
 }
 
+void	swapList(t_env *env, t_env *envNext)
+{
+	char	*tmpName;
+	char	*tmpContents;
+
+	tmpName = env->name;
+	env->name = envNext->name;
+	envNext->name = tmpName;
+	tmpContents = env->contents;
+	env->contents = envNext->contents;
+	envNext->contents = tmpContents;
+}
+
+void	envSort_print(t_env *env_info)
+{
+	t_env	*envSort;
+	int		listNum;
+	int		i;
+	int		j;
+
+	i = -1;
+	j = -1;
+	envSort = env_info;
+	listNum = listlen(&envSort);
+	while (++i < listNum)
+	{
+		if (envSort->next == NULL)
+			break ;
+		while (++j < listNum - 1 - i)
+		{
+			//printf("%s\n", envSort->name);
+			//printf("%s\n", envSort->next->name);
+			if (ft_strncmp(envSort->name, envSort->next->name, ft_strlen(envSort->name)) > 0)
+				swapList(envSort, envSort->next);
+			envSort = envSort->next;
+		}
+		j = -1;
+		envSort = env_info->next;
+	}
+	while (env_info != NULL)
+	{
+		if (env_info->contents != NULL)
+			printf("declare -x %s\n", env_info->name);
+		printf("declare -x %s=\"%s\"\n", env_info->name, env_info->contents);
+		env_info = env_info->next;
+	}
+}
+
 int		exec_export(t_cmd *exec_cmd, t_env *env_info)
 {
+	t_env	*envPrint;
+
+	envPrint = env_info;
+	if (exec_cmd->cmd[1] == NULL)
+	{
+		envSort_print(envPrint);
+		return (0);
+	}
 	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)
 		return (1);
 	//exit (1); //광범위한 일반적 에러
 
 	// export A=B | grep a 할 때 아무일도 일어나지 않음 (1 에러)
 	// export | grep a 라고 하면 정렬된 env내용에서 a문자를 포함한 것이 출력됨 declare -x SHELL="/bin/zsh" declare -x A="" 이런 형식
-	//if (exec_cmd->cmd[1] == NULL)
-	//	envSort_print(exec_env);
 	if (parsingEnv(exec_cmd->cmd[1], env_info))
-		return (1);
+		return (0);
 	return (0);
 }
 

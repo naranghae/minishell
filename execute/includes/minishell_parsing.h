@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/24 20:27:31 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/24 20:47:06 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,5 @@ void				save_red_cmd(t_cmd **tmp, int i, int idx);
 void				exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path);
 void				free_cmd(t_cmd **cmd);
 int					check_in_quote(char *buf, int start, int end);
-
+int					listlen(t_env **env_info);
 #endif

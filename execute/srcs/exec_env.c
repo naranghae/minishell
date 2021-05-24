@@ -1,6 +1,21 @@
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
+int		listlen(t_env **env_info)
+{
+	t_env	*envCount;
+	int	i;
+
+	i = 0;
+	envCount = *env_info;
+	while (envCount != NULL)
+	{
+		if (envCount->contents)
+			i++;
+		envCount = envCount->next;
+	}
+	return (i);
+}
 
 void	write_env(t_env	*exec_env)
 {

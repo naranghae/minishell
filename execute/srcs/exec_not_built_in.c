@@ -9,18 +9,10 @@ char	**getEnvp(t_env **env_set)
 	char	*envjoin;
 	char	**envpp;
 	t_env	*envParse;
-	t_env	*envCount;
 
-	i = 0;
 	k = 0;
 	envParse = *env_set;
-	envCount = *env_set;
-	while (envCount != NULL)
-	{
-		if (envCount->contents)
-			i++;
-		envCount = envCount->next;
-	}
+	i = listlen(env_set);
 	envpp = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!envpp)
 		return (NULL);
@@ -79,7 +71,7 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			free(pathjoin);
 			i++;
 		}
-		exit(printf("no cmd\n") * 0 + res);
+		exit(res);
 	}
 	else if (pid > 0)
 		close_pipe(&pid, exec_cmd, res, status);

@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/21 16:00:18 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/24 14:27:58 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct		s_cmd
 
 void	pipe_fork(t_cmd *exec_cmd,pid_t *pid);
 void pre_exec_cd(t_cmd *exec_cmd, pid_t pid);
+void pre_exec_echo(t_cmd *exec_cmd, pid_t *pid);
 void pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env **env_set);
 void	close_pipe(pid_t *pid, t_cmd *exec_cmd, int res, int status);
 

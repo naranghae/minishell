@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/23 19:18:53 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/24 15:28:31 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,12 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 		start++;
 				// printf ("start : %d ,end : %d len : %d\n", start,end,len);
 
-	if (end - start > 0)
+	if (end - start > 1)
 	// {
 		re[idx++] = ft_substr(buf, start, end - start);
 	// 	re[idx] = NULL;
 	// }
-	else
+	// else
 		re[idx] = NULL;
 	add_back_cmd(list, new_cmd(re));
 	// if (end - start > 0)
@@ -104,7 +104,7 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 		printf("firstpasing\n");
 	while (re[j] != NULL)
 	{
-	printf("re: %s\n",re[j]);
+		printf("i : %d re: %s\n",j,re[j]);
 	j++;
 	}
 	if (buf[end] == '|') // 추후에 함수로 빼서 더많은 정보들저장 가능 ex) 인자로 buf[end] 정보 넘겨서 파이프저장
@@ -233,7 +233,7 @@ t_cmd *parsing_cmd(char *buf)
 		}
 		i++;
 	}
-	// save_redirection(&head);
-	//change_single_qute(&head);
+	save_redirection(&head);
+	change_single_qute(&head);
 	return (head);
 }

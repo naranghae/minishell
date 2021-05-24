@@ -6,13 +6,13 @@
 #    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/23 15:42:33 by hyopark          ###   ########.fr        #
+#    Updated: 2021/05/24 14:06:55 by hyopark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 
-CC				= gcc -g3 #-fsanitize=address
+CC				= gcc -g3 -fsanitize=address
 
 CFLAGS			= -Wall -Wextra -Werror
 
@@ -35,6 +35,7 @@ SRC=	main.c\
 		parsing.c\
 		exec.c\
 		exec_cd.c\
+		exec_echo.c\
 		exec_env.c\
 		exec_not_built_in.c\
 		exec_util.c

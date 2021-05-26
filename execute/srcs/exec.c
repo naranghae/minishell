@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
+/*   Updated: 2021/05/26 12:26:24 by chanykim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
@@ -134,7 +146,6 @@ int		exec(t_cmd **cmd, t_env **env_info, char **envp)
 	char	**path;
 
 	exec_env = *env_info;
-	
 	while (exec_env != NULL)
 	{
 		if (!ft_strncmp(exec_env->name, "PATH", 4))

@@ -10,8 +10,23 @@ int		listlen(t_env **env_info)
 	envCount = *env_info;
 	while (envCount != NULL)
 	{
-		if (envCount->contents)
+		if (envCount->equal)
 			i++;
+		envCount = envCount->next;
+	}
+	return (i);
+}
+
+int		listlenAll(t_env **env_info)
+{
+	t_env	*envCount;
+	int	i;
+
+	i = 0;
+	envCount = *env_info;
+	while (envCount != NULL)
+	{
+		i++;
 		envCount = envCount->next;
 	}
 	return (i);
@@ -19,7 +34,7 @@ int		listlen(t_env **env_info)
 
 void	write_env(t_env	*exec_env)
 {
-	if (exec_env->contents)
+	if (exec_env->equal)
 	{
 		//write(1, exec_env->name, ft_strlen(exec_env->name));
 		//write(1, "=", 1);

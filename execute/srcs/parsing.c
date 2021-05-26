@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 18:01:43 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/26 20:05:40 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int		count_parsing(char *buf,int start,int end)
 		len++;
 	while (start != end && (is_inquote(buf,start,end) || (buf[start] != ' ' && buf[start] != '<' && buf[start] != '>')) &&  ++start)//명령어 크기 재기
 	{
-		if ((is_inquote(buf, tmp, start) && (buf[start] == ' ' )) || (is_inquote(buf, tmp, start) && (buf[start] == ' ' &&(buf[start] == '"'|| buf[start] == '\''))))
+			len++;
+		if ((!is_inquote(buf, tmp, start) && (buf[start] == ' ' )) || (is_inquote(buf, tmp, start) && (buf[start] == ' ' &&(buf[start] == '"'|| buf[start] == '\''))))
 			break ;
-		len++;
 	}
 	//start = tmp;
 	if (start != tmp)
@@ -80,9 +80,9 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 		len++;
 	while (start != end && (is_inquote(buf,start,end) || (buf[start] != ' ' && buf[start] != '<' && buf[start] != '>')) &&  ++start)//명령어 크기 재기
 	{
-		if ((is_inquote(buf, tmp, start) && (buf[start] == ' ' )) || (is_inquote(buf, tmp, start) && (buf[start] == ' ' &&(buf[start] == '"'|| buf[start] == '\''))))
-			break ;
 		len++;
+		if ((!is_inquote(buf, tmp, start) && (buf[start] == ' ' )) || (is_inquote(buf, tmp, start) && (buf[start] == ' ' &&(buf[start] == '"'|| buf[start] == '\''))))
+			break ;
 	}
 		 printf ("start : %d ,end : %d len : %d\n", tmp,end,len);
 	start = tmp;
@@ -149,7 +149,7 @@ int		check_quote(char *buf, int len)
 	{
 		if (buf[i] == '\\')
 		{
-			i++;
+			i += 2;
 			continue ;
 		}
 		if (!double_q && buf[i] == '\'')
@@ -214,10 +214,10 @@ char	*remove_escape(char *buf, int start, int end)
 	{
 		if (!is_inquote(buf, start, end) && buf[start] == '\\')
 		{
-			re[re_i++] = 24;
+			// re[re_i++] = 24;
 				if (buf[start + 1] != '\n')
-				{// 수정사항 / // 일때 퍼스트파싱에서 공백이 사라짐 /'/"처리 안됨
-					re[re_i - 1] = buf[start + 1];
+				{// 수정사항 '/ //' 일때 퍼스트파싱에서 공백이 사라짐 /'/"처리 안됨
+					re[re_i++] = buf[start + 1];
 					start += 2;
 				}
 				else
@@ -225,8 +225,7 @@ char	*remove_escape(char *buf, int start, int end)
 			continue ;
 		}
 		else 
-			re[re_i++] = buf[start];
-		start++;
+			re[re_i++] = buf[start++];
 	}
 	re[re_i] = '\0';
 	printf ("re:::%s\n", re);
@@ -244,12 +243,14 @@ t_cmd *parsing_cmd(char *buf, t_env *env)
 	start = 0;
 	init_cmd(&head, &tail);
 	buf = remove_empty(buf, 0, ft_strlen (buf));
-	buf = remove_escape(buf, 0, ft_strlen (buf));
 	if (!buf || check_syntax(buf, 0, ft_strlen(buf) - 1, 0) == 0)
 		return (0);
+	buf = remove_escape(buf, 0, ft_strlen (buf));
+	if (!buf)
+			return (0);
 	while (buf[i] != '\0')// ; 로 안끝나는경우도 생각
 	{
-		if ((!check_in_quote(buf, start, i) && (buf[i] == ';' || buf[i] == '|' )) || buf[i + 1] == '\0' )
+		if ((!is_inquote(buf, start, i) && (buf[i] == ';' || buf[i] == '|' )) || buf[i + 1] == '\0' )
 		{
 				 first_parse(&head, buf, start, i++);
 				// 에러처리 -> 크기가없는거 들어올때

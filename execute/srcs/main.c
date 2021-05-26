@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 18:59:21 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/26 19:23:18 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		main(int argc, char **argv, char **envp)
 	}
 	env_info = parsing_env(envp);
 	env_info = env_info->next;
-	signal_func();
+	// signal_func();
 	while (1)
 	{
 		prompt();

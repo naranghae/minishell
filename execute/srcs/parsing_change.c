@@ -90,7 +90,7 @@ void	change_double_qute(t_cmd *tmp, int idx, int i)
 
 	while (tmp->cmd[idx][i] != '\0')
 	{
-		if (!in_singlequote(tmp->cmd[idx],0,ft_strlen(tmp->cmd[idx])) && tmp->cmd[idx][i] == '\"')
+		if (!in_doublequote(tmp->cmd[idx],0,ft_strlen(tmp->cmd[idx])) && tmp->cmd[idx][i] == '\"')
 			{
 				tmp->cmd[idx][i++] = '\0';
 				start = i;

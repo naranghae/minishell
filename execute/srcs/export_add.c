@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 11:31:01 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/26 16:46:45 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		envAdd(char *cmd, t_env *env_info)
 	if(!(env_parse = (t_env *)malloc(sizeof(*env_parse))))
 		return (0);
 	save_env(env_parse, cmd, '=');
-	if (nameSearch(env_parse, env_info))
+	if (nameSearch(env_parse, env_info->next))
 	{
 		free(env_parse->name);
 		if (equalIs(cmd) && env_parse->contents != NULL)

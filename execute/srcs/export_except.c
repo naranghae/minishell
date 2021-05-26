@@ -6,12 +6,27 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 12:25:07 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/26 20:06:37 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
+
+int		QuoMark(char *exportCmd, int i)
+{
+	int		error;
+	char	*content;
+
+	content = NULL;
+	if (exportCmd[i] == '!')
+	{
+		error = 2;
+		content = ft_strchr(exportCmd, '!');
+		return (cmdError(content, error));
+	}
+	return (0);
+}
 
 int		cmdError(char *cmd, int error)
 {
@@ -40,7 +55,7 @@ int		exceptName(int str, int i)
 	return (0);
 }
 
-int		exceptCheck(char *exportCmd)
+int		exceptCheck(char *exportCmd, int type)
 {
 	int		i;
 	int		error;
@@ -49,8 +64,9 @@ int		exceptCheck(char *exportCmd)
 	i = -1;
 	while (exportCmd[++i] != '\0')
 	{
-		if ((exportCmd[i] == '=') && i != 0)
-			break ;
+		if (type == 1)
+			if ((exportCmd[i] == '=') && i != 0)
+				break ;
 		if (exportCmd[i] == '!')
 		{
 			error = 2;
@@ -59,8 +75,16 @@ int		exceptCheck(char *exportCmd)
 		if (exceptName(exportCmd[i], i))
 		{
 			error = 1;
+			if (QuoMark(exportCmd, i))
+				return (2);
 			return (cmdError(exportCmd, error));
 		}
+	}
+	while (exportCmd[i] != '\0')
+	{
+		if (QuoMark(exportCmd, i))
+				return (2);
+		i++;
 	}
 	return (0);
 }

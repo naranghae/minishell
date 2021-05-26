@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 12:28:16 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/26 19:13:07 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		parsingEnv(char *cmd, t_env *env_info)
 	exportCmd = ft_split(tmp, ' ');
 	while (exportCmd[++i] != NULL)
 	{
-		if ((error = exceptCheck(exportCmd[i])) > 0)
+		if ((error = exceptCheck(exportCmd[i], 1)) > 0)
 		{
 			if (error == 2)
 				return (1);

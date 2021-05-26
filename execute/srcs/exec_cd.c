@@ -1,7 +1,7 @@
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int exec_cd(t_cmd *exec_cmd)
+int		exec_cd(t_cmd *exec_cmd)
 {
 	char buf[1024];
 
@@ -14,11 +14,11 @@ int exec_cd(t_cmd *exec_cmd)
 		return (0);
 }
 
-void pre_exec_cd(t_cmd *exec_cmd, pid_t pid)
+void	pre_exec_cd(t_cmd *exec_cmd, pid_t pid)
 {
 	int status;
 	int res;
-	
+
 	if (exec_cmd->has_pip)
 	{
 		if (pid == 0)

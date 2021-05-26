@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 12:26:24 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/26 19:26:56 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ void	exec_built_in(t_cmd *exec_cmd, t_env **env_info)
 	else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
 		pre_exec_echo(exec_cmd, &pid);
 	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
-		pre_exec_env(exec_cmd, &pid, env_info);
+		pre_exec_env(exec_cmd, &pid, *env_info);
 	// else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
 	// 	pre_exec_exit();
 	else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
 		pre_exec_export(exec_cmd, &pid, *env_info);
-	// else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
-	// 	pre_exec_unset();
-	// else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
-	// 	pre_exec_pwd();
+	else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
+		pre_exec_unset(exec_cmd, &pid, *env_info);
+	else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
+		pre_exec_pwd(exec_cmd, &pid);
 	else
 		return ;
 }
@@ -51,10 +51,10 @@ int		is_built_in(t_cmd *exec_cmd)
 	// 	return (1);
 	else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
 		return (1);
-	// else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
-	// 	return (1);
-	// else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
-		// return (1);
+	else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
+		return (1);
+	else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
+		return (1);
 	else
 		return (0);
 }
@@ -103,15 +103,13 @@ void close_fd(t_red *red)
 		red = red->next;
 	}
 }
-void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
+void	exec_cmd(t_cmd **cmd, t_env *env_set, char **path)
 {
 	t_cmd	*exec_cmd;
 	int tmp_in;
 	int tmp_out;
-	char **envpp;
+	char **envp;
 
-	(void)envp;
-	envp = NULL;
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
@@ -123,12 +121,12 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 		if (exec_cmd->red!= NULL)
 			exec_redirection(exec_cmd);
 		if (is_built_in(exec_cmd))
-			exec_built_in(exec_cmd, env_set);
+			exec_built_in(exec_cmd, &env_set);
 		else
 		{
-			envpp = getEnvp(env_set);
-			exec_not_built_in(exec_cmd, path, envpp);
-			free_split(envpp);
+			envp = getEnvp(env_set);
+			exec_not_built_in(exec_cmd, path, envp);
+			free_split(envp);
 		}
 		if (exec_cmd->red!= NULL)
 		{
@@ -140,19 +138,22 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path)
 	}
 
 }
-int		exec(t_cmd **cmd, t_env **env_info, char **envp)
+int		exec(t_cmd **cmd, t_env *env_info)
 {
 	t_env	*exec_env;
 	char	**path;
+	int		i;
 
-	exec_env = *env_info;
-	while (exec_env != NULL)
+	i = -1;
+	//exec_env = NULL;
+	exec_env = env_info;
+	while (exec_env->next != NULL)
 	{
+		exec_env = exec_env->next;
 		if (!ft_strncmp(exec_env->name, "PATH", 4))
 			path = ft_split(exec_env->contents,':');
-		exec_env = exec_env->next;
 	}
-	exec_cmd(cmd, env_info, envp, path);
+	exec_cmd(cmd, env_info, path);
 	free_split(path);
 	return (0);
 }

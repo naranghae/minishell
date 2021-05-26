@@ -1,7 +1,7 @@
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-char	**getEnvp(t_env **env_set)
+char	**getEnvp(t_env *env_set)
 {
 	int		i;
 	int		k;
@@ -11,7 +11,7 @@ char	**getEnvp(t_env **env_set)
 	t_env	*envParse;
 
 	k = 0;
-	envParse = *env_set;
+	envParse = env_set->next;
 	i = listlen(env_set);
 	envpp = (char **)malloc(sizeof(char *) * (i + 1));
 	if (!envpp)

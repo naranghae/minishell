@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:22:34 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/25 17:18:36 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/26 17:00:07 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ void	save_env(t_env *env_parse, char *str, int c)
 			env_parse->contents = ft_substr(str, i + 1, ft_strlen(str) - (i + 1));
 			env_parse->next = NULL;
 			env_parse->equal = 1;
+//			printf("%s = %s\n", env_parse->name, env_parse->contents);
 			return ;
-			//printf("%s = %s\n", env_parse->name, env_parse->contents);
 		}
 	}
 	env_parse->name = ft_substr(str, 0, ft_strlen(str));

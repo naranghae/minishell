@@ -1,13 +1,13 @@
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int		listlen(t_env **env_info)
+int		listlen(t_env *env_info)
 {
 	t_env	*envCount;
 	int	i;
 
 	i = 0;
-	envCount = *env_info;
+	envCount = env_info->next;
 	while (envCount != NULL)
 	{
 		if (envCount->equal)
@@ -17,13 +17,13 @@ int		listlen(t_env **env_info)
 	return (i);
 }
 
-int		listlenAll(t_env **env_info)
+int		listlenAll(t_env *env_info)
 {
 	t_env	*envCount;
 	int	i;
 
 	i = 0;
-	envCount = *env_info;
+	envCount = env_info->next;
 	while (envCount != NULL)
 	{
 		i++;
@@ -44,11 +44,11 @@ void	write_env(t_env	*exec_env)
 	}
 }
 
-int	exec_env(t_env **env_info)
+int	exec_env(t_env *env_info)
 {
 	t_env	*exec_env;
 
-	exec_env = *env_info;
+	exec_env = env_info->next;
 	while (exec_env != NULL)
 	{
 		write_env(exec_env);
@@ -58,7 +58,7 @@ int	exec_env(t_env **env_info)
 
 }
 
-void		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env  **env_info)
+void		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env  *env_info)
 {
 	int status;
 	int res;

@@ -1,6 +1,5 @@
 {
 	"files.associations": {
-		"typeinfo": "c",
-		"sstream": "c"
+		"typeinfo": "c"
 	}
 }

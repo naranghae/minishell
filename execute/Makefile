@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/26 12:27:30 by chanykim         ###   ########.fr        #
+#    Updated: 2021/05/24 18:46:36 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,10 +39,7 @@ SRC=	main.c\
 		exec_export.c\
 		exec_env.c\
 		exec_not_built_in.c\
-		exec_util.c \
-		export_add.c \
-		export_swap.c \
-		export_except.c
+		exec_util.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

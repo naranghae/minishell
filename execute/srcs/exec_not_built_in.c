@@ -71,7 +71,7 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			free(pathjoin);
 			i++;
 		}
-		exit(res);
+		exit(printf("no cmd\n") * 0 + res);
 	}
 	else if (pid > 0)
 		close_pipe(&pid, exec_cmd, res, status);

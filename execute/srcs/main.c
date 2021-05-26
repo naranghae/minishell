@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/25 15:12:44 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/26 18:59:21 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ int		main(int argc, char **argv, char **envp)
 	}
 	env_info = parsing_env(envp);
 	env_info = env_info->next;
-	//signal_func();
+	signal_func();
 	while (1)
 	{
 		prompt();
 		end = read(0, buf, 1024);
 		buf[end] = '\0';
-		printf("0\n");
+		// printf("0\n");
 		cmd = parsing_cmd(buf, env_info);
 		if (!cmd)
 			continue ;

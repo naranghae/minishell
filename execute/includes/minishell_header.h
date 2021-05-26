@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/25 14:48:13 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 18:40:20 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@
 # include <errno.h>
 # include "../libft/libft.h"
 
-# define ft_MAX(a, b) ((a) > (b) ? (a) : (b))
 
 typedef struct			s_env
 {
 	char				*name;
 	char				*contents;
-	int					equal;
 	struct	s_env		*next;
 }						t_env;
 

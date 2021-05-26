@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 12:25:53 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/24 20:47:06 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,4 @@ void				exec_cmd(t_cmd **cmd, t_env **env_set, char **envp, char **path);
 void				free_cmd(t_cmd **cmd);
 int					check_in_quote(char *buf, int start, int end);
 int					listlen(t_env **env_info);
-int					listlenAll(t_env **env_info);
-
-int					envAdd(char *cmd, t_env *env_info);
-int					equalIs(char *cmd);
-int					nameSearch(t_env *env_parse, t_env *env_info);
-void				swapList(t_env *env, t_env *envNext);
-void				envSort_print(t_env *env_info);
-int					exceptCheck(char *exportCmd);
-int					cmdError(char *cmd, int error);
-int					exceptName(int str, int i);
 #endif

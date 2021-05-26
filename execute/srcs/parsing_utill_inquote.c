@@ -6,47 +6,86 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:49 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/21 16:01:57 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/26 16:48:45 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 
 
+// int		check_in_quote(char *buf, int start, int end)
+// {
+// 	int single_q;
+// 	int double_q;
+
+// 	single_q = 0;//1 열림 0 닫힘
+// 	double_q = 0;
+// 	while (start < end)
+// 	{
+// 		if (buf[start] == '\'')
+// 		{
+// 			start++;
+// 			single_q = 1;
+// 			while (buf[start] != '\0' && buf[start] != '\'')
+// 				start++;
+// 			if (buf[start] == '\'')
+// 			{
+// 				single_q = 0;
+// 				start++;
+// 			}
+// 			// printf (" i : %d c : %c \n",i, buf[start]);
+// 			continue ;
+// 		}
+// 		else if (buf[start] == '"')
+// 		{
+// 			double_q = 1;
+// 			while (buf[start] != '\0' && buf[start++] != '"')
+// 			start++;
+// 			if (buf[start] == '"')
+// 				double_q = 0;
+// 			continue ;
+// 		}
+// 		start++;
+// 	}
+// 	if (single_q == 1|| double_q == 1)// match가 안된경우
+// 		return (0);
+// 	else
+// 		return (1);
+// }
+
 int		check_in_quote(char *buf, int start, int end)
 {
+	int i;
 	int single_q;
 	int double_q;
 
+	i = start;
 	single_q = 0;//1 열림 0 닫힘
 	double_q = 0;
-	while (start < end)
+	while (buf[i] != '\0' && start < end)
 	{
-		if (buf[start] == '\'')
+		if (buf[i] == '\\')
 		{
-			start++;
-			single_q = 1;
-			while (buf[start] != '\0' && buf[start] != '\'')
-				start++;
-			if (buf[start] == '\'')
-			{
+			i++;
+			continue ;
+		}
+		if (!double_q && buf[i] == '\'')
+		{
+			if (single_q)
 				single_q = 0;
-				start++;
-			}
-			// printf (" i : %d c : %c \n",i, buf[start]);
-			continue ;
+			else
+				single_q = 1;
 		}
-		else if (buf[start] == '"')
+		else if (!single_q && buf[i] == '"')
 		{
-			double_q = 1;
-			while (buf[start] != '\0' && buf[start++] != '"')
-			start++;
-			if (buf[start] == '"')
+			if (double_q)
 				double_q = 0;
-			continue ;
+			else
+				double_q = 1;
 		}
-		start++;
+		i++;
 	}
+	// printf ("sing : %d doub : %d\n",single_q,double_q);
 	if (single_q == 1|| double_q == 1)// match가 안된경우
 		return (0);
 	else

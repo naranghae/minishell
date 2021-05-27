@@ -212,7 +212,7 @@ char	*remove_escape(char *buf, int start, int end)
 	re = buf;
 	while (buf[start] != '\0')
 	{
-		if (!is_inquote(buf, start, end) && buf[start] == '\\')
+		if (is_inquote(buf, start, end) && buf[start] == '\\')
 		{
 			// re[re_i++] = 24;
 				if (buf[start + 1] != '\n')

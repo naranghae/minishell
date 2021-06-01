@@ -1,10 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_env.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/01 18:23:42 by chanykim          #+#    #+#             */
+/*   Updated: 2021/06/01 18:23:43 by chanykim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
+int		listlen(t_env *env_info)
+{
+	t_env	*envCount;
+	int	i;
+
+	i = 0;
+	envCount = env_info->next;
+	while (envCount != NULL)
+	{
+		if (envCount->equal)
+			i++;
+		envCount = envCount->next;
+	}
+	return (i);
+}
+
+int		listlenAll(t_env *env_info)
+{
+	t_env	*envCount;
+	int	i;
+
+	i = 0;
+	envCount = env_info->next;
+	while (envCount != NULL)
+	{
+		i++;
+		envCount = envCount->next;
+	}
+	return (i);
+}
 
 void	write_env(t_env	*exec_env)
 {
-	if (exec_env->contents)
+	if (exec_env->equal)
 	{
 		//write(1, exec_env->name, ft_strlen(exec_env->name));
 		//write(1, "=", 1);
@@ -14,11 +56,11 @@ void	write_env(t_env	*exec_env)
 	}
 }
 
-int	exec_env(t_env **env_info)
+int	exec_env(t_env *env_info)
 {
 	t_env	*exec_env;
 
-	exec_env = *env_info;
+	exec_env = env_info->next;
 	while (exec_env != NULL)
 	{
 		write_env(exec_env);
@@ -28,7 +70,7 @@ int	exec_env(t_env **env_info)
 
 }
 
-void		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env  **env_info)
+void		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env  *env_info)
 {
 	int status;
 	int res;

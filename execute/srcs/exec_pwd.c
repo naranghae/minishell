@@ -1,62 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_export.c                                      :+:      :+:    :+:   */
+/*   exec_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/01 15:25:54 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/27 17:25:27 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int		parsingEnv(char *cmd, t_env *env_info)
+int		exec_pwd(void)
 {
-	char			*tmp;
-	char			**exportCmd;
-	int				i;
-	int				error;
+	char buf[1024];
 
-	error = 0;
-	i = -1;
-	tmp = cmd;
-	exportCmd = ft_split(tmp, ' ');
-	while (exportCmd[++i] != NULL)
-	{
-		if ((error = exceptCheck(exportCmd[i], 1)) > 0)
-		{
-			if (error == 2)
-				return (1);
-		}
-		else
-			envAdd(exportCmd[i], env_info);
-	}
-	free_split(exportCmd);
-	if (error == 1)
-		return (1);
+	if (!getcwd(buf, 1024))
+		return (-1);
+	printf("%s\n", buf);
 	return (0);
 }
 
-int		exec_export(t_cmd *exec_cmd, t_env *env_info)
-{
-	if (exec_cmd->cmd[1] == NULL)
-	{
-		envSort_print(env_info);
-		return (0);
-	}
-	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)
-		return (1);
-	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->prev->has_pip)
-		return (1);
-	if (parsingEnv(exec_cmd->cmd[1], env_info))
-		return (0);
-	return (0);
-}
-
-void	pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
+void	pre_exec_pwd(t_cmd *exec_cmd, pid_t *pid)
 {
 	int status;
 	int res;
@@ -71,11 +38,11 @@ void	pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 				exit(0);
 			if (exec_cmd->prev && exec_cmd->prev->has_pip && dup2(exec_cmd->prev->fd[0], 0) < 0)
 				exit(0);
-			exit(exec_export(exec_cmd, env_info));
+			exit(exec_pwd());
 		}
 		else if (*pid > 0)
 			close_pipe(pid, exec_cmd, res, status);
 	}
 	else
-		exec_export(exec_cmd, env_info);
+		exec_pwd();
 }

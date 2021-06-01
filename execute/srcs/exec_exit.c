@@ -1,62 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_export.c                                      :+:      :+:    :+:   */
+/*   exec_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/01 15:25:54 by chanykim         ###   ########.fr       */
+/*   Created: 2021/06/01 18:24:02 by chanykim          #+#    #+#             */
+/*   Updated: 2021/06/01 19:26:09 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int		parsingEnv(char *cmd, t_env *env_info)
+int		ft_exit(int exitcode)
 {
-	char			*tmp;
-	char			**exportCmd;
-	int				i;
-	int				error;
+	write(1, "exit\n", 5);
+	exit(exitcode);
+}
 
-	error = 0;
+int		isNumber(char *str)
+{
+	int		i;
+
 	i = -1;
-	tmp = cmd;
-	exportCmd = ft_split(tmp, ' ');
-	while (exportCmd[++i] != NULL)
+	while (str[++i])
 	{
-		if ((error = exceptCheck(exportCmd[i], 1)) > 0)
-		{
-			if (error == 2)
-				return (1);
-		}
-		else
-			envAdd(exportCmd[i], env_info);
+		if (!ft_isdigit(str[i]))
+			return (0);
 	}
-	free_split(exportCmd);
-	if (error == 1)
-		return (1);
-	return (0);
+	return (1);
 }
 
-int		exec_export(t_cmd *exec_cmd, t_env *env_info)
+int		exec_exit(t_cmd *exec_cmd)
 {
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
+		return (0);
 	if (exec_cmd->cmd[1] == NULL)
+		ft_exit(g_gv.errcode);
+	else if (exec_cmd->cmd[1] != NULL && !isNumber(exec_cmd->cmd[1]))
 	{
-		envSort_print(env_info);
-		return (0);
+		printf("exit: %s: numeric argument required\n", exec_cmd->cmd[1]);
+		ft_exit(255);
 	}
-	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)
-		return (1);
-	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->prev->has_pip)
-		return (1);
-	if (parsingEnv(exec_cmd->cmd[1], env_info))
-		return (0);
+	else if (exec_cmd->cmd[1] != NULL && isNumber(exec_cmd->cmd[1]))
+		ft_exit(ft_atoi(exec_cmd->cmd[1]));
 	return (0);
 }
 
-void	pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
+void	pre_exec_exit(t_cmd *exec_cmd, pid_t *pid)
 {
 	int status;
 	int res;
@@ -71,11 +63,11 @@ void	pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 				exit(0);
 			if (exec_cmd->prev && exec_cmd->prev->has_pip && dup2(exec_cmd->prev->fd[0], 0) < 0)
 				exit(0);
-			exit(exec_export(exec_cmd, env_info));
+			exit(exec_exit(exec_cmd));
 		}
 		else if (*pid > 0)
 			close_pipe(pid, exec_cmd, res, status);
 	}
 	else
-		exec_export(exec_cmd, env_info);
+		exec_exit(exec_cmd);
 }

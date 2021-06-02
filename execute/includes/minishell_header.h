@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/01 17:39:16 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/02 16:39:40 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define RIGHT_ARROW 4414235
 # define UP_ARROW 4283163
 # define DOWN_ARROW 4348699
-
+# define CTRLD	4
 typedef struct			s_env
 {
 	char				*name;
@@ -43,6 +43,16 @@ typedef struct			s_global
 	int					child;
 	int					errcode;
 }						t_global;
+
+typedef struct			s_cursor
+{
+	int					c;
+	int					row;
+	int					col;
+	char				*cm;
+	char				*ce;
+}						t_cursor;
+
 
 t_global				g_gv;
 void					print_env(char **env);

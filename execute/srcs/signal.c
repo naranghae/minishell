@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:08:00 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/01 18:05:23 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/02 16:46:24 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	hook(int signo)
 {
 	if (signo == SIGINT)
 	{
-		write(1, "\b\b  \n", 5);
+		write(1, "\n", 1);
 		g_gv.errcode = 1;
 		if (g_gv.child) //프로세스 실행시 ctrl + c를 하면 종료코드 130
 			g_gv.errcode = 130;
@@ -25,7 +25,6 @@ void	hook(int signo)
 	}
 	else if (signo == SIGQUIT || signo == SIGTSTP)
 	{
-		//write(1, "\b\b​​  \b\b", 12);
 		g_gv.errcode = 131;
 		if (g_gv.child) //프로세스 실행시 ctrl + \를 하면 종료코드 131
 			printf("^\\Quit: 3\n"); //종료코드 131: command not found

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utill_list.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/18 13:51:57 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/03 17:59:41 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	add_back_cmd(t_cmd **lst, t_cmd *new)
 	new->prev = tmp->prev;
 	tmp->prev = new;
 	new->next = tmp;
+	new->head = (*lst)->head;
+	new->tail = (*lst)->tail;
 }
 
 void	add_back_red(t_red **lst, t_red *new)
@@ -63,6 +65,22 @@ t_red	*new_red(char *file_name, int type)
 	return (new);
 }
 
+t_cmd	*new_cmd_buf(char *buf)
+{
+	t_cmd *new;
+
+	new = (t_cmd *)malloc(sizeof(t_cmd));
+	new->red = (t_red *)malloc(sizeof(t_red));
+	if (!new)
+		return (0);
+	new->cmd = 0;
+	new->buf = buf;
+	new->has_pip = 0;
+	new->red = NULL;
+	new->next = NULL;
+	new->prev = NULL;
+	return (new);
+}
 
 t_cmd	*new_cmd(char **cmd)
 {
@@ -91,4 +109,6 @@ void	init_cmd(t_cmd **head, t_cmd **tail)
 	(*tail)->next = (*tail);
 	(*tail)->prev = (*head);
 	(*head)->tail = (*tail);
+	(*tail)->tail = (*tail);
+	(*tail)->head = (*head);
 }

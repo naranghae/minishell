@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/01 18:34:22 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/03 16:28:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,18 @@ typedef struct		s_red
 
 typedef struct		s_cmd
 {
+	char			*buf;
 	char 			**cmd;
 	int				has_pip;
 	t_red			*red;
 	int				fd[2];
 	struct s_cmd	*prev;
-	struct s_cmd	*next;
 	struct s_cmd	*tail;
+	struct s_cmd	*head;
+	struct s_cmd	*next;
 }					t_cmd;
 
+t_cmd				*new_cmd_buf(char *buf);
 void				pipe_fork(t_cmd *exec_cmd,pid_t *pid);
 void				pre_exec_echo(t_cmd *exec_cmd, pid_t *pid);
 void				close_pipe(pid_t *pid, t_cmd *exec_cmd, int res, int status);

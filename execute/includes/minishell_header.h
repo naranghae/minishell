@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/02 16:39:40 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:35:34 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct			s_cursor
 	int					col;
 	char				*cm;
 	char				*ce;
+	char				*buf;
 }						t_cursor;
 
 

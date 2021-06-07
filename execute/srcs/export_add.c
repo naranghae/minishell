@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 16:46:45 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/27 20:03:57 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int		nameSearch(t_env *env_parse, t_env *env_info)
 	exec_env = env_info;
 	while (exec_env != NULL)
 	{
-		max = ft_MAX(ft_strlen(env_parse->name), ft_strlen(exec_env->name));
+		max = ft_strlen(env_parse->name) > ft_strlen(exec_env->name) ?\
+		ft_strlen(env_parse->name) : ft_strlen(exec_env->name);
 		if (!ft_strncmp(env_parse->name, exec_env->name, max))
 		{
 			if (env_parse->contents != NULL)

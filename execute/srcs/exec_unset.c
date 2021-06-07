@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:43:25 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 19:15:45 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/01 15:36:02 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	envDelete(char *cmd, t_env *env_info)
 	while (env_info->next != NULL)
 	{
 		envRemove = env_info->next;
-		max = ft_MAX(ft_strlen(cmd), ft_strlen(envRemove->name));
+		max = ft_strlen(cmd) > ft_strlen(envRemove->name) ?\
+			ft_strlen(cmd) : ft_strlen(envRemove->name);
 		if (!ft_strncmp(cmd, envRemove->name, max))
 		{
 			envTmp = envRemove->next;
@@ -66,8 +67,6 @@ int		exec_unset(t_cmd *exec_cmd, t_env *env_info)
 {
 	if (exec_cmd->cmd[1] == NULL)
 		return (0);
-	//else if (unset_except(exec_cmd->cmd[1], env_info))
-	//	return (1);
 	else if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)
 		return (1);
 	else

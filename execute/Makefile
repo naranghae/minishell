@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/26 19:25:02 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/01 18:24:30 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			= minishell
 
 CC				= gcc -g3 -fsanitize=address
 
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -lncurses -ltermcap
 
 LIBFTD = ./includes/libft
 
@@ -44,7 +44,8 @@ SRC=	main.c\
 		export_swap.c \
 		export_except.c \
 		exec_unset.c \
-		exec_pwd.c
+		exec_pwd.c \
+		exec_exit.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

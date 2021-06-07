@@ -48,6 +48,7 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			exit(0);
 			//exit_fatal();
 	pid = fork();
+	g_gv.child = 1;
 	if (pid < 0)
 		exit(0);
 		//exit_fatal();
@@ -65,13 +66,16 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			pathjoin = ft_strjoin(pjoin, exec_cmd->cmd[0]);
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
 				exit(write(1,"error\n",6) * 0);
-			res = execve(pathjoin, exec_cmd->cmd, envp);
+			if (!ft_strncmp(exec_cmd->cmd[0], "/bin/", 5))
+				res = execve(exec_cmd->cmd[0], exec_cmd->cmd, envp);
+			else
+				res = execve(pathjoin, exec_cmd->cmd, envp);
 			free(path[i]);
 			free(pjoin);
 			free(pathjoin);
 			i++;
 		}
-		exit(res);
+		exit(printf("no cmd\n") * 0 + res);
 	}
 	else if (pid > 0)
 		close_pipe(&pid, exec_cmd, res, status);

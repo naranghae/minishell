@@ -1,29 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pwd.c                                         :+:      :+:    :+:   */
+/*   exec_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/27 17:25:27 by chanykim         ###   ########.fr       */
+/*   Created: 2021/06/01 18:24:02 by chanykim          #+#    #+#             */
+/*   Updated: 2021/06/01 19:26:09 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int		exec_pwd(void)
+int		ft_exit(int exitcode)
 {
-	char buf[1024];
+	write(1, "exit\n", 5);
+	exit(exitcode);
+}
 
-	if (!getcwd(buf, 1024))
-		return (-1);
-	printf("%s\n", buf);
+int		isNumber(char *str)
+{
+	int		i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+	}
+	return (1);
+}
+
+int		exec_exit(t_cmd *exec_cmd)
+{
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
+		return (0);
+	if (exec_cmd->cmd[1] == NULL)
+		ft_exit(g_gv.errcode);
+	else if (exec_cmd->cmd[1] != NULL && !isNumber(exec_cmd->cmd[1]))
+	{
+		printf("exit: %s: numeric argument required\n", exec_cmd->cmd[1]);
+		ft_exit(255);
+	}
+	else if (exec_cmd->cmd[1] != NULL && isNumber(exec_cmd->cmd[1]))
+		ft_exit(ft_atoi(exec_cmd->cmd[1]));
 	return (0);
 }
 
-void	pre_exec_pwd(t_cmd *exec_cmd, pid_t *pid)
+void	pre_exec_exit(t_cmd *exec_cmd, pid_t *pid)
 {
 	int status;
 	int res;
@@ -38,11 +63,11 @@ void	pre_exec_pwd(t_cmd *exec_cmd, pid_t *pid)
 				exit(0);
 			if (exec_cmd->prev && exec_cmd->prev->has_pip && dup2(exec_cmd->prev->fd[0], 0) < 0)
 				exit(0);
-			exit(exec_pwd());
+			exit(exec_exit(exec_cmd));
 		}
 		else if (*pid > 0)
 			close_pipe(pid, exec_cmd, res, status);
 	}
 	else
-		exec_pwd();
+		exec_exit(exec_cmd);
 }

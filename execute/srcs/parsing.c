@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/24 20:40:23 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/04 14:06:14 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ while (start != end && (is_inquote(buf,start,end) || (buf[start] != ' ' && buf[s
 	return (re);
 }
 
-void	 first_parse(t_cmd **list, char *buf,int start,int end)
+void	 first_parse(t_cmd **list, char *buf, int start, int end)
 {
 	char **re;
 	int idx;
@@ -67,7 +67,7 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 
 	idx = 0;
 	len = 0;
-	printf ("cp : %d\n", count_parsing(buf, start, end));
+	// printf ("cp : %d\n", count_parsing(buf, start, end));
 	if (count_parsing(buf, start, end) == 0)
 		return ;
 	re = (char **)malloc(sizeof(char *) * (count_parsing(buf, start, end) + 1));
@@ -84,7 +84,7 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 			break ;
 		len++;
 	}
-		 printf ("start : %d ,end : %d len : %d\n", tmp,end,len);
+		//  printf ("start : %d ,end : %d len : %d\n", tmp,end,len);
 	start = tmp;
 	re[idx++] = ft_substr(buf, tmp, len);//명령어저장
 	start += len;
@@ -105,10 +105,10 @@ void	 first_parse(t_cmd **list, char *buf,int start,int end)
 	// else
 	// 	free(re[idx]);
 	int j = 0;
-		printf("firstpasing\n");
+		// printf("firstpasing\n");
 	while (re[j] != NULL)
 	{
-	printf("re: %s\n",re[j]);
+	// printf("re: %s\n",re[j]);
 	j++;
 	}
 	if (buf[end] == '|') // 추후에 함수로 빼서 더많은 정보들저장 가능 ex) 인자로 buf[end] 정보 넘겨서 파이프저장
@@ -119,7 +119,7 @@ char	*remove_empty(char *buf, int start, int end)
 {
 	char *re;
 	int re_i;
-	
+
 	re_i = start;
 	re = buf;
 	while (buf[start] != '\0')
@@ -127,11 +127,11 @@ char	*remove_empty(char *buf, int start, int end)
 		if (!is_inquote(buf, start, end) &&buf[start] == ' ')
 		{
 			re[re_i++] = ' ';
-			while (buf[start] == ' ' && buf[start] != '\0') 
+			while (buf[start] == ' ' && buf[start] != '\0')
 				start++;
 			continue ;
 		}
-		else 
+		else
 			re[re_i++] = buf[start];
 		start++;
 	}
@@ -188,7 +188,7 @@ int		check_quote(char *buf, int len)
 }
 
 int check_syntax(char *buf, int i, int len, int istoken)
-{	
+{
 	if (len == 0)
 		return (0);
 	if (!check_quote(buf, len))
@@ -232,12 +232,12 @@ t_cmd *parsing_cmd(char *buf, t_env *env)
 	{
 		if (check_in_quote(buf, start, i) && (buf[i] == ';' || buf[i + 1] == '\0' || buf[i] == '|'))
 		{
-				 first_parse(&head, buf, start, i++);
-				// 에러처리 -> 크기가없는거 들어올때
-				// not in quote일때 공배제거 먼저해야할듯..?
-				//free(first_parsed);
-				start = i;
-				continue ;
+			first_parse(&head, buf, start, i++);
+			// 에러처리 -> 크기가없는거 들어올때
+			// not in quote일때 공배제거 먼저해야할듯..?
+			//free(first_parsed);
+			start = i;
+			continue ;
 		}
 		i++;
 	}

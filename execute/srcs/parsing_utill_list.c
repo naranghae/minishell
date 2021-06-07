@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 15:35:00 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/07 17:19:53 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	remove_back_cmd(t_cmd **lst)
 	// printf("call remove bye:%d\n",tmp->prev->buf[0]);
 	if (tmp->prev != tmp->head)
 	{
+		free(tmp->prev);
 		tmp->prev = tmp->prev->prev;
 		tmp->next = tmp->tail;
 	}
@@ -91,7 +92,6 @@ t_cmd	*new_cmd_buf(char *buf)
 	if (!buf)
 		return (0);
 	new = (t_cmd *)malloc(sizeof(t_cmd));
-	new->red = (t_red *)malloc(sizeof(t_red));
 	if (new == NULL)
 		return (0);
 	new->cmd = 0;
@@ -108,7 +108,6 @@ t_cmd	*new_cmd(char **cmd)
 	t_cmd *new;
 
 	new = (t_cmd *)malloc(sizeof(t_cmd));
-	new->red = (t_red *)malloc(sizeof(t_red));
 	if (!new)
 		return (0);
 	new->cmd = cmd;

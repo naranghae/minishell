@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/04 21:35:17 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/07 15:08:07 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ typedef struct		s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-void	remove_back_cmd(t_cmd **lst);
-
+void				remove_back_cmd(t_cmd **lst);
 t_cmd				*new_cmd_buf(char *buf);
 void				pipe_fork(t_cmd *exec_cmd,pid_t *pid);
 void				pre_exec_echo(t_cmd *exec_cmd, pid_t *pid);

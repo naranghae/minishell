@@ -3,23 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 14:50:29 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/07 15:21:24 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
+
 void	ctrl_d_exit(void)
 {
 	write(1, "  \b\b\n", 5);
 	ft_exit(g_gv.errcode);
 }
+
 char	*append_char(t_cursor cursor)
 {
 	const int len = ft_strlen(cursor.buf);
 	char *const	ret = ft_calloc(len + 2, 1);
+
 	ft_memcpy(ret, cursor.buf, len);
 	ret[len] = cursor.c;
 	ret[len + 1] = 0;
@@ -27,9 +30,47 @@ char	*append_char(t_cursor cursor)
 		free(cursor.buf);
 	return (ret);
 }
-int	nbr_length(int n)
+
+// char	*remove_char(t_cursor cursor)
+// {
+// 	int		len;
+// 	char	*ret;
+
+// 	len = ft_strlen(cursor.buf);
+// 	printf("\n remove: %s,  %d\n", cursor.buf, len);
+// 	if (cursor.buf[len] == '\n')
+// 		len -= 2;
+// 	if (len != 0)
+// 	{
+// 		ret = ft_calloc(len, 1);
+// 		ft_memcpy(ret, cursor.buf, len);
+// 		ret[len - 1] = 0;
+// 		if (cursor.buf)
+// 			free(cursor.buf);
+// 		return (ret);
+// 	}
+// 	return (cursor.buf);
+// }
+
+char	*remove_char(t_cursor cursor)
+{
+	int		len;
+//	char	*ret;
+
+	len = ft_strlen(cursor.buf);
+	//printf("\n remove: %s,  %d  d:%d \n", cursor.buf, len, cursor.buf[len]);
+	len = (len == 0) ? 1 : len;
+	if (cursor.buf[len - 1] == '\n')
+		cursor.buf[--len] = '\0';
+	if (len != 0)
+		cursor.buf[len - 1] = 0;
+	return (cursor.buf);
+}
+
+int		nbr_length(int n)
 {
 	int	i = 0;
+
 	if (n <= 0)
 		i++;
 	while (n != 0)
@@ -39,6 +80,7 @@ int	nbr_length(int n)
 	}
 	return (i);
 }
+
 void	get_cursor_position(int *col, int *rows)
 {
 	int		a = 0;
@@ -55,17 +97,17 @@ void	get_cursor_position(int *col, int *rows)
 		if (buf[i] >= '0' && buf[i] <= '9')
 		{
 			if (a == 0)
-				*rows = atoi(&buf[i]) - 1;
+				*rows = ft_atoi(&buf[i]) - 1;
 			else
 			{
-				temp = atoi(&buf[i]);
+				temp = ft_atoi(&buf[i]);
 			}
 			a++;
 			i += nbr_length(temp) - 1;
 		}
 		i++;
 	}
-				*col = 14;
+	*col = 14;
 }
 
 int		putchar_tc(int tc)
@@ -73,15 +115,19 @@ int		putchar_tc(int tc)
 	write(1, &tc, 1);
 	return (0);
 }
+
 void	move_cursor_left(t_cursor *cursor)
 {
 	if (cursor->col > 14)
 		--(cursor->col);
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
+
 }
+
 void	move_cursor_right(t_cursor *cursor)
 {
 	int		len;
+
 	len = ft_strlen(cursor->buf);
 	//printf("%d\n", len);
 	//printf("%s\n", cursor->buf);
@@ -89,6 +135,7 @@ void	move_cursor_right(t_cursor *cursor)
 		++(cursor->col);
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
 }
+
 void	delete_end(t_cursor *cursor)
 {
 	if (cursor->col > 14)
@@ -96,6 +143,7 @@ void	delete_end(t_cursor *cursor)
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
 	tputs(cursor->ce, 1, putchar_tc);
 }
+
 void	firstWall(int argc, char **argv)
 {
 	(void)argv;
@@ -105,6 +153,7 @@ void	firstWall(int argc, char **argv)
 		exit(1);
 	}
 }
+
 void	initCursor(t_cursor	*cursor)
 {
 	cursor->buf = NULL;
@@ -114,11 +163,13 @@ void	initCursor(t_cursor	*cursor)
 	cursor->col = 0;
 	cursor->has_buf = 0;
 }
+
 void	globalVariable(void)
 {
 	g_gv.child = 0;
 	g_gv.errcode = 1;
 }
+
 char	*historyCmd(t_cmd **cmd, t_cursor *cursor)
 {
 	int		len;
@@ -225,6 +276,7 @@ int		main(int argc, char **argv, char **envp)
 	signal_func();
 	cmd = NULL;
 	hisbuf = NULL;
+
 	while (1)
 	{
 		prompt();
@@ -244,6 +296,8 @@ int		main(int argc, char **argv, char **envp)
 			else if (cursor.c == BACKSPACE)
 			{
 				delete_end(&cursor);
+				cursor.buf = remove_char(cursor);
+				//printf("\ndelete: %s\n", cursor.buf);
 				//cursor.buf에 담긴 거 하나씩 삭제.
 			}
 			else if (cursor.c == UP_ARROW ||cursor.c == DOWN_ARROW) // 위로 올리면 현재거 저장. 아래는 상관 X
@@ -252,7 +306,11 @@ int		main(int argc, char **argv, char **envp)
 				while (len--)
 					delete_end(&cursor);
 				hisbuf = historyCmd(&history, &cursor);
+				//cursor.c = 0; //flush buffer hyopark
+				//if (hisbuf != NULL) //history 올렸을 때 있는 문자열 저장
+				//	cursor.buf = ft_strdup(hisbuf);
 				cursor.c = 0; //flush buffer
+				//hisbuf = NULL;
 				continue ;
 			}
 			else

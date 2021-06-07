@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utill_list.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 14:50:15 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/07 15:16:10 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_red	*last_red(t_red *lst)
 void	remove_back_cmd(t_cmd **lst)
 {
 	t_cmd *tmp;
-	
+
 	tmp = (*lst)->tail;
 	// printf("call remove bye:%d\n",tmp->prev->buf[0]);
 	if (tmp->prev != tmp->head)

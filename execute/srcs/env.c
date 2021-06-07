@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:22:34 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/11 18:00:42 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/05/26 17:00:07 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_env	*new_env(void)
 		return (NULL);
 	lst->name = NULL;
 	lst->contents = NULL;
+	lst->equal = 0;
 	lst->next = NULL;
 	return (lst);
 }
@@ -51,15 +52,6 @@ void	add_back_env(t_env **lst, t_env *new)
 	}
 }
 
-void	print_env(char **env)
-{
-	int	i;
-
-	i = -1;
-	while (env[++i] != NULL)
-		printf("%s\n", env[i]);
-}
-
 void	save_env(t_env *env_parse, char *str, int c)
 {
 	int i;
@@ -72,9 +64,15 @@ void	save_env(t_env *env_parse, char *str, int c)
 			env_parse->name = ft_substr(str, 0, i);
 			env_parse->contents = ft_substr(str, i + 1, ft_strlen(str) - (i + 1));
 			env_parse->next = NULL;
-			//printf("%s = %s\n", env_parse->name, env_parse->contents);
+			env_parse->equal = 1;
+//			printf("%s = %s\n", env_parse->name, env_parse->contents);
+			return ;
 		}
 	}
+	env_parse->name = ft_substr(str, 0, ft_strlen(str));
+	env_parse->contents = 0;
+	env_parse->equal = 0;
+	env_parse->next = NULL;
 }
 
 t_env	*parsing_env(char **env)

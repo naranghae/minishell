@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_header.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/17 20:45:36 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/26 16:45:54 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@
 # include <errno.h>
 # include "../libft/libft.h"
 
+# define ft_MAX(a, b) ((a) > (b) ? (a) : (b))
 
 typedef struct			s_env
 {
 	char				*name;
 	char				*contents;
+	int					equal;
 	struct	s_env		*next;
 }						t_env;
 
@@ -35,5 +37,8 @@ void					prompt(void);
 t_env					*parsing_env(char **env);
 t_env					*new_env(void);
 void					signal_func(void);
-
+void					save_env(t_env *env_parse, char *str, int c);
+void					add_back_env(t_env **lst, t_env *new);
+t_env					*new_env(void);
+t_env					*last_env(t_env *lst);
 #endif

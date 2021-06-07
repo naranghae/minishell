@@ -30,7 +30,7 @@ void	save_red_cmd(t_cmd **tmp, int i, int idx)
 	{
 		len = 0;
 		type = 0;
-		while (is_inquote((*tmp)->cmd[idx], i, ft_strlen((*tmp)->cmd[idx])) || ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0'))
+		while (((*tmp)->cmd[idx][i] != '\0' && is_inquote((*tmp)->cmd[idx], i, ft_strlen((*tmp)->cmd[idx])) )|| ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0'))
 			i++;
 		if ((*tmp)->cmd[idx][i] == '<')
 			type = IN;

@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/18 13:51:57 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/05/26 12:15:31 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	add_back_cmd(t_cmd **lst, t_cmd *new)
 	t_cmd *tmp;
 
 	tmp = (*lst)->tail;
+	tmp->tail = (*lst)->tail;
 	tmp->prev->next = new;
 	new->prev = tmp->prev;
 	tmp->prev = new;

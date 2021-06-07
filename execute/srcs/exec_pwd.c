@@ -1,38 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_echo.c                                        :+:      :+:    :+:   */
+/*   exec_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/26 19:21:24 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/26 20:07:04 by chanykim         ###   ########.fr       */
+/*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
+/*   Updated: 2021/06/03 11:15:39 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int exec_echo(t_cmd *exec_cmd)
+int		exec_pwd(void)
 {
-	if (exec_cmd->has_pip)
-		if (pipe(exec_cmd->fd) < 0)
-			exit(0);
-	if (exec_cmd->cmd[1] == NULL)
-		printf("\n");
-	else if (exec_cmd->cmd[1] && !ft_strncmp(exec_cmd->cmd[1],"-n", 2))
-	{
-		if(!ft_strncmp(exec_cmd->cmd[1],"-n ", 3))
-			write(1, exec_cmd->cmd[1] + 3, ft_strlen( exec_cmd->cmd[1] + 3));
-		else
-			printf("");
-	}
-	else
-		printf("%s\n", exec_cmd->cmd[1]);
+	char buf[1024];
+
+	printf("%s\n", getcwd(buf, 1024));
 	return (0);
 }
 
-void pre_exec_echo(t_cmd *exec_cmd, pid_t *pid)
+void	pre_exec_pwd(t_cmd *exec_cmd, pid_t *pid)
 {
 	int status;
 	int res;
@@ -41,17 +30,17 @@ void pre_exec_echo(t_cmd *exec_cmd, pid_t *pid)
 	status = 0;
 	if (exec_cmd->has_pip)
 	{
-		if (pid == 0)
+		if (*pid == 0)
 		{
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
 				exit(0);
 			if (exec_cmd->prev && exec_cmd->prev->has_pip && dup2(exec_cmd->prev->fd[0], 0) < 0)
 				exit(0);
-			exit(exec_echo(exec_cmd));
+			exit(exec_pwd());
 		}
-		else if (pid > 0)
-		close_pipe(pid, exec_cmd, res, status);
+		else if (*pid > 0)
+			close_pipe(pid, exec_cmd, res, status);
 	}
 	else
-		exec_echo(exec_cmd);
+		exec_pwd();
 }

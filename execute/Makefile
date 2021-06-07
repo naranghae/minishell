@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
+#    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/24 14:06:55 by hyopark          ###   ########.fr        #
+#    Updated: 2021/05/26 19:25:02 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,15 @@ SRC=	main.c\
 		exec.c\
 		exec_cd.c\
 		exec_echo.c\
+		exec_export.c\
 		exec_env.c\
 		exec_not_built_in.c\
-		exec_util.c
+		exec_util.c \
+		export_add.c \
+		export_swap.c \
+		export_except.c \
+		exec_unset.c \
+		exec_pwd.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

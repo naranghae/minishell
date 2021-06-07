@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/24 14:04:58 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/06 18:12:51 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		main(int argc, char **argv, char **envp)
 {
-	t_env	*env_set;
+	t_env	*env_info;
 	t_cmd	*cmd;
 	char	buf[1024];
 	int		end;
@@ -26,8 +26,7 @@ int		main(int argc, char **argv, char **envp)
 		write(1, "Just execute ./minishell\n", 26);
 		return (0);
 	}
-	env_set = parsing_env(envp);
-	env_set = env_set->next;
+	env_info = parsing_env(envp);
 	//signal_func();
 	while (1)
 	{
@@ -35,12 +34,10 @@ int		main(int argc, char **argv, char **envp)
 		end = read(0, buf, 1024);
 		buf[end] = '\0';
 		printf("0\n");
-		cmd = parsing_cmd(buf);
-		printf("1\n");
-		if (cmd == 0)
+		cmd = parsing_cmd(buf, env_info);
+		if (!cmd)
 			continue ;
-		exec(&cmd, &env_set, envp);
-	//	free_cmd(&cmd);
+		exec(&cmd, &env_info);
 	}
 	return (0);
 }

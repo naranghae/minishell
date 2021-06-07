@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 15:21:24 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/07 16:33:30 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char	*append_char(t_cursor cursor)
 	ft_memcpy(ret, cursor.buf, len);
 	ret[len] = cursor.c;
 	ret[len + 1] = 0;
+	// printf("append: %s\n", ret);
 	if (cursor.buf)
 		free(cursor.buf);
 	return (ret);
@@ -92,6 +93,7 @@ void	get_cursor_position(int *col, int *rows)
 	write(0, "\033[6n", 4);  //report cursor location
 	ret = read(0, buf, 254);
 	buf[ret] = '\0';
+	if (*col>-1)
 	while (buf[i])
 	{
 		if (buf[i] >= '0' && buf[i] <= '9')
@@ -107,7 +109,7 @@ void	get_cursor_position(int *col, int *rows)
 		}
 		i++;
 	}
-	*col = 14;
+	// *col = 14;
 }
 
 int		putchar_tc(int tc)
@@ -271,7 +273,8 @@ int		main(int argc, char **argv, char **envp)
 	//init etc..
 	initCursor(&cursor);
 	firstWall(argc, argv);
-	env_info = parsing_env(envp);
+	env_info = parsing_env(envp);// 릭 하나
+	// (void)envp;
 	history = initHistory();
 	signal_func();
 	cmd = NULL;
@@ -281,10 +284,11 @@ int		main(int argc, char **argv, char **envp)
 	{
 		prompt();
 		globalVariable();
-		get_cursor_position(&cursor.col, &cursor.row);
 		// printf("col:::%d\n",cursor.col);
+		cursor.col = 14;
 		while (read(0, &cursor.c, sizeof(cursor.c)) > 0)
 		{
+		get_cursor_position(&cursor.col, &cursor.row);
 		// printf("col:::%d\n",cursor.col);
 			if (cursor.buf == NULL)
 				cursor.buf = ft_calloc(1, sizeof(char));
@@ -318,7 +322,7 @@ int		main(int argc, char **argv, char **envp)
 				cursor.col++;
 				write(0, &cursor.c, 1);
 			}
-			if (hisbuf != NULL && cursor.c != CTRLD) //history 올렸을 때 있는 문자열 저장
+			if (hisbuf != NULL && hisbuf[0] != '\n' && cursor.c != CTRLD) //history 올렸을 때 있는 문자열 저장
 				cursor.buf = ft_strdup(hisbuf);
 			else if (keyValue(cursor))
 				cursor.buf = append_char(cursor);
@@ -339,18 +343,21 @@ int		main(int argc, char **argv, char **envp)
 		{
 			cursor.has_buf = 0;
 			remove_back_cmd(&history->tail->head);
+			cursor.buf = ft_strdup(cursor.buf + 1);
 		}
-		if (cursor.buf[0] == '\n')
+		if (cursor.buf[0] == '\n' && cursor.buf[0] == '\0')
 		{
 			free(cursor.buf);
 			cursor.buf = NULL;
-			history = history->head;
+			history = history->tail;
 			continue ;
 		}
-		if (cursor.buf[0] != '\n')
+		//if (cursor.buf[0] != '\n' || (cursor.buf[0] == '\n' && ))
 			add_back_cmd(&history, new_cmd_buf(ft_strdup(cursor.buf)));
+		// printf(":%s\n",cursor.buf);
+
 		cmd = parsing_cmd(cursor.buf, env_info);
-		// cmd->tail->prev->buf = ft_strdup(cursor.buf);
+		//cmd->tail->prev->buf = ft_strdup(cursor.buf);
 		hisbuf = NULL;
 		if (cmd)
 			exec(&cmd, &env_info);

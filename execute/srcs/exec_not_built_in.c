@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_not_built_in.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/07 15:31:42 by chanykim          #+#    #+#             */
+/*   Updated: 2021/06/07 15:31:43 by chanykim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
@@ -75,6 +87,7 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			free(pathjoin);
 			i++;
 		}
+		// exit(res);
 		exit(printf("no cmd\n") * 0 + res);
 	}
 	else if (pid > 0)

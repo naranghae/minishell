@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 15:16:10 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/07 15:35:00 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	add_back_cmd(t_cmd **lst, t_cmd *new)
 	// if (!new)
 	// 	return ;
 	tmp = (*lst)->tail;
+	tmp->tail = (*lst)->tail;
 	tmp->prev->next = new;
 	new->prev = tmp->prev;
 	tmp->prev = new;

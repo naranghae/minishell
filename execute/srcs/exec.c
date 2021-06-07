@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 15:08:18 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/07 16:25:05 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 	int tmp_in;
 	int tmp_out;
 	char **envp;
+	t_cmd	*exec_cmd_a;
 
 	tmp_in = dup(0);
 	tmp_out = dup(1);
@@ -118,6 +119,8 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 		return ;
 	while (exec_cmd != (*cmd)->tail)
 	{
+		exec_cmd_a = exec_cmd;
+		change_qute(&exec_cmd, *env_set, 2);
 		if (exec_cmd->red!= NULL)
 			exec_redirection(exec_cmd);
 		if (is_built_in(exec_cmd))

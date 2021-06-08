@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 22:09:26 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/08 15:20:10 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ t_cmd	*initHistory(void)
 int		keyValue(t_cursor cursor)
 {
 	if (cursor.c == LEFT_ARROW || cursor.c == RIGHT_ARROW || cursor.c == BACKSPACE ||
-		cursor.c == UP_ARROW || cursor.c == DOWN_ARROW )//|| cursor.c == CTRLD)
+		cursor.c == UP_ARROW || cursor.c == DOWN_ARROW || cursor.c == CTRLD)
 		return (0);
 	return (1);
 }
@@ -265,8 +265,9 @@ int		main(int argc, char **argv, char **envp)
 	t_cmd		*history; //입력하고 엔터치고 저장된 문자열
 	t_cursor	cursor;
 	char		*hisbuf; //입력하고 있는 문자열
-//	char		*tmpBuf;
+	char		*tmpBuf;
 	int			len;
+	int			flag;
 	struct termios term;
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ICANON | ECHO);
@@ -282,7 +283,8 @@ int		main(int argc, char **argv, char **envp)
 	signal_func();
 	cmd = NULL;
 	hisbuf = NULL;
-
+	flag = 1;
+	tmpBuf = NULL;
 	while (1)
 	{
 		prompt();
@@ -305,6 +307,12 @@ int		main(int argc, char **argv, char **envp)
 			}
 			else if (cursor.c == UP_ARROW ||cursor.c == DOWN_ARROW) // 위로 올리면 현재거 저장. 아래는 상관 X
 			{
+				if (cursor.c == UP_ARROW && flag == 1)
+				{
+					if (cursor.buf[0] != '\0')
+						tmpBuf = ft_strdup(cursor.buf);
+					flag = 0;
+				}
 				if (history->head->next != history->tail)
 				{
 					len = ft_strlen(cursor.buf);
@@ -314,9 +322,15 @@ int		main(int argc, char **argv, char **envp)
 				hisbuf = historyCmd(&history, &cursor);
 				if (hisbuf != NULL) //history 올렸을 때 있는 문자열 저장
 				{
+					free(cursor.buf);
 					cursor.buf = ft_strdup(hisbuf);
 					//printf("원래 문자열 저장했니? %s\n", cursor.buf);
 					free(hisbuf);
+				}
+				else if (hisbuf == NULL && flag == 0)
+				{
+					write(1, &tmpBuf, ft_strlen(tmpBuf));
+					free(tmpBuf);
 				}
 				cursor.c = 0; //flush buffer
 				hisbuf = NULL;
@@ -337,13 +351,13 @@ int		main(int argc, char **argv, char **envp)
 				{
 					printf("버퍼 왜 들어와?\n");
 					add_back_cmd(&history, new_cmd_buf(ft_strdup(cursor.buf)));
-					free(cursor.buf);
-					cursor.buf = NULL;
 				}
+				free(cursor.buf);
+				cursor.buf = NULL;
 				cursor.c = 0; //flush buffer
 				break ;
 			}
-			if (cursor.c == CTRLD && (cursor.buf[0] == CTRLD))
+			if (cursor.c == CTRLD && (cursor.buf[0] == '\0'))
 			{
 				cursor.c = 0;
 				ctrl_d_exit();

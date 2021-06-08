@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 14:49:26 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/08 15:41:29 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,6 @@ typedef struct			s_cmd
 	struct s_cmd		*head;
 	struct s_cmd		*next;
 }						t_cmd;
-
-typedef struct			s_history
-{
-	char				*buf;
-	struct s_history	*prev;
-	struct s_history	*next;
-}						t_history;
 
 void					remove_back_cmd(t_cmd **lst);
 t_cmd					*new_cmd_buf(char *buf);

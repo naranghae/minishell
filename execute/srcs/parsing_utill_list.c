@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 14:42:41 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/08 16:10:45 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ void	init_cmd(t_cmd **head, t_cmd **tail)
 	(*head)->prev = (*head);
 	(*tail)->next = (*tail);
 	(*tail)->prev = (*head);
-	(*head)->tail = (*tail);
 	(*head)->head = (*head);
+	(*head)->tail = (*tail);
 	(*tail)->tail = (*tail);
 	(*tail)->head = (*head);
 	(*head)->tail->buf = NULL;

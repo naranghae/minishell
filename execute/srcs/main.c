@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 15:20:10 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/08 21:34:58 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,20 @@ char	*remove_char(t_cursor cursor)
 // 	return (cursor.buf);
 // }
 
+int		historylst_num(t_cmd *history)
+{
+	int		i;
+
+	i = 0;
+	history = history->tail;
+	while (history->head != history->prev)
+	{
+		history = history->prev;
+		i++;
+	}
+	return (i);
+}
+
 int		nbr_length(int n)
 {
 	int	i = 0;
@@ -124,7 +138,6 @@ void	move_cursor_left(t_cursor *cursor)
 	if (cursor->col > 14)
 		--(cursor->col);
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
-
 }
 
 void	move_cursor_right(t_cursor *cursor)
@@ -171,6 +184,7 @@ void	globalVariable(void)
 {
 	g_gv.child = 0;
 	g_gv.errcode = 1;
+	g_gv.buffer = 0;
 }
 
 char	*historyCmd(t_cmd **cmd, t_cursor *cursor)
@@ -179,6 +193,7 @@ char	*historyCmd(t_cmd **cmd, t_cursor *cursor)
 	char	*str;
 
 	len = 0;
+	str = NULL;
 	// printf("\np1:%p p2:%p p3:%p\n", cmd, *cmd, (*cmd)->next);
 	if ((*cmd) == (*cmd)->head)
 		return (NULL);
@@ -202,7 +217,7 @@ char	*historyCmd(t_cmd **cmd, t_cursor *cursor)
 				len = ft_strlen((*cmd)->buf);
 			while (len--)//리스트로 과거로그를 볼 때 현재 문자열을 삭제함.
 				delete_end(cursor);
-			if ((*cmd)->prev != (*cmd)->tail->head)
+			if ((*cmd)->prev != (*cmd)->head)
 				(*cmd) = (*cmd)->prev;
 			if((*cmd)->buf != NULL)
 				write(0, (*cmd)->buf, ft_strlen((*cmd)->buf));
@@ -226,8 +241,7 @@ char	*historyCmd(t_cmd **cmd, t_cursor *cursor)
 				len = ft_strlen((*cmd)->buf);
 			while (len--)//리스트로 과거로그를 볼 때 현재 문자열을 삭제함.
 				delete_end(cursor);
-			if ((*cmd)->next != (*cmd)->tail)
-				(*cmd) = (*cmd)->next;
+			(*cmd) = (*cmd)->next;
 			if((*cmd)->buf != NULL)
 				write(0, (*cmd)->buf, ft_strlen((*cmd)->buf));
 			else
@@ -265,7 +279,7 @@ int		main(int argc, char **argv, char **envp)
 	t_cmd		*history; //입력하고 엔터치고 저장된 문자열
 	t_cursor	cursor;
 	char		*hisbuf; //입력하고 있는 문자열
-	char		*tmpBuf;
+	char		*tmpbuf;
 	int			len;
 	int			flag;
 	struct termios term;
@@ -284,7 +298,8 @@ int		main(int argc, char **argv, char **envp)
 	cmd = NULL;
 	hisbuf = NULL;
 	flag = 1;
-	tmpBuf = NULL;
+	len = 0;
+	tmpbuf = NULL;
 	while (1)
 	{
 		prompt();
@@ -293,6 +308,19 @@ int		main(int argc, char **argv, char **envp)
 		while (read(0, &cursor.c, sizeof(cursor.c)) > 0)
 		{
 			get_cursor_position(&cursor.col, &cursor.row);
+			//ctrl + c 일 때 버퍼비우기
+			if (g_gv.buffer == 1)
+			{
+				if (cursor.buf != NULL)
+				{
+				len = ft_strlen(cursor.buf);
+				while (len--)//리스트로 과거로그를 볼 때 현재 문자열을 삭제함.
+					delete_end(&cursor);
+					free(cursor.buf);
+					cursor.buf = NULL;
+				}
+				g_gv.buffer = 0;
+			}
 			if (cursor.buf == NULL)
 				cursor.buf = ft_calloc(1, sizeof(char));
 			if (cursor.c == LEFT_ARROW)
@@ -305,35 +333,58 @@ int		main(int argc, char **argv, char **envp)
 				cursor.buf = remove_char(cursor);
 				//cursor.buf에 담긴 거 하나씩 삭제.
 			}
-			else if (cursor.c == UP_ARROW ||cursor.c == DOWN_ARROW) // 위로 올리면 현재거 저장. 아래는 상관 X
+			else if (cursor.c == UP_ARROW ||cursor.c == DOWN_ARROW)
 			{
-				if (cursor.c == UP_ARROW && flag == 1)
-				{
-					if (cursor.buf[0] != '\0')
-						tmpBuf = ft_strdup(cursor.buf);
-					flag = 0;
-				}
+				//(head랑 tail사이에 값이 있을 때)
 				if (history->head->next != history->tail)
 				{
 					len = ft_strlen(cursor.buf);
 					while (len--)
 						delete_end(&cursor);
 				}
+				if ((cursor.buf[0] != '\0') && (flag == 1) &&
+					(history->head->next != history->tail))
+				{
+					tmpbuf = ft_strdup(cursor.buf);
+					free(cursor.buf);
+					cursor.buf = NULL;
+					flag = 0;
+				}
 				hisbuf = historyCmd(&history, &cursor);
 				if (hisbuf != NULL) //history 올렸을 때 있는 문자열 저장
 				{
-					free(cursor.buf);
+					if (cursor.buf)
+						free(cursor.buf);
 					cursor.buf = ft_strdup(hisbuf);
 					//printf("원래 문자열 저장했니? %s\n", cursor.buf);
+					flag = 0;
 					free(hisbuf);
+					hisbuf = NULL;
 				}
-				else if (hisbuf == NULL && flag == 0)
+				else if (hisbuf == NULL && (history->head->next != history->tail))
 				{
-					write(1, &tmpBuf, ft_strlen(tmpBuf));
-					free(tmpBuf);
+					if (cursor.buf)
+						free(cursor.buf);
+					if (tmpbuf != NULL)
+					{
+						len = 0;
+						cursor.buf = ft_strdup(tmpbuf);
+						while (cursor.buf[len])
+						{
+							cursor.col++;
+							write(1, &cursor.buf[len++], 1);
+						}
+						len = 0;
+					}
+					else
+					{
+						free(tmpbuf);
+						tmpbuf = NULL;
+						cursor.buf = NULL;
+					}
 				}
 				cursor.c = 0; //flush buffer
-				hisbuf = NULL;
+				//hisbuf = NULL;
 				continue ;
 			}
 			else if (keyValue(cursor))
@@ -353,6 +404,12 @@ int		main(int argc, char **argv, char **envp)
 					add_back_cmd(&history, new_cmd_buf(ft_strdup(cursor.buf)));
 				}
 				free(cursor.buf);
+				flag = 1;
+				if (tmpbuf)
+				{
+					free(tmpbuf);
+					tmpbuf = NULL;
+				}
 				cursor.buf = NULL;
 				cursor.c = 0; //flush buffer
 				break ;

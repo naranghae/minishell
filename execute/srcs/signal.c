@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:08:00 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/02 18:44:05 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/08 19:01:42 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ void	hook(int signo)
 		if (g_gv.child) //프로세스 실행시 ctrl + c를 하면 종료코드 130
 			g_gv.errcode = 130;
 		else
+		{
+			g_gv.buffer = 1;
 			prompt();
+		}
 	}
 	else if (signo == SIGQUIT || signo == SIGTSTP)
 	{

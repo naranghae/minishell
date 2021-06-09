@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:12:02 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 21:24:31 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,13 @@ typedef struct				s_cursor
 	int						c;
 	int						row;
 	int						col;
+	int						listcircle;
+	int						len;
 	char					*cm;
 	char					*ce;
 	char					*buf;
-	int						listcircle;
+	char					*tmpbuf;
+	char					*hisbuf;
 }							t_cursor;
 
 typedef struct				s_history

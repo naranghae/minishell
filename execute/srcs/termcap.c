@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 20:40:26 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:12:50 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 21:28:23 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	init_cursor(t_cursor *cursor)
 	cursor->c = 0;
 	cursor->col = 14;
 	cursor->listcircle = 1;
+	cursor->tmpbuf = NULL;
+	cursor->hisbuf = NULL;
+	cursor->len = 0;
 }
 
 void	get_cursor_position(int *col, int *rows)

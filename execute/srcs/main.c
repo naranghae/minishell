@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:13:57 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 21:27:52 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,12 @@ int		main(int argc, char **argv, char **envp)
 	t_cmd		*cmd;
 	t_history	*history; //입력하고 엔터치고 저장된 문자열
 	t_cursor	cursor;
-	char		*hisbuf; //입력하고 있는 문자열
-	char		*tmpbuf;
-	int			len;
 
-	/* init termcap */
-	tgetent(NULL, "xterm");
-	//init etc..
 	firstWall(argc, argv);
 	env_info = parsing_env(envp);
 	history = init_history();
 	signal_func();
 	cmd = NULL;
-	hisbuf = NULL;
-	len = 0;
-	tmpbuf = NULL;
 	while (1)
 	{
 		prompt();
@@ -72,27 +63,27 @@ int		main(int argc, char **argv, char **envp)
 				//(head랑 tail사이에 값이 있을 때)
 				if (history->head->next != history->tail)
 				{
-					len = ft_strlen(cursor.buf);
-					while (len--)
+					cursor.len = ft_strlen(cursor.buf);
+					while (cursor.len--)
 						delete_end(&cursor);
 				}
 				if ((cursor.listcircle == 1) && (cursor.buf[0] != '\0'))
 				{
-					tmpbuf = ft_strdup(cursor.buf);
+					cursor.tmpbuf = ft_strdup(cursor.buf);
 					free(cursor.buf);
 					cursor.buf = NULL;
 				}
 				cursor.listcircle++;
-				hisbuf = history_up(&history, &cursor);
-				if (hisbuf != NULL) //history 올렸을 때 있는 문자열 저장
+				cursor.hisbuf = history_up(&history, &cursor);
+				if (cursor.hisbuf != NULL) //history 올렸을 때 있는 문자열 저장
 				{
 					if (cursor.buf)
 						free(cursor.buf);
-					cursor.buf = ft_strdup(hisbuf);
-					free(hisbuf);
+					cursor.buf = ft_strdup(cursor.hisbuf);
+					free(cursor.hisbuf);
 				}
 				cursor.c = 0; //flush buffer
-				hisbuf = NULL;
+				cursor.hisbuf = NULL;
 				continue ;
 			}
 			else if (cursor.c == DOWN_ARROW && ((0 < cursor.listcircle) && ((historylst_num(history) + 1) >= cursor.listcircle)))
@@ -102,32 +93,32 @@ int		main(int argc, char **argv, char **envp)
 				{
 					if (history->head->next != history->tail)
 					{
-						len = ft_strlen(cursor.buf);
-						while (len--)
+						cursor.len = ft_strlen(cursor.buf);
+						while (cursor.len--)
 							delete_end(&cursor);
 					}
-					hisbuf = history_down(&history, &cursor);
+					cursor.hisbuf = history_down(&history, &cursor);
 				}
-				if (hisbuf != NULL) //history 올렸을 때 있는 문자열 저장
+				if (cursor.hisbuf != NULL) //history 올렸을 때 있는 문자열 저장
 				{
 					if (cursor.buf)
 						free(cursor.buf);
-					cursor.buf = ft_strdup(hisbuf);
-					free(hisbuf);
-					hisbuf = NULL;
+					cursor.buf = ft_strdup(cursor.hisbuf);
+					free(cursor.hisbuf);
+					cursor.hisbuf = NULL;
 				}
-				else if (hisbuf == NULL && (cursor.listcircle == 1)) //맨 아래일 때
+				else if (cursor.hisbuf == NULL && (cursor.listcircle == 1)) //맨 아래일 때
 				{
 					if (cursor.buf)
 						free(cursor.buf);
-					if (tmpbuf != NULL)
+					if (cursor.tmpbuf != NULL)
 					{
-						cursor.buf = ft_strdup(tmpbuf);
+						cursor.buf = ft_strdup(cursor.tmpbuf);
 						print_buf(&cursor, cursor.buf);
-						free(tmpbuf);
-						tmpbuf = NULL;
+						free(cursor.tmpbuf);
+						cursor.tmpbuf = NULL;
 					}
-					else if (tmpbuf == NULL)
+					else if (cursor.tmpbuf == NULL)
 						cursor.buf = NULL;
 				}
 				if (cursor.listcircle == 0)
@@ -149,10 +140,10 @@ int		main(int argc, char **argv, char **envp)
 				printf("나오는 버퍼: %s|\n", cursor.buf);
 				if (cursor.buf[0] != '\0')
 					add_back_his(&history, new_his_buf(ft_strdup(cursor.buf)));
-				if (tmpbuf)
+				if (cursor.tmpbuf)
 				{
-					free(tmpbuf);
-					tmpbuf = NULL;
+					free(cursor.tmpbuf);
+					cursor.tmpbuf = NULL;
 				}
 				cursor.c = 0; //flush buffer
 				break ;

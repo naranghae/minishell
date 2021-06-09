@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 16:25:05 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 15:57:45 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,16 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 	t_cmd	*exec_cmd;
 	int tmp_in;
 	int tmp_out;
-	char **envp;
+//	char **envp;
 	t_cmd	*exec_cmd_a;
 
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
 	//change_double_qute();
+	if ((*env_set)->envp)
+		free_split((*env_set)->envp);
+	(*env_set)->envp = getEnvp(*env_set);
 	if (exec_cmd->cmd[0] == NULL || ft_strlen(exec_cmd->cmd[0]) < 1)
 		return ;
 	while (exec_cmd != (*cmd)->tail)
@@ -126,11 +129,7 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 		if (is_built_in(exec_cmd))
 			exec_built_in(exec_cmd, env_set);
 		else
-		{
-			envp = getEnvp(*env_set);
-			exec_not_built_in(exec_cmd, path, envp);
-			free_split(envp);
-		}
+			exec_not_built_in(exec_cmd, path, (*env_set)->envp);
 		if (exec_cmd->red!= NULL)
 		{
 			dup2(tmp_out, 1);
@@ -149,6 +148,7 @@ int		exec(t_cmd **cmd, t_env **env_info)
 
 	i = -1;
 	//exec_env = NULL;
+	set_termios(SIGON);
 	exec_env = *env_info;
 	while (exec_env->next != NULL)
 	{

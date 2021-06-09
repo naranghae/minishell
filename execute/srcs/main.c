@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 21:34:58 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 19:29:42 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	ctrl_d_exit(void)
 {
 	write(1, "  \b\b\n", 5);
-	ft_exit(g_gv.errcode);
+	ft_exit(g_errcode);
 }
 
 char	*append_char(t_cursor cursor)
@@ -170,7 +170,7 @@ void	firstWall(int argc, char **argv)
 	}
 }
 
-void	initCursor(t_cursor	*cursor)
+void	init_cursor(t_cursor	*cursor)
 {
 	cursor->buf = NULL;
 	cursor->cm = tgetstr("cm", NULL); //cursor motion
@@ -180,12 +180,12 @@ void	initCursor(t_cursor	*cursor)
 	cursor->has_buf = 0;
 }
 
-void	globalVariable(void)
-{
-	g_gv.child = 0;
-	g_gv.errcode = 1;
-	g_gv.buffer = 0;
-}
+// void	globalVariable(void)
+// {
+// 	g_gv.child = 0;
+// 	g_gv.errcode = 1;
+// 	g_gv.buffer = 0;
+// }
 
 char	*historyCmd(t_cmd **cmd, t_cursor *cursor)
 {
@@ -272,6 +272,19 @@ int		keyValue(t_cursor cursor)
 	return (1);
 }
 
+void	termios_set(void)
+{
+	struct termios term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ICANON;
+	term.c_lflag &= ~ECHO;
+	term.c_cc[VMIN] = 1;
+	term.c_cc[VTIME] = 0;
+	term.c_cc[VINTR] = 3;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
 int		main(int argc, char **argv, char **envp)
 {
 	t_env		*env_info;
@@ -282,12 +295,8 @@ int		main(int argc, char **argv, char **envp)
 	char		*tmpbuf;
 	int			len;
 	int			flag;
-	struct termios term;
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~(ICANON | ECHO);
-	term.c_cc[VMIN] = 1;
-	term.c_cc[VTIME] = 0;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+
+
 	/* init termcap */
 	tgetent(NULL, "xterm");
 	//init etc..
@@ -303,23 +312,29 @@ int		main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		prompt();
-		globalVariable();
-		initCursor(&cursor);
+		//globalVariable();
+		set_termios(SET);
+		init_cursor(&cursor);
 		while (read(0, &cursor.c, sizeof(cursor.c)) > 0)
 		{
+			len = historylst_num(history);
 			get_cursor_position(&cursor.col, &cursor.row);
-			//ctrl + c 일 때 버퍼비우기
-			if (g_gv.buffer == 1)
+			//ctrl + c가 들어왔을 때
+			set_termios(INPUT);
+			if (cursor.c == CTRLC)
 			{
+				//write(1, " ", 1);
 				if (cursor.buf != NULL)
 				{
-				len = ft_strlen(cursor.buf);
-				while (len--)//리스트로 과거로그를 볼 때 현재 문자열을 삭제함.
-					delete_end(&cursor);
+				//	len = ft_strlen(cursor.buf);
+				//	while (len--)//리스트로 과거로그를 볼 때 현재 문자열을 삭제함.
+				//		delete_end(&cursor);
 					free(cursor.buf);
 					cursor.buf = NULL;
 				}
-				g_gv.buffer = 0;
+				cursor.c = 0;
+				write(1, "\n", 1);
+				break ;
 			}
 			if (cursor.buf == NULL)
 				cursor.buf = ft_calloc(1, sizeof(char));
@@ -403,14 +418,14 @@ int		main(int argc, char **argv, char **envp)
 					printf("버퍼 왜 들어와?\n");
 					add_back_cmd(&history, new_cmd_buf(ft_strdup(cursor.buf)));
 				}
-				free(cursor.buf);
+				//free(cursor.buf);
 				flag = 1;
 				if (tmpbuf)
 				{
 					free(tmpbuf);
 					tmpbuf = NULL;
 				}
-				cursor.buf = NULL;
+				//cursor.buf = NULL;
 				cursor.c = 0; //flush buffer
 				break ;
 			}
@@ -440,15 +455,20 @@ int		main(int argc, char **argv, char **envp)
 		// 	continue ;
 		// }
 		//if (cursor.buf[0] != '\n' || (cursor.buf[0] == '\n' && ))
-		// printf(":%s\n",cursor.buf);
-		//add_back_cmd(&history, new_cmd_buf(ft_strdup(cursor.buf)));
-		//cmd = parsing_cmd(cursor.buf, env_info);
-		//cmd->tail->prev->buf = ft_strdup(cursor.buf);
-		//hisbuf = NULL;
-		if (cmd)
-			exec(&cmd, &env_info);
-		//free(cursor.buf);
-		//cursor.buf = NULL;
+		if (cursor.c != CTRLC)
+		{
+			cursor.c = '\n';
+			cursor.buf = append_char(cursor);
+			cursor.c = 0;
+			//add_back_cmd(&history, new_cmd_buf(ft_strdup(cursor.buf)));
+			cmd = parsing_cmd(cursor.buf, env_info);
+			//cmd->tail->prev->buf = ft_strdup(cursor.buf);
+			//hisbuf = NULL;
+			if (cmd)
+				exec(&cmd, &env_info);
+			free(cursor.buf);
+			cursor.buf = NULL;
+		}
 	}
 /*
 	while (1)

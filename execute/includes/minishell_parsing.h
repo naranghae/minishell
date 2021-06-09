@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 15:41:29 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 16:03:03 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int						envAdd(char *cmd, t_env *env_info);
 int						equalIs(char *cmd);
 int						nameSearch(t_env *env_parse, t_env *env_info);
 void					swapList(t_env *env, t_env *envNext);
-void					envSort_print(t_env *env_info);
+void					envsort_print(char **envp);
 int						exceptCheck(char *exportCmd, int type);
 int						cmdError(char *cmd, int error);
 int						exceptName(int str, int i);

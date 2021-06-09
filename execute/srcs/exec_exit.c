@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:24:02 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/01 19:26:09 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 13:48:59 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		exec_exit(t_cmd *exec_cmd)
 	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 		return (0);
 	if (exec_cmd->cmd[1] == NULL)
-		ft_exit(g_gv.errcode);
+		ft_exit(g_errcode);
 	else if (exec_cmd->cmd[1] != NULL && !isNumber(exec_cmd->cmd[1]))
 	{
 		printf("exit: %s: numeric argument required\n", exec_cmd->cmd[1]);

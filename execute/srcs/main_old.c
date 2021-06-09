@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_old.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/04 16:30:19 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/09 13:44:50 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 void	ctrl_d_exit(void)
 {
 	write(1, "  \b\b\n", 5);
-	ft_exit(g_gv.errcode);
+	ft_exit(g_errcode);
 }
 
 char	*append_char(t_cursor cursor)
@@ -124,11 +124,6 @@ void	initCursor(t_cursor	*cursor)
 	cursor->c = 0;
 }
 
-void	globalVariable(void)
-{
-	g_gv.child = 0;
-	g_gv.errcode = 1;
-}
 
 char	*historyCmd(t_cmd **cmd, t_cursor *cursor)
 {
@@ -245,7 +240,7 @@ int		main(int argc, char **argv, char **envp)
 	{
 		prompt();
 		globalVariable();
-		
+
 			get_cursor_position(&cursor.col, &cursor.row);
 			cursor.col = 14;
 			// printf("col:%d\n",cursor.col);

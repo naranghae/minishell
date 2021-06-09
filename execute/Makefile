@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/08 11:36:33 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/09 14:37:22 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ SRC=	main.c\
 		export_except.c \
 		exec_unset.c \
 		exec_pwd.c \
-		exec_exit.c
+		exec_exit.c \
+		termi.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

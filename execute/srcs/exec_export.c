@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 15:31:29 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 16:02:38 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		exec_export(t_cmd *exec_cmd, t_env *env_info)
 {
 	if (exec_cmd->cmd[1] == NULL)
 	{
-		envSort_print(env_info);
+		envsort_print(env_info->envp);
 		return (0);
 	}
 	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)

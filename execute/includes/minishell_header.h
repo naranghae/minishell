@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 18:59:09 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 15:42:31 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,20 @@
 # define RIGHT_ARROW 4414235
 # define UP_ARROW 4283163
 # define DOWN_ARROW 4348699
+# define CTRLC	3
 # define CTRLD	4
+# define SET	0
+# define INPUT	1
+# define SIGON	2
 
 typedef struct			s_env
 {
 	char				*name;
 	char				*contents;
+	char				**envp;
 	int					equal;
 	struct s_env		*next;
 }						t_env;
-
-typedef struct			s_global
-{
-	int					child;
-	int					errcode;
-	int					buffer;
-}						t_global;
 
 typedef struct			s_cursor
 {
@@ -58,7 +56,7 @@ typedef struct			s_cursor
 }						t_cursor;
 
 
-t_global				g_gv;
+int						g_errcode;
 void					print_env(char **env);
 void					prompt(void);
 t_env					*parsing_env(char **env);
@@ -68,4 +66,8 @@ void					save_env(t_env *env_parse, char *str, int c);
 void					add_back_env(t_env **lst, t_env *new);
 t_env					*new_env(void);
 t_env					*last_env(t_env *lst);
+void					init_termios(void);
+void					read_termios(void);
+void					signal_termios(void);
+void					set_termios(int	flag);
 #endif

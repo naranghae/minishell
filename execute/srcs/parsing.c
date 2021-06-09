@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 16:15:24 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 13:12:19 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	 first_parse(t_cmd **list, char *buf, int start, int end)
 
 	idx = 0;
 	len = 0;
-	// printf ("cp : %d\n", count_parsing(buf, start, end));
+	 printf ("cp : %d\n", count_parsing(buf, start, end));
 	if (count_parsing(buf, start, end) == 0)
 		return ;
 	re = (char **)malloc(sizeof(char *) * (count_parsing(buf, start, end) + 1));
@@ -84,7 +84,7 @@ void	 first_parse(t_cmd **list, char *buf, int start, int end)
 		if ((!is_inquote(buf, tmp, start) && (buf[start] == ' ' )) || (is_inquote(buf, tmp, start) && (buf[start] == ' ' &&(buf[start] == '"'|| buf[start] == '\''))))
 			break ;
 	}
-	//	 printf ("start : %d ,end : %d len : %d\n", tmp,end,len);
+		 printf ("start : %d ,end : %d len : %d\n", tmp,end,len);
 	start = tmp;
 	re[idx++] = ft_substr(buf, tmp, len);//명령어저장
 	start += len;
@@ -94,7 +94,7 @@ void	 first_parse(t_cmd **list, char *buf, int start, int end)
 	if (end - start > 0)
 	// {
 		re[idx++] = ft_substr(buf, start, end - start);
-			// printf("re: %s\n",re[idx-1]);
+			printf("re: %s\n",re[idx-1]);
 	// 	re[idx] = NULL;
 	// }
 	//else

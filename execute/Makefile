@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/09 14:37:22 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/09 20:57:58 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ LIBFT = libft.a
 SRCD = ./srcs/
 
 SRC=	main.c\
+		main_util.c \
 		env.c\
 		prompt.c\
 		signal.c\
@@ -46,7 +47,13 @@ SRC=	main.c\
 		exec_unset.c \
 		exec_pwd.c \
 		exec_exit.c \
-		termi.c
+		termi.c \
+		history.c \
+		history_util.c \
+		termcap.c \
+		termcap2.c
+
+
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

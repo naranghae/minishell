@@ -6,11 +6,18 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:08:00 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 16:33:11 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 21:03:20 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
+#include "minishell_parsing.h"
+
+void	ctrl_d_exit(void)
+{
+	write(1, "  \b\b\n", 5);
+	ft_exit(g_errcode);
+}
 
 void	hook(int signo)
 {

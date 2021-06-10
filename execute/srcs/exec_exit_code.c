@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_exit_code.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 19:21:24 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 19:01:30 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 15:29:52 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		exec_exit_code(t_cmd *exec_cmd)
 	if (exec_cmd->has_pip)
 		if (pipe(exec_cmd->fd) < 0)
 			exit(1);
-	printf("%d\n", g_gv.errcode);
+	printf("%d\n", g_errcode);
 	return (0);
 }
 

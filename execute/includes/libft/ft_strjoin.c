@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 17:33:28 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 13:03:52 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 19:44:40 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		i;
 
 	if (!s1)
-		return(ft_strdup(s2));
-	if (!s2)
-		return(ft_strdup(s1));
+		return (ft_strdup(s2));
 	if (!s1 || !s2)
 		return (NULL);
 	len1 = ft_strlen(s1);

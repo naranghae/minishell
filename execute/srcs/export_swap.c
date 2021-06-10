@@ -3,17 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   export_swap.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 19:30:19 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 15:38:32 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-void	swap_list(t_env *env, t_env *env_next)
+void	env_clean(t_env *env_info)
+{
+	t_env	*envremove;
+	t_env	*envtmp;
+
+	envremove = env_info->next;
+	while (envremove != NULL)
+	{
+		envtmp = envremove->next;
+		free(envremove->name);
+		if (envremove->contents)
+			free(envremove->contents);
+		free(envremove);
+		envremove = envtmp;
+	}
+	free(env_info);
+}
+
+
+void	swaplist(t_env *env, t_env *env_next)
 {
 	char	*tmp_name;
 	char	*tmp_contents;
@@ -31,10 +50,8 @@ void	swap_list(t_env *env, t_env *env_next)
 	env_next->equal = tmpequal;
 }
 
-void	env_sort_print(t_env *env_info)
+void	swap_func(t_env	**tmp, t_env *envsort, int listnum)
 {
-	t_env	*env_sort;
-	int		list_num;
 	int		i;
 	int		j;
 	int		max;
@@ -42,31 +59,40 @@ void	env_sort_print(t_env *env_info)
 	max = 0;
 	i = -1;
 	j = -1;
-	env_info = env_info->next;
-	env_sort = env_info;
-	list_num = listlen_all(env_sort);
-	while (++i <= list_num)
+	while (++i <= listnum)
 	{
-		if (env_sort->next == NULL)
+		if ((*tmp)->next == NULL)
 			break ;
-		while (++j <= list_num - 1 - i)
+		while (++j <= listnum -1 - i)
 		{
-			max = ft_strlen(env_sort->name) > ft_strlen(env_sort->next->name) ?\
-			ft_strlen(env_sort->name) : ft_strlen(env_sort->next->name);
-			if (ft_strncmp(env_sort->name, env_sort->next->name, max) > 0)
-				swap_list(env_sort, env_sort->next);
-			env_sort = env_sort->next;
+			max = ft_strlen((*tmp)->name) > ft_strlen((*tmp)->next->name) ?\
+			ft_strlen((*tmp)->name) : ft_strlen((*tmp)->next->name);
+			if (ft_strncmp((*tmp)->name, (*tmp)->next->name, max) > 0)
+				swaplist((*tmp), (*tmp)->next);
+			(*tmp) = (*tmp)->next;
 		}
 		j = -1;
-		env_sort = env_info;
+		(*tmp) = envsort->next;
 	}
-	while (env_info != NULL)
+}
+
+void	envsort_print(char	**envp)
+{
+	t_env	*envsort;
+	t_env	*tmp;
+	int		listnum;
+
+	envsort = parsing_env(envp);
+	tmp = envsort->next;
+	listnum = listlen_all(tmp);
+	swap_func(&tmp, envsort, listnum);
+	while (tmp != NULL)
 	{
-		if (env_info->equal)
-			printf("declare -x %s=\"%s\"\n",
-				env_info->name, env_info->contents);
+		if (tmp->equal)
+			printf("declare -x %s=\"%s\"\n", tmp->name, tmp->contents);
 		else
-			printf("declare -x %s\n", env_info->name);
-		env_info = env_info->next;
+			printf("declare -x %s\n", tmp->name);
+		tmp = tmp->next;
 	}
+	env_clean(envsort);
 }

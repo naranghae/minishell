@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:22:34 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 18:44:21 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 15:31:07 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 t_env	*new_env(void)
 {
-	t_env *lst;
+	t_env	*lst;
 
 	if (!(lst = (t_env *)malloc(sizeof(*lst))))
 		return (NULL);
+	lst->envp = NULL;
 	lst->name = NULL;
 	lst->contents = NULL;
 	lst->equal = 0;

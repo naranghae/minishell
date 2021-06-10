@@ -6,7 +6,7 @@
 #    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/10 14:09:20 by hyopark          ###   ########.fr        #
+#    Updated: 2021/06/10 21:08:28 by hyopark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,17 +23,26 @@ LIBFT = libft.a
 SRCD = ./srcs/
 
 SRC=	main.c\
+		main_util.c \
 		env.c\
 		prompt.c\
 		signal.c\
 		parsing_change.c\
+		parsing_change_env.c\
+		parsing_change_double.c\
+		parsing_change_single.c\
+		parsing_change_esc.c\
 		parsing_utill_free.c\
 		parsing_utill_inquote.c\
-		parsing_utill_list.c\
+		parsing_utill_list_cmd.c\
+		parsing_utill_list_red.c\
 		parsing_utill_str.c\
 		parsing_save_redirection.c\
+		parsing_util_pre.c\
+		parsing_util.c\
 		parsing.c\
 		exec.c\
+		exec_red.c\
 		exec_cd.c\
 		exec_echo.c\
 		exec_export.c\
@@ -46,7 +55,12 @@ SRC=	main.c\
 		export_except.c \
 		exec_unset.c \
 		exec_pwd.c \
-		exec_exit.c
+		exec_exit.c \
+		termi.c \
+		history.c \
+		history_util.c \
+		termcap.c \
+		termcap2.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

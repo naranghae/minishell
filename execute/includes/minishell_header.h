@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_header.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 15:44:32 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 15:37:58 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,42 +29,79 @@
 # define RIGHT_ARROW 4414235
 # define UP_ARROW 4283163
 # define DOWN_ARROW 4348699
+# define CTRLC	3
 # define CTRLD	4
-typedef struct			s_env
+# define SET	0
+# define INPUT	1
+# define SIGON	2
+
+typedef struct				s_env
 {
-	char				*name;
-	char				*contents;
-	int					equal;
-	struct s_env		*next;
-}						t_env;
+	char					*name;
+	char					*contents;
+	char					**envp;
+	int						equal;
+	struct s_env			*next;
+}							t_env;
 
-typedef struct			s_global
+typedef struct				s_cursor
 {
-	int					child;
-	int					errcode;
-}						t_global;
+	int						c;
+	int						row;
+	int						col;
+	int						listcircle;
+	int						len;
+	char					*cm;
+	char					*ce;
+	char					*buf;
+	char					*tmpbuf;
+	char					*hisbuf;
+}							t_cursor;
 
-typedef struct			s_cursor
+typedef struct				s_history
 {
-	int					c;
-	int					row;
-	int					col;
-	char				*cm;
-	char				*ce;
-	char				*buf;
-	int					has_buf;
-}						t_cursor;
+	char					*buf;
+	struct s_history		*prev;
+	struct s_history		*tail;
+	struct s_history		*head;
+	struct s_history		*next;
+}							t_history;
 
-
-t_global				g_gv;
-void					print_env(char **env);
-void					prompt(void);
-t_env					*parsing_env(char **env);
-t_env					*new_env(void);
-void					envDelete(char *cmd, t_env *env_info);
-void					signal_func(void);
-void					save_env(t_env *env_parse, char *str, int c);
-void					add_back_env(t_env **lst, t_env *new);
-t_env					*new_env(void);
-t_env					*last_env(t_env *lst);
+int							g_errcode;
+void						print_env(char **env);
+void						prompt(void);
+t_env						*parsing_env(char **env);
+t_env						*new_env(void);
+void						signal_func(void);
+void						save_env(t_env *env_parse, char *str, int c);
+void						add_back_env(t_env **lst, t_env *new);
+t_env						*new_env(void);
+t_env						*last_env(t_env *lst);
+void						init_termios(void);
+void						read_termios(void);
+void						signal_termios(void);
+void						set_termios(int	flag);
+void						print_buf(t_cursor *cursor, char *buf);
+void						ctrl_d_exit(void);
+int							historylst_num(t_history *history);
+int							nbr_length(int n);
+void						get_cursor_position(int *col, int *rows);
+int							putchar_tc(int tc);
+void						move_cursor_left(t_cursor *cursor);
+void						move_cursor_right(t_cursor *cursor);
+void						delete_end(t_cursor *cursor);
+void						init_cursor(t_cursor *cursor);
+char						*history_up(t_history **cmd, t_cursor *cursor);
+char						*history_down(t_history **cmd, t_cursor *cursor);
+t_history					*init_history(void);
+void						history_ht(t_history **head, t_history **tail);
+void						add_back_his(t_history **lst, t_history *new);
+t_history					*new_his_buf(char *buf);
+t_history					*new_his(void);
+char						*append_char(t_cursor cursor);
+char						*remove_char(t_cursor cursor);
+void						firstWall(int argc, char **argv);
+void						print_buf(t_cursor *cursor, char *buf);
+int							keyValue(t_cursor cursor);
+void						envsort_print(char	**envp);
 #endif

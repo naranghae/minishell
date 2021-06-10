@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 19:29:07 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 15:28:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int		exec_export(t_cmd *exec_cmd, t_env *env_info)
 {
 	if (exec_cmd->cmd[1] == NULL)
 	{
-		env_sort_print(env_info);
-		return (1);
+		envsort_print(env_info->envp);
+		return (0);
 	}
 	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)
 		return (1);

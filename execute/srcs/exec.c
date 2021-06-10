@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 17:50:42 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 21:26:33 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		exec_built_in(t_cmd *exec_cmd, t_env **env_info)
 		re = pre_exec_pwd(exec_cmd, &pid);
 	else if (!ft_strncmp(exec_cmd->cmd[0], "$?", 2))
 		re = pre_exec_exit_code(exec_cmd, &pid);
-	g_gv.errcode = re;
+	g_errcode = re;
 	return (re);
 }
 
@@ -96,8 +96,6 @@ void	exec_redirection(t_cmd *exec_cmd)
 		}
 		tmp = tmp->next;
 	}
-	// dup2(tmp_out, 1);
-	// close (*fd);
 }
 
 void	close_fd(t_red *red)
@@ -114,17 +112,16 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 	t_cmd	*exec_cmd;
 	int		tmp_in;
 	int		tmp_out;
-	char	**envp;
 	t_cmd	*exec_cmd_a;
 
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
-	//change_double_qute();
+	if ((*env_set)->envp)
+		free_split((*env_set)->envp);
+	(*env_set)->envp = get_envp(*env_set);
 	if (exec_cmd == NULL || exec_cmd->cmd[0] == NULL || ft_strlen(exec_cmd->cmd[0]) < 1)
 		return ;
-		// if (exec_cmd != NULL && exec_cmd->cmd != NULL && exec_cmd->cmd[0] != NULL && ft_strlen(exec_cmd->cmd[0]) < 1)
-		// exit(printf("empty\n") * 0);
 	while (exec_cmd != (*cmd)->tail)
 	{
 		exec_cmd_a = exec_cmd;
@@ -134,12 +131,8 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 		if (is_built_in(exec_cmd))
 			exec_built_in(exec_cmd, env_set);
 		else
-		{
-			envp = get_envp(*env_set);
-			exec_not_built_in(exec_cmd, path, envp);
-			free_split(envp);
-		}
-		if (exec_cmd->red != NULL)
+			exec_not_built_in(exec_cmd, path, (*env_set)->envp);
+		if (exec_cmd->red!= NULL)
 		{
 			dup2(tmp_out, 1);
 			dup2(tmp_in, 0);
@@ -156,7 +149,7 @@ int		exec(t_cmd **cmd, t_env **env_info)
 	int		i;
 
 	i = -1;
-	//exec_env = NULL;
+	set_termios(SIGON);
 	exec_env = *env_info;
 	while (exec_env->next != NULL)
 	{

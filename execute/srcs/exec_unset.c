@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_unset.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:43:25 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 19:22:05 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 15:27:01 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		env_unset(char *cmd, t_env *env_info)
 int		exec_unset(t_cmd *exec_cmd, t_env *env_info)
 {
 	if (exec_cmd->cmd[1] == NULL)
-		return (1);
+		return (0);
 	else if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)
 		return (1);
 	else

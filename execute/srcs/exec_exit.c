@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:24:02 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 19:03:25 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 15:31:04 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int		is_number(char *str)
 int		exec_exit(t_cmd *exec_cmd)
 {
 	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
-		return (1);
+		return (0);
 	if (exec_cmd->cmd[1] == NULL)
-		ft_exit(g_gv.errcode);
+		ft_exit(g_errcode);
 	else if (exec_cmd->cmd[1] != NULL && !is_number(exec_cmd->cmd[1]))
 	{
 		printf("exit: %s: numeric argument required\n", exec_cmd->cmd[1]);

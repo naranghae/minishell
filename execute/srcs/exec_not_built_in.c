@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_not_built_in.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:31:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 14:30:48 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/10 15:27:32 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 	if (pipe(exec_cmd->fd) < 0)
 		exit(0);
 	pid = fork();
-	g_gv.child = 1;
 	if (pid < 0)
 		exit(0);
 	else if (pid == 0)
@@ -74,8 +73,8 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			pjoin = ft_strjoin(path[i], "/");
 			pathjoin = ft_strjoin(pjoin, exec_cmd->cmd[0]);
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-				exit(write(1, "error\n", 6) * 0);
-			if (!ft_strncmp(exec_cmd->cmd[0], "/bin/", 5))
+				exit(write(1,"error\n",6) * 0);
+			if (i == 0)
 				res = execve(exec_cmd->cmd[0], exec_cmd->cmd, envp);
 			else
 				res = execve(pathjoin, exec_cmd->cmd, envp);

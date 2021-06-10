@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_util.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/08 19:14:29 by hyopark           #+#    #+#             */
+/*   Updated: 2021/06/08 19:14:30 by hyopark          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-void	pipe_fork(t_cmd *exec_cmd,pid_t *pid)
+void	pipe_fork(t_cmd *exec_cmd, pid_t *pid)
 {
 	if (pipe(exec_cmd->fd) < 0)
-			exit(0);
-			//exit_fatal();
+		exit(0);
+		//exit_fatal();
 	(*pid) = fork();
 	if ((*pid) < 0)
 		exit(0);

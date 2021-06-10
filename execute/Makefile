@@ -3,18 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
+#    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/05/26 19:25:02 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/10 14:09:20 by hyopark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 
-CC				= gcc -g3 -fsanitize=address
+CC				= gcc #-g3 -fsanitize=address
 
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -lncurses -ltermcap
 
 LIBFTD = ./includes/libft
 
@@ -40,11 +40,13 @@ SRC=	main.c\
 		exec_env.c\
 		exec_not_built_in.c\
 		exec_util.c \
+		exec_exit_code.c\
 		export_add.c \
 		export_swap.c \
 		export_except.c \
 		exec_unset.c \
-		exec_pwd.c
+		exec_pwd.c \
+		exec_exit.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 19:54:00 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:36:43 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,15 @@ void	search_future(t_cursor *cursor, t_history **history)
 
 void	now_input(t_cursor *cursor)
 {
-		if (cursor->buf)
-			free(cursor->buf);
-		if (cursor->tmpbuf != NULL)
-		{
-			cursor->buf = ft_strdup(cursor->tmpbuf);
-			print_buf(&cursor, cursor->buf);
-			free(cursor->tmpbuf);
-			cursor->tmpbuf = NULL;
-		}
-		else if (cursor->tmpbuf == NULL)
-			cursor->buf = NULL;
+	if (cursor->buf)
+		free(cursor->buf);
+	if (cursor->tmpbuf != NULL)
+	{
+		cursor->buf = ft_strdup(cursor->tmpbuf);
+		print_buf(&cursor, cursor->buf);
+		free(cursor->tmpbuf);
+		cursor->tmpbuf = NULL;
+	}
+	else if (cursor->tmpbuf == NULL)
+		cursor->buf = NULL;
 }

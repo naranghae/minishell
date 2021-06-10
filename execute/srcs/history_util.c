@@ -6,13 +6,13 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:07:22 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 21:23:04 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 
-void	add_back_his(t_history **lst, t_history *new)
+void		add_back_his(t_history **lst, t_history *new)
 {
 	t_history *tmp;
 
@@ -55,9 +55,8 @@ t_history	*new_his(void)
 	return (new);
 }
 
-void	history_ht(t_history **head, t_history **tail)
+void		history_ht(t_history **head, t_history **tail)
 {
-
 	*head = new_his();
 	*tail = new_his();
 	(*head)->buf = NULL;

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:28:16 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 21:01:57 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,12 @@ int		parsing_check_env(char *cmd, t_env *env_info)
 	export_cmd = ft_split(tmp, ' ');
 	while (export_cmd[++i] != NULL)
 	{
-		if ((error = except_check(export_cmd[i], 1)) > 0)
-		{
-			if (error == 2)
-				return (1);
-		}
-		else
+		error = except_check(export_cmd[i], 1);
+		if (error == 0)
 			env_add(export_cmd[i], env_info);
 	}
 	free_split(export_cmd);
-	if (error == 1)
+	if (error > 0)
 		return (1);
 	return (0);
 }

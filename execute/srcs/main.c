@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 20:19:55 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 21:37:56 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		main(int argc, char **argv, char **envp)
 	t_history	*history;
 	t_cursor	cursor;
 
-	firstWall(argc, argv);
+	firstwall(argc, argv);
 	env_info = parsing_env(envp);
 	history = init_history();
 	signal_func();

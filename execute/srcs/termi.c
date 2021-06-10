@@ -6,13 +6,12 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 14:18:39 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:29:23 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:35:50 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
-
 
 void	init_termios(void)
 {
@@ -48,11 +47,11 @@ void	signal_termios(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 
-void	set_termios(int	flag)
+void	set_termios(int flag)
 {
 	if (flag == SET)
 		init_termios();
-	else if(flag == INPUT)
+	else if (flag == INPUT)
 		read_termios();
 	else if (flag == SIGON)
 		signal_termios();

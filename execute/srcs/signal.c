@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:08:00 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:36:14 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:27:01 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ void	hook(int signo)
 	{
 		g_errcode = 1;
 		write(1, "\n", 1);
-		if ((term.c_lflag & ICANON) == ICANON) //프로세스 실행시 ctrl + c를 하면 종료코드 130
+		if ((term.c_lflag & ICANON) == ICANON)
 			g_errcode = 130;
 		else
 			prompt();
 	}
 	else if (signo == SIGQUIT || signo == SIGTSTP)
 	{
-		if ((term.c_lflag & ICANON) == ICANON) //프로세스 실행시 ctrl + \를 하면 종료코드 131
+		if ((term.c_lflag & ICANON) == ICANON)
 		{
 			g_errcode = 131;
-			printf("Quit: 3\n"); //종료코드 131: command not found
+			printf("Quit: 3\n");
 		}
 	}
 }
@@ -46,7 +46,7 @@ void	hook(int signo)
 void	signal_func(void)
 {
 	tgetent(NULL, "xterm");
-	signal(SIGINT, hook); //interrupt program ctrl + c
-	signal(SIGQUIT, hook); //quit program ctrl + '\'
-	signal(SIGTSTP, hook); //stop signal generated from keyboard ctrl + z
+	signal(SIGINT, hook);
+	signal(SIGQUIT, hook);
+	signal(SIGTSTP, hook);
 }

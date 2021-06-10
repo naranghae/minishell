@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 19:59:18 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 21:37:12 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void						set_termios(int	flag);
 void						ctrl_d_exit(void);
 int							historylst_num(t_history *history);
 int							nbr_length(int n);
-void						get_cursor_position(int *col, int *rows);
+void						get_cursor_position(int *rows);
 int							putchar_tc(int tc);
 void						move_cursor_left(t_cursor *cursor);
 void						move_cursor_right(t_cursor *cursor);
@@ -99,9 +99,9 @@ t_history					*new_his_buf(char *buf);
 t_history					*new_his(void);
 char						*append_char(t_cursor cursor);
 char						*remove_char(t_cursor cursor);
-void						firstWall(int argc, char **argv);
+void						firstwall(int argc, char **argv);
 void						print_buf(t_cursor **cursor, char *buf);
-int							keyValue(t_cursor cursor);
+int							key_value(t_cursor cursor);
 void						envsort_print(char	**envp);
 int							enter_key(t_cursor *cursor, t_history **history);
 void						char_print(t_cursor *cursor);

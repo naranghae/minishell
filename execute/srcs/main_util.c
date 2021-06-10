@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 16:28:06 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 21:42:25 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 
 char	*append_char(t_cursor cursor)
 {
-	const int len = ft_strlen(cursor.buf);
-	char *const	ret = ft_calloc(len + 2, 1);
+	int		len;
+	char	*ret;
 
+	len = ft_strlen(cursor.buf);
+	ret = ft_calloc(len + 2, 1);
 	ft_memcpy(ret, cursor.buf, len);
 	ret[len] = cursor.c;
 	ret[len + 1] = 0;
-	// printf("append: %s\n", ret);
 	if (cursor.buf)
 		free(cursor.buf);
 	return (ret);
@@ -47,7 +48,7 @@ char	*remove_char(t_cursor cursor)
 	return (cursor.buf);
 }
 
-void	firstWall(int argc, char **argv)
+void	firstwall(int argc, char **argv)
 {
 	(void)argv;
 	if (argc > 1)
@@ -71,10 +72,11 @@ void	print_buf(t_cursor **cursor, char *buf)
 	}
 }
 
-int		keyValue(t_cursor cursor)
+int		key_value(t_cursor cursor)
 {
-	if (cursor.c == LEFT_ARROW || cursor.c == RIGHT_ARROW || cursor.c == BACKSPACE ||
-		cursor.c == UP_ARROW || cursor.c == DOWN_ARROW || cursor.c == CTRLD)
+	if (cursor.c == LEFT_ARROW || cursor.c == RIGHT_ARROW ||
+		cursor.c == BACKSPACE || cursor.c == UP_ARROW ||
+		cursor.c == DOWN_ARROW || cursor.c == CTRLD)
 		return (0);
 	return (1);
 }

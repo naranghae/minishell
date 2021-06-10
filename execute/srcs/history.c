@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 20:37:29 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 20:19:39 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:35:30 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char		*history_up(t_history **cmd, t_cursor **cursor)
 			delete_end((*cursor));
 		if ((*cmd)->prev != (*cmd)->head)
 			(*cmd) = (*cmd)->prev;
-		if((*cmd)->buf != NULL)
+		if ((*cmd)->buf != NULL)
 			print_buf(cursor, (*cmd)->buf);
 		else
 			return (NULL);
@@ -70,7 +70,7 @@ char		*history_down(t_history **cmd, t_cursor **cursor)
 		while (len--)
 			delete_end(*cursor);
 		(*cmd) = (*cmd)->next;
-		if((*cmd)->buf != NULL)
+		if ((*cmd)->buf != NULL)
 			print_buf(cursor, (*cmd)->buf);
 		else
 			return (NULL);
@@ -84,6 +84,7 @@ t_history	*init_history(void)
 {
 	t_history *head;
 	t_history *tail;
+
 	history_ht(&head, &tail);
 	return (head);
 }

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:31:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 20:09:05 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 21:43:23 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			not_built_in_free(path[i], pjoin, pathjoin);
 			i++;
 		}
-		exit(printf("no cmd\n") * 0 + res);// add exitcode 127
+		exit(printf("no cmd\n") * 0 + res);
 	}
 	else if (pid > 0)
 		close_pipe(&pid, exec_cmd, res, status);

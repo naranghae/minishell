@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 20:40:26 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 14:18:23 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:30:38 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 int		nbr_length(int n)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	if (n <= 0)
 		i++;
 	while (n != 0)
@@ -40,18 +41,19 @@ void	init_cursor(t_cursor *cursor)
 	cursor->len = 0;
 }
 
-void	get_cursor_position(int *col, int *rows)
+void	get_cursor_position(int *rows)
 {
-	int		a = 0;
-	int		i = 1;
+	int		a;
+	int		i;
 	char	buf[255];
 	int		ret;
 	int		temp;
 
+	a = 0;
+	i = 1;
 	write(0, "\033[6n", 4);
 	ret = read(0, buf, 254);
 	buf[ret] = '\0';
-	if (*col > -1)
 	while (buf[i])
 	{
 		if (buf[i] >= '0' && buf[i] <= '9')

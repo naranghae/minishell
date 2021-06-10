@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 20:18:44 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:37:51 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	swaplist(t_env *env, t_env *env_next)
 	env_next->equal = tmpequal;
 }
 
-void	swap_func(t_env	**tmp, t_env *envsort, int listnum)
+void	swap_func(t_env **tmp, t_env *envsort, int listnum)
 {
 	int		i;
 	int		j;
@@ -62,7 +62,7 @@ void	swap_func(t_env	**tmp, t_env *envsort, int listnum)
 	{
 		if ((*tmp)->next == NULL)
 			break ;
-		while (++j <= listnum -1 - i)
+		while (++j <= (listnum - 1 - i))
 		{
 			max = ft_strlen((*tmp)->name) > ft_strlen((*tmp)->next->name) ?\
 			ft_strlen((*tmp)->name) : ft_strlen((*tmp)->next->name);
@@ -75,7 +75,7 @@ void	swap_func(t_env	**tmp, t_env *envsort, int listnum)
 	}
 }
 
-void	envsort_print(char	**envp)
+void	envsort_print(char **envp)
 {
 	t_env	*envsort;
 	t_env	*tmp;

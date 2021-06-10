@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 20:20:25 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 21:37:26 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		enter_key(t_cursor *cursor, t_history **history)
 {
-	if (cursor->c != '\n' && keyValue(*cursor))
+	if (cursor->c != '\n' && key_value(*cursor))
 		cursor->buf = append_char(*cursor);
 	else if (cursor->c == '\n')
 	{
@@ -41,7 +41,7 @@ int		enter_key(t_cursor *cursor, t_history **history)
 
 int		ctrl_c(t_cursor *cursor)
 {
-	get_cursor_position(&cursor->col, &cursor->row);
+	get_cursor_position(&cursor->row);
 	set_termios(INPUT);
 	if (cursor->c == CTRLC)
 	{
@@ -91,7 +91,7 @@ void	input_mode(t_cursor *cursor, t_history **history)
 			history_future(cursor, history);
 			continue ;
 		}
-		else if (keyValue(*cursor))
+		else if (key_value(*cursor))
 			char_print(cursor);
 		if (enter_key(cursor, history))
 			break ;

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:32:46 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:17:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,21 @@ int		equal_is(char *cmd)
 	return (0);
 }
 
+void	store_contents(char **contents, t_env *env_parse, t_env *exec_env)
+{
+	if (env_parse->contents != NULL)
+	{
+		free(exec_env->contents);
+		*contents = ft_strdup(env_parse->contents);
+		exec_env->equal = 1;
+	}
+	else
+	{
+		*contents = NULL;
+		exec_env->equal = 0;
+	}
+}
+
 int		name_search(t_env *env_parse, t_env *env_info)
 {
 	t_env	*exec_env;
@@ -41,16 +56,7 @@ int		name_search(t_env *env_parse, t_env *env_info)
 		ft_strlen(env_parse->name) : ft_strlen(exec_env->name);
 		if (!ft_strncmp(env_parse->name, exec_env->name, max))
 		{
-			if (env_parse->contents != NULL)
-			{
-				contents = ft_strdup(env_parse->contents);
-				exec_env->equal = 1;
-			}
-			else
-			{
-				contents = NULL;
-				exec_env->equal = 0;
-			}
+			store_contents(&contents, env_parse, exec_env);
 			exec_env->contents = contents;
 			return (1);
 		}

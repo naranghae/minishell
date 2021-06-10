@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:31:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:27:32 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:09:05 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,34 @@
 
 char	**get_envp(t_env *env_set)
 {
-	int		i;
-	int		k;
-	char	*ejoin;
-	char	*envjoin;
-	char	**envpp;
-	t_env	*env_parse;
+	t_get_env var;
 
-	k = 0;
-	env_parse = env_set->next;
-	i = listlen(env_set);
-	envpp = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!envpp)
+	var.k = 0;
+	var.env_parse = env_set->next;
+	var.i = listlen(env_set);
+	var.envpp = (char **)malloc(sizeof(char *) * (var.i + 1));
+	if (!var.envpp)
 		return (NULL);
-	while (env_parse != NULL)
+	while (var.env_parse != NULL)
 	{
-		if (env_parse->contents)
+		if (var.env_parse->contents)
 		{
-			ejoin = ft_strjoin(env_parse->name, "=");
-			envjoin = ft_strjoin(ejoin, env_parse->contents);
-			envpp[k++] = envjoin;
-			free(ejoin);
+			var.ejoin = ft_strjoin(var.env_parse->name, "=");
+			var.envjoin = ft_strjoin(var.ejoin, var.env_parse->contents);
+			var.envpp[var.k++] = var.envjoin;
+			free(var.ejoin);
 		}
-		env_parse = env_parse->next;
+		var.env_parse = var.env_parse->next;
 	}
-	envpp[k] = NULL;
-	return (envpp);
+	var.envpp[var.k] = NULL;
+	return (var.envpp);
+}
+
+void	not_built_in_free(char *path, char *pjoin, char *pathjoin)
+{
+	free(path);
+	free(pjoin);
+	free(pathjoin);
 }
 
 void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
@@ -78,9 +80,7 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 				res = execve(exec_cmd->cmd[0], exec_cmd->cmd, envp);
 			else
 				res = execve(pathjoin, exec_cmd->cmd, envp);
-			free(path[i]);
-			free(pjoin);
-			free(pathjoin);
+			not_built_in_free(path[i], pjoin, pathjoin);
 			i++;
 		}
 		exit(printf("no cmd\n") * 0 + res);// add exitcode 127

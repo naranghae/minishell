@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:38:53 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:09:53 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ void	exec_redirection(t_cmd *exec_cmd)
 		}
 		tmp = tmp->next;
 	}
-	// dup2(tmp_out, 1);
-	// close (*fd);
 }
 
 void	close_fd(t_red *red)
@@ -119,14 +117,11 @@ void	exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
-	//change_double_qute();
 	if ((*env_set)->envp)
 		free_split((*env_set)->envp);
 	(*env_set)->envp = get_envp(*env_set);
 	if (exec_cmd == NULL || exec_cmd->cmd[0] == NULL || ft_strlen(exec_cmd->cmd[0]) < 1)
 		return ;
-		// if (exec_cmd != NULL && exec_cmd->cmd != NULL && exec_cmd->cmd[0] != NULL && ft_strlen(exec_cmd->cmd[0]) < 1)
-		// exit(printf("empty\n") * 0);
 	while (exec_cmd != (*cmd)->tail)
 	{
 		exec_cmd_a = exec_cmd;
@@ -154,7 +149,6 @@ int		exec(t_cmd **cmd, t_env **env_info)
 	int		i;
 
 	i = -1;
-	//exec_env = NULL;
 	set_termios(SIGON);
 	exec_env = *env_info;
 	while (exec_env->next != NULL)

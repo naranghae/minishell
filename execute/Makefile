@@ -6,7 +6,7 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/10 15:46:16 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/10 19:51:24 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,9 @@ SRC=	main.c\
 		history.c \
 		history_util.c \
 		termcap.c \
-		termcap2.c
+		termcap2.c \
+		input_util.c \
+		input_util2.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:05:52 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 16:28:06 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	firstWall(int argc, char **argv)
 	}
 }
 
-void	print_buf(t_cursor *cursor, char *buf)
+void	print_buf(t_cursor **cursor, char *buf)
 {
 	int		len;
 
@@ -66,7 +66,7 @@ void	print_buf(t_cursor *cursor, char *buf)
 		return ;
 	while (buf[len])
 	{
-		cursor->col++;
+		(*cursor)->col++;
 		write(0, &buf[len++], 1);
 	}
 }

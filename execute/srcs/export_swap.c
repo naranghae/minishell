@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:38:32 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:18:44 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	env_clean(t_env *env_info)
 	}
 	free(env_info);
 }
-
 
 void	swaplist(t_env *env, t_env *env_next)
 {

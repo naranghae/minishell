@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:37:58 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 19:59:18 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void						init_termios(void);
 void						read_termios(void);
 void						signal_termios(void);
 void						set_termios(int	flag);
-void						print_buf(t_cursor *cursor, char *buf);
 void						ctrl_d_exit(void);
 int							historylst_num(t_history *history);
 int							nbr_length(int n);
@@ -91,8 +90,8 @@ void						move_cursor_left(t_cursor *cursor);
 void						move_cursor_right(t_cursor *cursor);
 void						delete_end(t_cursor *cursor);
 void						init_cursor(t_cursor *cursor);
-char						*history_up(t_history **cmd, t_cursor *cursor);
-char						*history_down(t_history **cmd, t_cursor *cursor);
+char						*history_up(t_history **cmd, t_cursor **cursor);
+char						*history_down(t_history **cmd, t_cursor **cursor);
 t_history					*init_history(void);
 void						history_ht(t_history **head, t_history **tail);
 void						add_back_his(t_history **lst, t_history *new);
@@ -101,7 +100,20 @@ t_history					*new_his(void);
 char						*append_char(t_cursor cursor);
 char						*remove_char(t_cursor cursor);
 void						firstWall(int argc, char **argv);
-void						print_buf(t_cursor *cursor, char *buf);
+void						print_buf(t_cursor **cursor, char *buf);
 int							keyValue(t_cursor cursor);
 void						envsort_print(char	**envp);
+int							enter_key(t_cursor *cursor, t_history **history);
+void						char_print(t_cursor *cursor);
+int							ctrl_c(t_cursor *cursor);
+void						cursor_move(t_cursor *cursor);
+void						history_past(t_cursor *cursor,
+								t_history **history);
+void						search_future(t_cursor *cursor,
+								t_history **history);
+void						now_input(t_cursor *cursor);
+void						history_future(t_cursor *cursor,
+								t_history **history);
+void						input_mode(t_cursor *cursor, t_history **history);
+
 #endif

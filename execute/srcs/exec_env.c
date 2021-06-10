@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:23:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:31:18 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:00:19 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,7 @@ int		listlen_all(t_env *env_info)
 void	write_env(t_env *exec_env)
 {
 	if (exec_env->equal)
-	{
-	//write(1, exec_env->name, ft_strlen(exec_env->name));
-	//write(1, "=", 1);
-	//write(1, exec_env->contents, ft_strlen(exec_env->contents));
-	//write(1, "\n", 1);
 		printf("%s=%s\n", exec_env->name, exec_env->contents);
-	}
 }
 
 int		exec_env(t_env *env_info)

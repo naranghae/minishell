@@ -6,14 +6,14 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 20:37:29 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:33:33 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 20:19:39 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int		historylst_num(t_history *history)
+int			historylst_num(t_history *history)
 {
 	int		i;
 
@@ -27,7 +27,7 @@ int		historylst_num(t_history *history)
 	return (i);
 }
 
-char	*history_up(t_history **cmd, t_cursor *cursor)
+char		*history_up(t_history **cmd, t_cursor **cursor)
 {
 	int		len;
 	char	*str;
@@ -36,12 +36,12 @@ char	*history_up(t_history **cmd, t_cursor *cursor)
 	str = NULL;
 	if ((*cmd) == (*cmd)->head)
 		return (NULL);
-	if (cursor->c == UP_ARROW)
+	if ((*cursor)->c == UP_ARROW)
 	{
 		if ((*cmd)->buf != NULL)
 			len = ft_strlen((*cmd)->buf);
-		while (len--)//리스트로 과거로그를 볼 때 현재 문자열을 삭제함.
-			delete_end(cursor);
+		while (len--)
+			delete_end((*cursor));
 		if ((*cmd)->prev != (*cmd)->head)
 			(*cmd) = (*cmd)->prev;
 		if((*cmd)->buf != NULL)
@@ -54,7 +54,7 @@ char	*history_up(t_history **cmd, t_cursor *cursor)
 	return (NULL);
 }
 
-char	*history_down(t_history **cmd, t_cursor *cursor)
+char		*history_down(t_history **cmd, t_cursor **cursor)
 {
 	int		len;
 	char	*str;
@@ -63,12 +63,12 @@ char	*history_down(t_history **cmd, t_cursor *cursor)
 	str = NULL;
 	if ((*cmd) == (*cmd)->head)
 		return (NULL);
-	if (cursor->c == DOWN_ARROW)
+	if ((*cursor)->c == DOWN_ARROW)
 	{
 		if ((*cmd)->buf != NULL)
 			len = ft_strlen((*cmd)->buf);
 		while (len--)
-			delete_end(cursor);
+			delete_end(*cursor);
 		(*cmd) = (*cmd)->next;
 		if((*cmd)->buf != NULL)
 			print_buf(cursor, (*cmd)->buf);

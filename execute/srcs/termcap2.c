@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 20:40:26 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 20:44:04 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/09 21:29:17 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	move_cursor_right(t_cursor *cursor)
 	int		len;
 
 	len = ft_strlen(cursor->buf);
-	//printf("%d\n", len);
-	//printf("%s\n", cursor->buf);
 	if ((cursor->col) <= (len + 13))
 		++(cursor->col);
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);

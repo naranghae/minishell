@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:43:25 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 15:32:27 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 14:59:26 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	envDelete(char *cmd, t_env *env_info)
 	while (env_info->next != NULL)
 	{
 		envRemove = env_info->next;
+		printf("asdasd %s=\"%s\"\n", envRemove->name, envRemove->contents);
 		max = ft_strlen(cmd) > ft_strlen(envRemove->name) ?\
 			ft_strlen(cmd) : ft_strlen(envRemove->name);
 		if (!ft_strncmp(cmd, envRemove->name, max))

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 20:40:26 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:28:23 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 14:18:23 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int		nbr_length(int n)
 void	init_cursor(t_cursor *cursor)
 {
 	cursor->buf = NULL;
-	cursor->cm = tgetstr("cm", NULL); //cursor motion
-	cursor->ce = tgetstr("ce", NULL); //clear line from cursor
+	cursor->cm = tgetstr("cm", NULL);
+	cursor->ce = tgetstr("ce", NULL);
 	cursor->c = 0;
 	cursor->col = 14;
 	cursor->listcircle = 1;
@@ -48,10 +48,10 @@ void	get_cursor_position(int *col, int *rows)
 	int		ret;
 	int		temp;
 
-	write(0, "\033[6n", 4);  //report cursor location
+	write(0, "\033[6n", 4);
 	ret = read(0, buf, 254);
 	buf[ret] = '\0';
-	if (*col>-1)
+	if (*col > -1)
 	while (buf[i])
 	{
 		if (buf[i] >= '0' && buf[i] <= '9')

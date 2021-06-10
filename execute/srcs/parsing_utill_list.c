@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 16:10:45 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:35:06 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,23 @@ t_red	*last_red(t_red *lst)
 	}
 	return (lst);
 }
+
 void	remove_back_cmd(t_cmd **lst)
 {
 	t_cmd *tmp;
 
 	tmp = (*lst)->tail;
-	// printf("call remove bye:%d\n",tmp->prev->buf[0]);
 	if (tmp->prev != tmp->head)
 	{
-		free(tmp->prev);
 		tmp->prev = tmp->prev->prev;
 		tmp->next = tmp->tail;
 	}
-	// new->prev = tmp->prev;
-	// tmp->prev = new;
-	// new->next = tmp;
-	// new->head = (*lst)->head;
-	// new->tail = (*lst)->tail;
 }
+
 void	add_back_cmd(t_cmd **lst, t_cmd *new)
 {
 	t_cmd *tmp;
 
-	// if (!new)
-	// 	return ;
 	tmp = (*lst)->tail;
 	tmp->tail = (*lst)->tail;
 	tmp->prev->next = new;
@@ -89,8 +82,6 @@ t_cmd	*new_cmd_buf(char *buf)
 {
 	t_cmd *new;
 
-	if (!buf)
-		return (0);
 	new = (t_cmd *)malloc(sizeof(t_cmd));
 	if (new == NULL)
 		return (0);
@@ -119,9 +110,8 @@ t_cmd	*new_cmd(char **cmd)
 	return (new);
 }
 
-void	init_cmd(t_cmd **head, t_cmd **tail)
+void	init_cmd(t_cmd **head, t_cmd **tail, t_p_c *p_v)
 {
-
 	*head = new_cmd(NULL);
 	*tail = new_cmd(NULL);
 	(*head)->buf = NULL;
@@ -134,4 +124,6 @@ void	init_cmd(t_cmd **head, t_cmd **tail)
 	(*tail)->tail = (*tail);
 	(*tail)->head = (*head);
 	(*head)->tail->buf = NULL;
+	p_v->start = 0;
+	p_v->i = 0;
 }

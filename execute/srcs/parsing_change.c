@@ -3,255 +3,303 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_change.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 202idx/05/11 17:32:19 by chanykim          #+#    #+#             */
-/*   Updated: 2021/05/12 11:58:31 by hyopark          ###   ########.fr       */
+/*   Created: 2021/06/08 19:42:06 by hyopark           #+#    #+#             */
+/*   Updated: 2021/06/10 15:34:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 
-int		find_end(t_cmd *cmd, int idx, int i)
+int		find_end(t_cmd *cmd, int ix, int i)
 {
 	int	re;
 
-	i++;
-	while (cmd->cmd[idx][i] != '\0' && cmd->cmd[idx][i] != ' ' && cmd->cmd[idx][i] != '$'&& cmd->cmd[idx][i] != '"')
+	if (cmd->cmd[ix][i] != '\0')
+		i++;
+	else
+		return (i);
+	while (cmd->cmd[ix][i] != '\0' && cmd->cmd[ix][i] != ' ' && cmd->cmd[ix][i]
+		!= '$' && cmd->cmd[ix][i] != '"' && cmd->cmd[ix][i] != '\'')
 		i++;
 	re = i;
-	// printf("reeeeee:%d\n",re);
 	return (re);
 }
 
-char	*find_env(t_cmd *cmd, t_env *env, int idx, int *i)
+char	*find_env(t_cmd *cmd, t_env *env, int ix, int *i)
 {
 	t_env	*tmp;
 	int		end;
-	int		start;
+	int		st;
 
-	start = *i + 1;
-	end = find_end(cmd, idx, *i);
+	st = *i + 1;
+	end = find_end(cmd, ix, *i);
 	tmp = env->next;
-	// printf("s:%d,e:%d\n",start,end);
-	while(tmp != NULL)
+	while (tmp != NULL)
 	{
-		if (!ft_strncmp(&cmd->cmd[idx][*i], tmp->name, end - start + 1))
+		if (!ft_strncmp(&cmd->cmd[ix][*i], tmp->name, end - st + 1))
 		{
-			// printf("find : %s key :: %s find: %d  end :%d\n",&cmd->cmd[idx][*i], tmp->name, end-start, end);
 			*i += ft_strlen(tmp->name);
-			return(tmp->contents);
+			return (tmp->contents);
 		}
 		tmp = tmp->next;
 	}
-	// *i = end - 1;
-	// printf("retrun12312312\n");
 	return (0);
 }
 
-void	change_env(t_cmd *tmp, t_env *env, int idx, int i)// 추후에 또 나눠야함 cmd[0]도 사실은 변환시켜야하고 해서 여기서는 리스트만 돌면서 함수두개 반복케
+void	change_env_save(t_cmd **tmp, t_c_env *c_e, t__free_p *f_p)
 {
-	char *envstr;
-	int start;
-
-	while (tmp->cmd[idx][i] != '\0')
+	if (c_e->envstr != 0)
 	{
-		if (tmp->cmd[idx][i] == '\\')
+		f_p->tmp1 = ft_substr((*tmp)->cmd[c_e->ix], 0, c_e->st - 1);
+		f_p->tmp2 = ft_strdup(&((*tmp)->cmd[c_e->ix][c_e->i]));
+		f_p->tmp3 = ft_strjoin(f_p->tmp1, c_e->envstr);
+		free((*tmp)->cmd[c_e->ix]);
+		(*tmp)->cmd[c_e->ix] = ft_strjoin(f_p->tmp3, f_p->tmp2);
+		free(f_p->tmp1);
+		free(f_p->tmp2);
+		free(f_p->tmp3);
+		c_e->i = (c_e->st - 1) + ft_strlen(c_e->envstr);
+	}
+	else
+	{
+		f_p->tmp1 = ft_substr((*tmp)->cmd[c_e->ix], 0, c_e->st - 1);
+		f_p->tmp2 = ft_strdup(&((*tmp)->cmd[c_e->ix]
+			[find_end((*tmp), c_e->ix, c_e->st)]));
+		free((*tmp)->cmd[c_e->ix]);
+		f_p->tmp3 = ft_strjoin(f_p->tmp1, f_p->tmp2);
+		(*tmp)->cmd[c_e->ix] = f_p->tmp3;
+		free(f_p->tmp1);
+		free(f_p->tmp2);
+		c_e->i = (c_e->st - 1);
+	}
+}
+
+void	init_c_env(t_c_env *c_env, int ix, int i)
+{
+	c_env->ix = ix;
+	c_env->i = i;
+}
+
+void	change_env(t_cmd *tmp, t_env *env, int ix, int i)
+{
+	t_c_env		c_env;
+	t__free_p	f_p;
+
+	init_c_env(&c_env, ix, i);
+	while (tmp->cmd[c_env.ix][c_env.i] != '\0')
+	{
+		if (tmp->cmd[c_env.ix][c_env.i] == '\\')
 		{
-			if (tmp->cmd[idx][i++ + 1] != '\0')
-				i += 1;
+			if (tmp->cmd[c_env.ix][(c_env.i)++ + 1] != '\0')
+				c_env.i += 1;
 			continue ;
 		}
-		// printf("c:%c sing:%d\n",tmp->cmd[idx][i],!in_singlequote(tmp->cmd[idx],i,ft_strlen(tmp->cmd[idx])));
-		if (tmp->cmd[idx][i++] == '$' && !in_singlequote(tmp->cmd[idx],i,ft_strlen(tmp->cmd[idx])))
+		if (tmp->cmd[c_env.ix][(c_env.i)++] == '$' &&
+			!in_singlequote(tmp->cmd[c_env.ix], c_env.i, 0, 0))
 		{
-			start = i;
-			envstr = find_env(tmp, env, idx, &i);
-			// printf("envstr:%s\n",envstr);
-			if (envstr != 0)
-			{
-				tmp->cmd[idx] = ft_strjoin(ft_strjoin(ft_substr(tmp->cmd[idx], 0, start - 1), envstr),ft_strdup(&(tmp->cmd[idx][i])));
-				i = (start - 1) + ft_strlen(envstr);
-				// printf("33333start:%d, end::%d s:%s\n",start,find_end(tmp,idx,start) - start, tmp->cmd[idx]);
-			}
-			else
-			{
-				tmp->cmd[idx] = ft_strjoin(ft_substr(tmp->cmd[idx], 0, start - 1), ft_strdup(&(tmp->cmd[idx][find_end(tmp,idx,start)])));
-				//  printf("44444start:%d, end::%d s:%s\n",start,find_end(tmp,idx,start) - start, tmp->cmd[idx]);
-				 i = (start - 1);
-			}
-			//echo "$HOME$ASDASDFGA"
+			c_env.st = c_env.i;
+			c_env.envstr = find_env(tmp, env, c_env.ix, &(c_env.i));
+			change_env_save(&tmp, &c_env, &f_p);
 		}
 	}
 }
 
-void	change_escape(t_cmd **cmd, int idx, int start)
+void	init_e(t_ecs *e, t_cmd **cmd, int *ix)
 {
-	char	*re;
-	int		re_i;
-	t_cmd	*tmp;
+	e->tmp = *cmd;
+	e->re_i = 0;
+	e->re = e->tmp->cmd[*ix];
+}
 
-	tmp = *cmd;
-	re_i = 0;
-	re = tmp->cmd[idx];
-	while (tmp->cmd[idx][start] != '\0')
+void	change_escape(t_cmd **cmd, int ix, int st)
+{
+	t_ecs	e;
+
+	init_e(&e, cmd, &ix);
+	while (e.tmp->cmd[ix][st] != '\0')
 	{
-		if (tmp->cmd[idx][start] == '\\')
+		if (e.tmp->cmd[ix][st] == '\\')
 		{
-				if (tmp->cmd[idx][start + 1] != '\0' && (tmp->cmd[idx][start + 1] == '`' || tmp->cmd[idx][start + 1] == '$' || tmp->cmd[idx][start + 1] == '"' || tmp->cmd[idx][start + 1] == '\\' /*|| tmp->cmd[idx][start + 1] == '\''*/))
-				{
-					re[re_i++] = tmp->cmd[idx][start + 1];
-					start += 2;
-				}
-				else
-					re[re_i++] = tmp->cmd[idx][start++];
+			if (e.tmp->cmd[ix][st + 1] != '\0' && (e.tmp->cmd[ix][st + 1] == '`'
+				|| e.tmp->cmd[ix][st + 1] == '$' || e.tmp->cmd[ix][st + 1]
+					== '"' || e.tmp->cmd[ix][st + 1] == '\\'))
+			{
+				e.re[e.re_i++] = e.tmp->cmd[ix][st + 1];
+				st += 2;
+			}
+			else
+				e.re[e.re_i++] = e.tmp->cmd[ix][st++];
 			continue ;
 		}
 		else
-			re[re_i++] = tmp->cmd[idx][start];
-		start++;
+			e.re[e.re_i++] = e.tmp->cmd[ix][st];
+		st++;
 	}
-	re[re_i] = '\0';
-	// printf("reeeeeee:%s\n", re);
-	(*cmd)->cmd[idx] = re;
+	e.re[e.re_i] = '\0';
+	(*cmd)->cmd[ix] = e.re;
 }
 
-void	change_double_qute(t_cmd *tmp, int idx, int i)
+void	change_double_qute_save(t_cmd **tmp, int *ix, int *i, t_st_end *st_end)
 {
-	int start;
-	int end;
+	char	*free_p;
 
-	while (tmp->cmd[idx][i] != '\0')
+	st_end->end = *i;
+	(*tmp)->cmd[*ix][st_end->end] = '\0';
+	free_p = ft_strjoin((*tmp)->cmd[*ix] + st_end->st,
+		(*tmp)->cmd[*ix] + st_end->end + *ix);
+	free((*tmp)->cmd[*ix]);
+	(*tmp)->cmd[*ix] = ft_strjoin((*tmp)->cmd[*ix], free_p);
+	free(free_p);
+	*i = st_end->end - 1;
+}
+
+void	change_double_qute_init(t_cmd **tmp, int *ix, int *i, t_st_end *st_end)
+{
+	(*tmp)->cmd[*ix][(*i)++] = '\0';
+	st_end->st = *i;
+	while ((*tmp)->cmd[*ix][*i] != '\0' && (*tmp)->cmd[*ix][*i] != '\"')
+		(*i)++;
+}
+
+void	change_double_qute(t_cmd *tmp, int ix, int i, t_st_end *st_end)
+{
+	while (tmp->cmd[ix][i] != '\0')
 	{
-		// printf("insigel:%d caric:%c\n", in_singlequote(tmp->cmd[idx],i,ft_strlen(tmp->cmd[idx])), tmp->cmd[idx][i]);
-		if (!in_singlequote(tmp->cmd[idx],i,ft_strlen(tmp->cmd[idx])) && tmp->cmd[idx][i] == '\"')
+		if (!in_doublequote(tmp->cmd[ix], i, 0, 0) && tmp->cmd[ix][i] == '\'')
+			i = change_single_qute(tmp, ix, i) - 1;
+		if (tmp->cmd[ix][i] == '\0')
+			break ;
+		if (!in_singlequote(tmp->cmd[ix], i, 0, 0) && tmp->cmd[ix][i] == '\"')
+		{
+			change_double_qute_init(&tmp, &ix, &i, st_end);
+			if (tmp->cmd[ix][i] == '\0' && st_end->st == i)
 			{
-				tmp->cmd[idx][i++] = '\0';
-				start = i;
-				while (tmp->cmd[idx][i] != '\0' && tmp->cmd[idx][i] != '\"')
-					i++;
-				if (tmp->cmd[idx][i] == '\0' && start == i)
-				{
-					tmp->cmd[idx][i-1] = '"';
-					// printf("54321 start:%d,i:%d,s:%s",start,i,tmp->cmd[idx]);
-					return ;
-				}
-				if (tmp->cmd[idx][i] != '\0' && i > 1 && tmp->cmd[idx][i] =='\"' && tmp->cmd[idx][i] == '\\')
-				{
-					// printf("123123123erfsdfdfv\n");
-					tmp->cmd[idx][i - 1] = '9';
-					break ;
-				}
-				if (tmp->cmd[idx][i] != '\0')
-				{
-					end = i;
-					tmp->cmd[idx][end] = '\0';
-					tmp->cmd[idx] = ft_strjoin(tmp->cmd[idx],ft_strjoin(tmp->cmd[idx] + start, tmp->cmd[idx] + end + idx));
-					i = end - 1;
-					continue ;
-				}
-				else
-					break ;
+				tmp->cmd[ix][i - 1] = '"';
+				return ;
 			}
+			if (tmp->cmd[ix][i] != '\0')
+			{
+				change_double_qute_save(&tmp, &ix, &i, st_end);
+				continue ;
+			}
+			else
+				break ;
+		}
 		i++;
 	}
 }
 
-void change_single_qute(t_cmd *tmp, int idx, int i)// 추후에 또 나눠야함 cmd[0]도 사실은 변환시켜야하고 해서 여기서는 리스트만 돌면서 함수두개 반복케
+int		change_single_qute_if(t_cmd **tmp, int *ix, int *i, t_st_end *st_end)
 {
-	int start;
-	int end;
+	char	*free_p1;
+	char	*free_p2;
 
-	while (tmp->cmd[idx][i] != '\0')
+	if ((*tmp)->cmd[*ix][*i] != '\0')
 	{
-		//printf("i : %d, 2c:%c 2sing:%d\n",i,tmp->cmd[idx][i],!in_singlequote(tmp->cmd[idx],i,ft_strlen(tmp->cmd[idx])));
-		if (tmp->cmd[idx][i] == '\'' && tmp->cmd[idx][i + 1] != '\0')
-			{
-				tmp->cmd[idx][i++] = '\0';
-				if (i > 1 && tmp->cmd[idx][i - 2] == '\\')
-				{
-					tmp->cmd[idx][i - 2] = '\'';
-					break ;
-				}
-				start = i;
-				while (tmp->cmd[idx][i] != '\0' && tmp->cmd[idx][i] != '\'')
-					i++;
-				if (tmp->cmd[idx][i] != '\0')
-				{
-					end = i;
-					tmp->cmd[idx][end] = '\0';
-					tmp->cmd[idx] = ft_strjoin(tmp->cmd[idx],ft_strjoin(tmp->cmd[idx] + start, tmp->cmd[idx] + end + idx));
-					i = end - 1;
-					continue ;
-				}
-				// else
-				// {
-				// 	tmp->cmd[idx][start - 2] = '\'';
-				// 	break ;
-				// }
-			}
-		i++;
+		st_end->end = *i;
+		(*tmp)->cmd[*ix][st_end->end] = '\0';
+		free_p1 = ft_strjoin((*tmp)->cmd[*ix] + st_end->st,
+			(*tmp)->cmd[*ix] + st_end->end + *ix);
+		free_p2 = ft_strjoin((*tmp)->cmd[*ix], free_p1);
+		free((*tmp)->cmd[*ix]);
+		(*tmp)->cmd[*ix] = free_p2;
+		free(free_p1);
+		*i = st_end->end - 1;
+		return (st_end->end);
+	}
+	else
+	{
+		(*tmp)->cmd[*ix][st_end->st - 1] = '\'';
+		return (*i);
 	}
 }
 
-void change_single_qute_in_double(t_cmd *tmp, int idx, int i)// 추후에 또 나눠야함 cmd[0]도 사실은 변환시켜야하고 해서 여기서는 리스트만 돌면서 함수두개 반복케
+int		change_single_qute(t_cmd *tmp, int ix, int i)
 {
-	int start;
-	int end;
+	t_st_end st_end;
 
-	while (tmp->cmd[idx][i] != '\0')
+	while (tmp->cmd[ix][i] != '\0')
 	{
-		// printf("2c:%c 2sing:%d\n",tmp->cmd[idx][i],!in_singlequote(tmp->cmd[idx],i,ft_strlen(tmp->cmd[idx])));
-		if (in_doublequote(tmp->cmd[idx], i, ft_strlen(tmp->cmd[idx])) && tmp->cmd[idx][i] == '\'')
+		if ((tmp->cmd[ix][i] == '\'' && tmp->cmd[ix][i + 1] != '\0'))
+		{
+			tmp->cmd[ix][i++] = '\0';
+			if (i > 1 && tmp->cmd[ix][i - 2] == '\\')
 			{
-				tmp->cmd[idx][i++] = '\0';
-				start = i;
-				while (tmp->cmd[idx][i] != '\0' && tmp->cmd[idx][i] != '\'')
-					i++;
-				if (tmp->cmd[idx][i] != '\0')
-				{
-					end = i;
-					tmp->cmd[idx][end] = '\0';
-					tmp->cmd[idx] = ft_strjoin(tmp->cmd[idx],ft_strjoin(tmp->cmd[idx] + start, tmp->cmd[idx] + end + idx));
-					i = end - 1;
-					continue ;
-				}
-				else
-					break ;
+				tmp->cmd[ix][i - 2] = '\'';
+				break ;
 			}
+			st_end.st = i;
+			while (tmp->cmd[ix][i] != '\0' && tmp->cmd[ix][i] != '\'')
+				i++;
+			return (change_single_qute_if(&tmp, &ix, &i, &st_end));
+		}
 		i++;
+	}
+	return (i);
+}
+
+void	env_remove(char *key, t_env **env)
+{
+	t_env	*env_remove;
+	t_env	*env_tmp;
+	int		max;
+
+	max = 0;
+	env_remove = NULL;
+	env_tmp = NULL;
+	while ((*env)->next != NULL)
+	{
+		env_remove = (*env)->next;
+		max = ft_strlen(key) > ft_strlen(env_remove->name) ?\
+			ft_strlen(key) : ft_strlen(env_remove->name);
+		if (!ft_strncmp(key, env_remove->name, max))
+		{
+			env_tmp = env_remove->next;
+			(*env)->next = env_tmp;
+			free(env_remove->name);
+			if (env_remove->contents)
+				free(env_remove->contents);
+			free(env_remove);
+			return ;
+		}
+		(*env) = (*env)->next;
 	}
 }
 
-void change_qute(t_cmd **list, t_env *env,int type)
+void	init_errorcode(t_env **errorcode)
 {
-	int idx;
-	int i;
-	t_cmd *tmp;
+	(*errorcode) = new_env();
+	(*errorcode)->contents = ft_itoa(g_errcode);
+	(*errorcode)->name = ft_strdup("?");
+}
 
-	// if (type == 1)
-	// 	tmp = (*list)->next;
-	// else
-		tmp = *list;
+void	change_qute(t_cmd **list, t_env *env, int i)
+{
+	int			ix;
+	t_cmd		*tmp;
+	t_env		*errorcode;
+	t_st_end	st_end;
+
+	errorcode = NULL;
+	init_errorcode(&errorcode);
+	tmp = *list;
+	add_back_env(&env, errorcode);
 	while (tmp != tmp->tail)
 	{
-		idx = 0;
-		while (tmp->cmd[idx]!= NULL)
+		ix = 0;
+		while (tmp->cmd[ix] != NULL)
 		{
+			if (ix == 0 && !ft_strncmp(tmp->cmd[ix], "$?", 2))
+				break ;
 			i = 0;
-			if (type == 1)
-			{
-				change_single_qute(tmp, idx, i);
-			}
-			else if (type == 2)
-			{
-				change_env(tmp, env, idx, i);
-				change_double_qute(tmp, idx, i);
-				change_escape(&tmp, idx, i);
-				change_single_qute(tmp, idx, i);
-			}
-			idx++;
+			change_env(tmp, env, ix, i);
+			change_double_qute(tmp, ix, i, &st_end);
+			change_escape(&tmp, ix, i);
+			ix++;
 		}
 		tmp = tmp->next;
 	}
+	env_remove(errorcode->name, &env);
 }

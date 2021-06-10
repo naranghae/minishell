@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:34:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/04 16:43:00 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:36:00 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 void	prompt(void)
 {
-	write(0,"hyochanyoung$ ",14);
+	write(0, "hyochanyoung$ ", 14);
 }

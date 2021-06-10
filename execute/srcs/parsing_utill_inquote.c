@@ -6,236 +6,101 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:49 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/07 15:34:53 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:34:37 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 
-
-// int		check_in_quote(char *buf, int start, int end)
-// {
-// 	int single_q;
-// 	int double_q;
-
-// 	single_q = 0;//1 열림 0 닫힘
-// 	double_q = 0;
-// 	while (start < end)
-// 	{
-// 		if (buf[start] == '\'')
-// 		{
-// 			start++;
-// 			single_q = 1;
-// 			while (buf[start] != '\0' && buf[start] != '\'')
-// 				start++;
-// 			if (buf[start] == '\'')
-// 			{
-// 				single_q = 0;
-// 				start++;
-// 			}
-// 			// printf (" i : %d c : %c \n",i, buf[start]);
-// 			continue ;
-// 		}
-// 		else if (buf[start] == '"')
-// 		{
-// 			double_q = 1;
-// 			while (buf[start] != '\0' && buf[start++] != '"')
-// 			start++;
-// 			if (buf[start] == '"')
-// 				double_q = 0;
-// 			continue ;
-// 		}
-// 		start++;
-// 	}
-// 	if (single_q == 1|| double_q == 1)// match가 안된경우
-// 		return (0);
-// 	else
-// 		return (1);
-// }
-
-int		check_in_quote(char *buf, int start, int end)
+int		check_in_quote(char *buf, int start, int single_q, int double_q)
 {
-	int i;
-	int single_q;
-	int double_q;
-
-	i = start;
-	single_q = 0;//1 열림 0 닫힘
-	double_q = 0;
-	while (buf[i] != '\0' && start < end)
+	while (buf[start] != '\0' && start < (int)ft_strlen(buf))
 	{
-		if (buf[i] == '\\')
+		if (buf[start] == '\\')
 		{
-			i++;
+			start++;
 			continue ;
 		}
-		if (!double_q && buf[i] == '\'')
+		if (!double_q && buf[start] == '\'')
 		{
 			if (single_q)
 				single_q = 0;
 			else
 				single_q = 1;
 		}
-		else if (!single_q && buf[i] == '"')
+		else if (!single_q && buf[start] == '"')
 		{
 			if (double_q)
 				double_q = 0;
 			else
 				double_q = 1;
 		}
+		start++;
+	}
+	return (!(single_q | double_q));
+}
+
+int		in_singlequote(char *buf, int end, int single_q, int double_q)
+{
+	int	i;
+
+	i = 0;
+	while (buf[i] != '\0' && i < end)
+	{
+		if (!single_q && buf[i] == '\"')
+		{
+			if (double_q)
+				double_q = 0;
+			else
+				double_q = 1;
+		}
+		else if (!double_q && buf[i] == '\'')
+		{
+			if (single_q)
+				single_q = 0;
+			else
+				single_q = 1;
+		}
 		i++;
 	}
-	// printf ("sing : %d doub : %d\n",single_q,double_q);
-	if (single_q == 1|| double_q == 1)// match가 안된경우
-		return (0);
-	else
+	if (single_q == 1)
 		return (1);
+	else
+		return (0);
 }
 
-// int		in_singlequote(char *buf, int start, int end)
-// {
-// 	int single_q;
-
-// 	single_q = 0;
-// 	while (start != end)
-// 	{
-// 		if (buf[start] == '\'')
-// 			single_q++;
-// 		start++;
-// 	}
-// 	if (single_q % 2 !=0) //둘중 하나라도 홀수면 인쿼트 = 쿼트안에있다
-// 		return (1);
-// 	else
-// 		return (0);
-// }
-
-// int		in_doublequote(char *buf, int start, int end)
-// {
-// 	int double_q;
-
-// 	double_q = 0;
-// 	while (start != end)
-// 	{
-// 		if (buf[start] == '"')
-// 			double_q++;
-// 		start++;
-// 	}
-// 	if (double_q % 2 != 0 ) //나머지가 0이면 짝수 0이아니면 홀수 홀수면 인쿼트
-// 		return (1);
-// 	else
-// 		return (0);
-// }
-
-// int		check_in_quote(char *buf, int start, int end)
-// {
-// 	int i;
-// 	int single_q;
-// 	int double_q;
-
-// 	i = start;
-// 	single_q = 0;//1 열림 0 닫힘
-// 	double_q = 0;
-// 	while (buf[i] != '\0' && start < end)
-// 	{
-// 		if (buf[i] == '\\')
-// 		{
-// 			i++;
-// 			continue ;
-// 		}
-// 		if (!double_q && buf[i] == '\'')
-// 		{
-// 			if (single_q)
-// 				single_q = 0;
-// 			else
-// 				single_q = 1;
-// 		}
-// 		else if (!single_q && buf[i] == '"')
-// 		{
-// 			if (double_q)
-// 				double_q = 0;
-// 			else
-// 				double_q = 1;
-// 		}
-// 		i++;
-// 	}
-// 	// printf ("sing : %d doub : %d\n",single_q,double_q);
-// 	if (single_q == 1|| double_q == 1)// match가 안된경우
-// 		return (0);
-// 	else
-// 		return (1);
-// }
-
-int		in_singlequote(char *buf, int start, int end)
+int		in_doublequote(char *buf, int end, int single_q, int double_q)
 {
-	int single_q;
-	int double_q;
+	int	i;
 
-	single_q = 0;
-	double_q = 0;
-	end = start;
-	start = 0;
-	while (buf[start] != '\0' && start < end)
+	i = 0;
+	while (buf[i] != '\0' && i < end)
 	{
-		if (!single_q && buf[start] == '\"')
+		if (!single_q && buf[i] == '\"')
 		{
-			if(double_q)
+			if (double_q)
 				double_q = 0;
 			else
 				double_q = 1;
 		}
-		else if (!double_q && buf[start] == '\'')
+		else if (!double_q && buf[i] == '\'')
 		{
-			if(single_q)
+			if (single_q)
 				single_q = 0;
 			else
 				single_q = 1;
 		}
-		start++;
+		i++;
 	}
-	if (single_q == 1) //둘중 하나라도 홀수면 인쿼트 = 쿼트안에있다
+	if (double_q == 1)
 		return (1);
 	else
 		return (0);
 }
 
-int		in_doublequote(char *buf, int start, int end)
+int		is_inquote(char *buf, int end)
 {
-	int single_q;
-	int double_q;
-
-	single_q = 0;
-	double_q = 0;
-	end = start;
-	start = 0;
-
-
-	while (buf[start] != '\0' && start < end)
-	{
-		if (!single_q && buf[start] == '\"')
-		{
-			if(double_q)
-				double_q = 0;
-			else
-				double_q = 1;
-		}
-		else if (!double_q && buf[start] == '\'')
-		{
-			if(single_q)
-				single_q = 0;
-			else
-				single_q = 1;
-		}
-		start++;
-	}
-	if (double_q == 1) //둘중 하나라도 홀수면 인쿼트 = 쿼트안에있다
-		return (1);
-	else
-		return (0);
-}
-
-int		is_inquote(char *buf, int start, int end)
-{
-	if (in_doublequote(buf, start, end) || in_singlequote(buf, start, end) ) //둘중 하나라도 인쿼트 = 쿼트안에있다
+	if (in_doublequote(buf, end, 0, 0) || in_singlequote(buf, end, 0, 0))
 		return (1);
 	else
 		return (0);

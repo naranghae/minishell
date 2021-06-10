@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 20:37:29 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:08:12 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:33:33 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*history_down(t_history **cmd, t_cursor *cursor)
 	{
 		if ((*cmd)->buf != NULL)
 			len = ft_strlen((*cmd)->buf);
-		while (len--)//리스트로 과거로그를 볼 때 현재 문자열을 삭제함.
+		while (len--)
 			delete_end(cursor);
 		(*cmd) = (*cmd)->next;
 		if((*cmd)->buf != NULL)

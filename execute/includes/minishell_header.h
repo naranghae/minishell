@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:24:31 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:37:58 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,5 @@ char						*remove_char(t_cursor cursor);
 void						firstWall(int argc, char **argv);
 void						print_buf(t_cursor *cursor, char *buf);
 int							keyValue(t_cursor cursor);
+void						envsort_print(char	**envp);
 #endif

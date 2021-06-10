@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:22:34 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 15:48:38 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:31:07 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_env	*new_env(void)
 	return (lst);
 }
 
-t_env		*last_env(t_env *lst)
+t_env	*last_env(t_env *lst)
 {
 	while (lst)
 	{
@@ -55,7 +55,7 @@ void	add_back_env(t_env **lst, t_env *new)
 
 void	save_env(t_env *env_parse, char *str, int c)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i] != '\0')
@@ -63,10 +63,10 @@ void	save_env(t_env *env_parse, char *str, int c)
 		if (str[i] == c)
 		{
 			env_parse->name = ft_substr(str, 0, i);
-			env_parse->contents = ft_substr(str, i + 1, ft_strlen(str) - (i + 1));
+			env_parse->contents = ft_substr(str, i + 1,
+				ft_strlen(str) - (i + 1));
 			env_parse->next = NULL;
 			env_parse->equal = 1;
-//			printf("%s = %s\n", env_parse->name, env_parse->contents);
 			return ;
 		}
 	}
@@ -86,7 +86,7 @@ t_env	*parsing_env(char **env)
 	env_set = new_env();
 	while (env[++i] != NULL)
 	{
-		if(!(env_parse = (t_env *)malloc(sizeof(*env_parse))))
+		if (!(env_parse = (t_env *)malloc(sizeof(*env_parse))))
 			return (NULL);
 		save_env(env_parse, env[i], '=');
 		add_back_env(&env_set, env_parse);

@@ -6,13 +6,13 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/09 20:57:58 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/10 15:46:16 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 
-CC				= gcc -g3 -fsanitize=address
+CC				= gcc #-g3 -fsanitize=address
 
 CFLAGS			= -Wall -Wextra -Werror -lncurses -ltermcap
 
@@ -41,6 +41,7 @@ SRC=	main.c\
 		exec_env.c\
 		exec_not_built_in.c\
 		exec_util.c \
+		exec_exit_code.c\
 		export_add.c \
 		export_swap.c \
 		export_except.c \
@@ -52,8 +53,6 @@ SRC=	main.c\
 		history_util.c \
 		termcap.c \
 		termcap2.c
-
-
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

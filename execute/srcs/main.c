@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/09 21:27:52 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:44:07 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,9 +160,12 @@ int		main(int argc, char **argv, char **envp)
 			cursor.c = '\n';
 			cursor.buf = append_char(cursor);
 			cursor.c = 0;
-			cmd = parsing_cmd(cursor.buf, env_info);
+			cmd = parsing_cmd(cursor.buf);
 			if (cmd)
+			{
 				exec(&cmd, &env_info);
+				free_cmd(&cmd);
+			}
 			free(cursor.buf);
 			cursor.buf = NULL;
 		}

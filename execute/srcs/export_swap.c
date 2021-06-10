@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:11:10 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:38:32 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@ void	env_clean(t_env *env_info)
 }
 
 
-void	swaplist(t_env *env, t_env *envNext)
+void	swaplist(t_env *env, t_env *env_next)
 {
-	char	*tmpName;
-	char	*tmpContents;
+	char	*tmp_name;
+	char	*tmp_contents;
 	int		tmpequal;
 
 	tmpequal = 0;
-	tmpName = env->name;
-	env->name = envNext->name;
-	envNext->name = tmpName;
-	tmpContents = env->contents;
-	env->contents = envNext->contents;
-	envNext->contents = tmpContents;
+	tmp_name = env->name;
+	env->name = env_next->name;
+	env_next->name = tmp_name;
+	tmp_contents = env->contents;
+	env->contents = env_next->contents;
+	env_next->contents = tmp_contents;
 	tmpequal = env->equal;
-	env->equal = envNext->equal;
-	envNext->equal = tmpequal;
+	env->equal = env_next->equal;
+	env_next->equal = tmpequal;
 }
 
 void	swap_func(t_env	**tmp, t_env *envsort, int listnum)
@@ -84,7 +84,7 @@ void	envsort_print(char	**envp)
 
 	envsort = parsing_env(envp);
 	tmp = envsort->next;
-	listnum = listlenAll(tmp);
+	listnum = listlen_all(tmp);
 	swap_func(&tmp, envsort, listnum);
 	while (tmp != NULL)
 	{

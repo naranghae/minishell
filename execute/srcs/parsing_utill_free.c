@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 16:48:38 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/11 13:37:49 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,11 @@ void	free_red(t_red **red)
 		next = (*red)->next;
 		if ((*red)->file_name)
 		{
-			printf("free!\n");
 			free((*red)->file_name);
 		}
-		printf("free!\n");
 		free((*red));
 		(*red) = next;
 	}
-	printf("free!\n");
 	free((*red));
 }
 

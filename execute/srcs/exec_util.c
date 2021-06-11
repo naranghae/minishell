@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 19:14:29 by hyopark           #+#    #+#             */
-/*   Updated: 2021/06/10 21:26:53 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/11 13:30:44 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	close_pipe(pid_t *pid, t_cmd *exec_cmd, int res, int status)
 		close(exec_cmd->prev->fd[0]);
 }
 
-// void	close_fd(t_red *red)
-// {
-// 	while (red != NULL)
-// 	{
-// 		close(red->fd);
-// 		red = red->next;
-// 	}
-// }
+void	close_fd(t_red *red)
+{
+	while (red != NULL)
+	{
+		close(red->fd);
+		red = red->next;
+	}
+}

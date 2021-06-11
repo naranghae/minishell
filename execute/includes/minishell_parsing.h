@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 21:32:30 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/11 13:34:11 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ typedef struct			s_free_p
 	char				*tmp3;
 }						t__free_p;
 
-// void					exec_redirection(t_cmd *exec_cmd);
-// void					close_fd(t_red *red);
+void					exec_redirection(t_cmd *exec_cmd);
+void					close_fd(t_red *red);
 char					*remove_escape(char *buf, int start);
 int						check_syntax(char *buf, int i, int len, int istoken);
 int						check_quote(char *buf, int i,

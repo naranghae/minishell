@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_save_redirection.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:34:37 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:52:44 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 13:54:27 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,13 @@
 
 void	tokenize_red(t_cmd **tmp, int i, int idx)
 {
-	// char	*free_p;
+	char	*free_p;
 
 	if (idx == 0 && ((*tmp)->cmd[idx][i] != '>' || (*tmp)->cmd[idx][i] != '<'
 		|| ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i + 1] != '>')))
 	{
-		// free_p = (*tmp)->cmd[idx];
 		free((*tmp)->cmd[idx]);
 		(*tmp)->cmd[idx] = ft_strdup(" ");
-		// free(free_p);
 		return ;
 	}
 	while ((*tmp)->cmd[idx][i] != '\0')
@@ -30,9 +28,11 @@ void	tokenize_red(t_cmd **tmp, int i, int idx)
 		while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i]
 			!= '<' && (*tmp)->cmd[idx][i] != '\0')
 			i++;
+		if ((*tmp)->cmd[idx][i] == '\0')
+			break ;
 		(*tmp)->cmd[idx][i] = '\0';
-		// free_p = (*tmp)->cmd[idx];
 		free((*tmp)->cmd[idx]);
+		free_p = ft_strtrim((*tmp)->cmd[idx], " ");
 		(*tmp)->cmd[idx] = ft_strtrim((*tmp)->cmd[idx], " ");
 		// free(free_p);
 		break ;
@@ -101,24 +101,6 @@ void	save_redirection(t_cmd **list)
 		}
 		else if (tmp->cmd[0] != NULL)
 			save_red_cmd(&tmp, 0, 0);
-		tmp = tmp->next;
-	}
-}
-
-void	trim_cmd(t_cmd **list)
-{
-	t_cmd	*tmp;
-	char	*free_p;
-
-	tmp = (*list)->next;
-	while (tmp != (*list)->tail)
-	{
-		if (tmp->cmd[1] != NULL)
-		{
-			free_p = tmp->cmd[1];
-			tmp->cmd[1] = ft_strtrim(tmp->cmd[1], " ");
-			free(free_p);
-		}
 		tmp = tmp->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utill_inquote.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:49 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:34:37 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 13:52:32 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ int		in_singlequote(char *buf, int end, int single_q, int double_q)
 	i = 0;
 	while (buf[i] != '\0' && i < end)
 	{
-		if (!single_q && buf[i] == '\"')
+		if (!single_q && buf[i] == '\"' && (i > 0 && buf[i - 1] != '\\'))
 		{
 			if (double_q)
 				double_q = 0;
 			else
 				double_q = 1;
 		}
-		else if (!double_q && buf[i] == '\'')
+		else if (!double_q && buf[i] == '\'' && (i > 0 && buf[i - 1] != '\\'))
 		{
 			if (single_q)
 				single_q = 0;
@@ -76,14 +76,14 @@ int		in_doublequote(char *buf, int end, int single_q, int double_q)
 	i = 0;
 	while (buf[i] != '\0' && i < end)
 	{
-		if (!single_q && buf[i] == '\"')
+		if (!single_q && buf[i] == '\"' && (i > 0 && buf[i - 1] != '\\'))
 		{
 			if (double_q)
 				double_q = 0;
 			else
 				double_q = 1;
 		}
-		else if (!double_q && buf[i] == '\'')
+		else if (!double_q && buf[i] == '\'' && (i > 0 && buf[i - 1] != '\\'))
 		{
 			if (single_q)
 				single_q = 0;

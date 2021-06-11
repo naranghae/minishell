@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 19:14:29 by hyopark           #+#    #+#             */
-/*   Updated: 2021/06/10 20:36:18 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 14:00:19 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,13 @@ void	close_pipe(pid_t *pid, t_cmd *exec_cmd, int res, int status)
 	}
 	if (exec_cmd->prev && exec_cmd->prev->has_pip)
 		close(exec_cmd->prev->fd[0]);
+}
+
+void	close_fd(t_red *red)
+{
+	while (red != NULL)
+	{
+		close(red->fd);
+		red = red->next;
+	}
 }

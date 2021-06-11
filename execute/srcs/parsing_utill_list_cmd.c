@@ -1,39 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_utill_list.c                               :+:      :+:    :+:   */
+/*   parsing_utill_list_cmd.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:35:06 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 13:52:37 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
-
-t_red	*last_red(t_red *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next != NULL)
-	{
-		lst = lst->next;
-	}
-	return (lst);
-}
-
-void	remove_back_cmd(t_cmd **lst)
-{
-	t_cmd *tmp;
-
-	tmp = (*lst)->tail;
-	if (tmp->prev != tmp->head)
-	{
-		tmp->prev = tmp->prev->prev;
-		tmp->next = tmp->tail;
-	}
-}
 
 void	add_back_cmd(t_cmd **lst, t_cmd *new)
 {
@@ -47,35 +24,6 @@ void	add_back_cmd(t_cmd **lst, t_cmd *new)
 	new->next = tmp;
 	new->head = (*lst)->head;
 	new->tail = (*lst)->tail;
-}
-
-void	add_back_red(t_red **lst, t_red *new)
-{
-	t_red *last;
-
-	if (lst)
-	{
-		if (*lst)
-		{
-			last = last_red(*lst);
-			last->next = new;
-		}
-		else
-			*lst = new;
-	}
-}
-
-t_red	*new_red(char *file_name, int type)
-{
-	t_red *new;
-
-	new = (t_red *)malloc(sizeof(t_red));
-	if (!new)
-		return (0);
-	new->file_name = file_name;
-	new->type = type;
-	new->next = NULL;
-	return (new);
 }
 
 t_cmd	*new_cmd_buf(char *buf)

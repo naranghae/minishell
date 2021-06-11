@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:35:48 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 13:52:41 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,135 +91,6 @@ void	first_parse(t_cmd **list, char *buf, int start, int end)
 	add_back_cmd(list, new_cmd(f_v.re));
 	if (buf[end] == '|')
 		(*list)->tail->prev->has_pip = 1;
-}
-
-char	*remove_empty(char *buf, int start)
-{
-	char	*re;
-	int		re_i;
-
-	re_i = start;
-	re = buf;
-	while (buf[start] != '\0')
-	{
-		if (!is_inquote(buf, start) && buf[start] == ' ')
-		{
-			re[re_i++] = ' ';
-			while (buf[start] == ' ' && buf[start] != '\0')
-				start++;
-			continue ;
-		}
-		else
-			re[re_i++] = buf[start];
-		start++;
-	}
-	re[re_i] = '\0';
-	return (re);
-}
-
-int		check_quote(char *buf, int i, int single_q, int double_q)
-{
-	while (buf[i] != '\0')
-	{
-		if (!single_q && buf[i] == '\\')
-		{
-			i += 2;
-			continue ;
-		}
-		if (!double_q && buf[i] == '\'')
-			single_q = !single_q;
-		else if (!single_q && buf[i] == '"')
-			double_q = !double_q;
-		i++;
-	}
-	if (single_q == 1 || double_q == 1)
-		return (0);
-	else
-		return (1);
-}
-
-int		check_syntax_if(char *buf, int i, int istoken)
-{
-	if (istoken < 1 && (buf[i] == ';' || buf[i] == '|'))
-	{
-		if (istoken == 2 && (buf[i - 1] == ';' || buf[i - 1] == '|'))
-			return (printf("%s \'%c%c'\n", ERORR_SYN, buf[i], buf[i]) * 0);
-		else if (istoken == -1 && (buf[i + 1] == ';' || buf[i + 1] == '|'))
-			return (printf("%s \'%c%c'\n", ERORR_SYN, buf[i], buf[i]) * 0);
-		else
-			return (printf("%s \'%c'\n", ERORR_SYN, buf[i]) * 0);
-	}
-	else if ((buf[i] == ';' || buf[i] == '|')
-		&& (buf[i + 1] == ';' || buf[i + 1] == '|'))
-		return (printf("%s \'%c%c'\n", ERORR_SYN, buf[i], buf[i + 1]) * 0);
-	return (1);
-}
-
-int		check_syntax(char *buf, int i, int len, int istoken)
-{
-	while (i < len)
-	{
-		if (is_inquote(buf, i))
-		{
-			i++;
-			continue ;
-		}
-		if (buf[i] != ' ' && (buf[i] != ';' && buf[i] != '|' && buf[i] != '>'))
-			istoken = 1;
-		else if (istoken == 1 && (buf[i] == ';'
-			|| buf[i] == '|' || buf[i] == '\n'))
-			istoken = 2;
-		else if (buf[i] != ' ')
-			istoken = -1;
-		if (!check_syntax_if(buf, i, istoken))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-char	*remove_escape(char *buf, int start)
-{
-	char	*re;
-	int		re_i;
-
-	re_i = start;
-	re = buf;
-	while (buf[start] != '\0')
-	{
-		if (!is_inquote(buf, start) && buf[start] == '\\')
-		{
-			if (buf[start + 1] != '\n')
-			{
-				re[re_i++] = buf[start + 1];
-				start += 2;
-			}
-			else
-				return (0);
-			continue ;
-		}
-		else
-			re[re_i++] = buf[start++];
-	}
-	re[re_i] = '\0';
-	return (re);
-}
-
-int		pre_parsing(char *buf)
-{
-	if (ft_strlen(buf) - 1 == 0)
-		return (0);
-	if (!buf || !check_quote(buf, 0, 0, 0))
-		return (printf("error : match quote\n") * 0);
-	if (!buf || check_syntax(buf, 0, ft_strlen(buf) - 1, 0) == 0)
-		return (0);
-	buf = remove_escape(buf, 0);
-	if (!buf)
-		return (0);
-	buf = remove_empty(buf, 0);
-	if (!buf)
-		return (0);
-	return (1);
 }
 
 t_cmd	*parsing_cmd(char *buf)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
+#    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/10 19:51:24 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/11 13:53:33 by hyopark          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,13 +28,21 @@ SRC=	main.c\
 		prompt.c\
 		signal.c\
 		parsing_change.c\
+		parsing_change_env.c\
+		parsing_change_double.c\
+		parsing_change_single.c\
+		parsing_change_esc.c\
 		parsing_utill_free.c\
 		parsing_utill_inquote.c\
-		parsing_utill_list.c\
+		parsing_utill_list_cmd.c\
+		parsing_utill_list_red.c\
 		parsing_utill_str.c\
 		parsing_save_redirection.c\
+		parsing_util_pre.c\
+		parsing_util.c\
 		parsing.c\
 		exec.c\
+		exec_red.c\
 		exec_cd.c\
 		exec_echo.c\
 		exec_export.c\

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utill_free.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:34:27 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 13:52:29 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void	free_red(t_red **red)
 	while ((*red) != NULL)
 	{
 		next = (*red)->next;
-		if ((*red)->file_name != NULL)
+		if ((*red)->file_name)
+		{
 			free((*red)->file_name);
+		}
 		free((*red));
 		(*red) = next;
 	}
@@ -51,7 +53,7 @@ void	free_cmd(t_cmd **cmd)
 	while ((*cmd) != NULL)
 	{
 		next = (*cmd)->next;
-		if ((*cmd)->red != NULL)
+		if ((*cmd)->red)
 		{
 			free_red(&((*cmd)->red));
 			free((*cmd)->red);

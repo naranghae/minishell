@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:51:06 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/11 15:02:19 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		equal_is(char *cmd)
 
 void	store_contents(char **contents, t_env *env_parse, t_env *exec_env)
 {
-	if (env_parse->contents != NULL)
+	if (env_parse->contents != NULL && exec_env->equal == 1)
 	{
 		free(exec_env->contents);
 		*contents = ft_strdup(env_parse->contents);
@@ -83,6 +83,9 @@ int		env_add(char *cmd, t_env *env_info)
 		return (0);
 	}
 	else
+	{
+		printf("%s, %d\n", env_parse->name, env_parse->equal);
 		add_back_env(&env_info, env_parse);
+	}
 	return (0);
 }

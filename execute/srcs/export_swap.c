@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:51:30 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/11 14:40:37 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ void	envsort_print(char **envp)
 	swap_func(&tmp, envsort, listnum);
 	while (tmp != NULL)
 	{
-		if (tmp->equal)
+		if (tmp->equal == 1)
 			printf("declare -x %s=\"%s\"\n", tmp->name, tmp->contents);
-		else
+		else if (tmp->equal == 0)
 			printf("declare -x %s\n", tmp->name);
 		tmp = tmp->next;
 	}

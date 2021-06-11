@@ -6,16 +6,14 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:34:37 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:54:27 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/11 16:46:37 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
 
-void	tokenize_red(t_cmd **tmp, int i, int idx)
+void	tokenize_red(t_cmd **tmp, int i, int idx, char *free_p)
 {
-	char	*free_p;
-
 	if (idx == 0 && ((*tmp)->cmd[idx][i] != '>' || (*tmp)->cmd[idx][i] != '<'
 		|| ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i + 1] != '>')))
 	{
@@ -28,13 +26,15 @@ void	tokenize_red(t_cmd **tmp, int i, int idx)
 		while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i]
 			!= '<' && (*tmp)->cmd[idx][i] != '\0')
 			i++;
-		if ((*tmp)->cmd[idx][i] == '\0')
-			break ;
 		(*tmp)->cmd[idx][i] = '\0';
-		free((*tmp)->cmd[idx]);
-		free_p = ft_strtrim((*tmp)->cmd[idx], " ");
-		(*tmp)->cmd[idx] = ft_strtrim((*tmp)->cmd[idx], " ");
-		// free(free_p);
+		if (i == 0)
+		{
+			free((*tmp)->cmd[idx]);
+			break ;
+		}
+		free_p = (*tmp)->cmd[idx];
+		(*tmp)->cmd[idx] = ft_strtrim(free_p, " ");
+		free(free_p);
 		break ;
 	}
 	if (ft_strlen((*tmp)->cmd[idx]) == 0)
@@ -64,12 +64,13 @@ void	save_red_cmd_add(t_cmd **tmp, int *i, int *idx, t_save_red *r_v)
 
 void	save_red_cmd(t_cmd **tmp, int i, int idx)
 {
-	t_save_red r_v;
+	t_save_red  r_v;
+	char		free_p;
 
 	while ((*tmp)->cmd[idx][i] != '\0')
 	{
 		init_r_v(&r_v);
-		while (((*tmp)->cmd[idx][i] != '\0' && is_inquote((*tmp)->cmd[idx], i))
+		while (((*tmp)->cmd[idx][i] != '\0' && is_inquote((*tmp)->cmd[idx], ft_strlen((*tmp)->cmd[idx])))
 			|| ((*tmp)->cmd[idx][i] != '>' &&
 				(*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0'))
 			i++;
@@ -84,7 +85,7 @@ void	save_red_cmd(t_cmd **tmp, int i, int idx)
 		save_red_cmd_add(tmp, &i, &idx, &r_v);
 	}
 	if (r_v.type)
-		tokenize_red(tmp, 0, idx);
+		tokenize_red(tmp, 0, idx, &free_p);
 }
 
 void	save_redirection(t_cmd **list)

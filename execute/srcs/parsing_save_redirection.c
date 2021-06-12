@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:34:37 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 16:46:37 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/12 15:06:49 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,14 @@ void	save_red_cmd_add(t_cmd **tmp, int *i, int *idx, t_save_red *r_v)
 
 void	save_red_cmd(t_cmd **tmp, int i, int idx)
 {
-	t_save_red  r_v;
+	t_save_red	r_v;
 	char		free_p;
 
 	while ((*tmp)->cmd[idx][i] != '\0')
 	{
 		init_r_v(&r_v);
-		while (((*tmp)->cmd[idx][i] != '\0' && is_inquote((*tmp)->cmd[idx], ft_strlen((*tmp)->cmd[idx])))
+		while (((*tmp)->cmd[idx][i] != '\0' &&
+			is_inquote((*tmp)->cmd[idx], ft_strlen((*tmp)->cmd[idx])))
 			|| ((*tmp)->cmd[idx][i] != '>' &&
 				(*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0'))
 			i++;

@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 19:21:24 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/08 18:53:02 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/12 15:02:03 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		exec_echo(t_cmd *exec_cmd)
 		if (pipe(exec_cmd->fd) < 0)
 			exit(0);
 	if (exec_cmd->cmd[1] == NULL)
-		printf("\n");
+		write(1, "\n", 1);
 	else if (exec_cmd->cmd[1] && !ft_strncmp(exec_cmd->cmd[1], "-n", 2))
 	{
 		if (!ft_strncmp(exec_cmd->cmd[1], "-n ", 3))
@@ -28,7 +28,10 @@ int		exec_echo(t_cmd *exec_cmd)
 			printf("");
 	}
 	else
-		printf("%s\n", exec_cmd->cmd[1]);
+	{
+		write(1, exec_cmd->cmd[1], ft_strlen(exec_cmd->cmd[1]));
+		write(1, "\n", 1);
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:59:09 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/12 15:05:46 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,12 @@ typedef struct			s_get_env
 	char				**envpp;
 	t_env				*env_parse;
 }						t_get_env;
+
+typedef struct			s_io
+{
+	int					tmp_in;
+	int					tmp_out;
+}						t_io;
 
 void					exec_redirection(t_cmd *exec_cmd);
 void					close_fd(t_red *red);

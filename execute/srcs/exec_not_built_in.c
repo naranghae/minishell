@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:31:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:50:24 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/12 15:04:07 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			pjoin = ft_strjoin(path[i], "/");
 			pathjoin = ft_strjoin(pjoin, exec_cmd->cmd[0]);
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-				exit(write(1,"error\n",6) * 0);
+				exit(write(1, "error\n", 6) * 0);
 			if (i == 0)
 				res = execve(exec_cmd->cmd[0], exec_cmd->cmd, envp);
 			else

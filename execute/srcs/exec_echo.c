@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 19:21:24 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/12 15:02:03 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:33:30 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		pre_exec_echo(t_cmd *exec_cmd, pid_t *pid)
 
 	res = 0;
 	status = 0;
-	if (exec_cmd->has_pip)
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 	{
 		if (*pid == 0)
 		{

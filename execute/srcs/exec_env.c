@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:23:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:50:16 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:33:34 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 
 	res = 0;
 	status = 0;
-	if (exec_cmd->has_pip)
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 	{
 		if (*pid == 0)
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_swap.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 14:40:37 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:37:14 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ void	envsort_print(char **envp)
 	swap_func(&tmp, envsort, listnum);
 	while (tmp != NULL)
 	{
-		if (tmp->equal == 1)
+		if (tmp->equal == 1 && ft_strncmp("_", tmp->name,
+			ft_strlen(tmp->name)) != 0)
 			printf("declare -x %s=\"%s\"\n", tmp->name, tmp->contents);
 		else if (tmp->equal == 0)
 			printf("declare -x %s\n", tmp->name);

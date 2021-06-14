@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_add.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 15:02:19 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:36:25 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,29 @@ int		equal_is(char *cmd)
 
 void	store_contents(char **contents, t_env *env_parse, t_env *exec_env)
 {
-	if (env_parse->contents != NULL && exec_env->equal == 1)
+	if ((exec_env->contents != NULL) && (exec_env->equal == 1))
 	{
 		free(exec_env->contents);
-		*contents = ft_strdup(env_parse->contents);
-		exec_env->equal = 1;
+		if (env_parse->contents)
+			*contents = ft_strdup(env_parse->contents);
+		else
+			*contents = NULL;
 	}
-	else
+	else if ((exec_env->contents == NULL) && (exec_env->equal == 1))
 	{
-		*contents = NULL;
-		exec_env->equal = 0;
+		if (env_parse->contents)
+			*contents = ft_strdup(env_parse->contents);
+		else
+			*contents = NULL;
+	}
+	else if (exec_env->equal == 0)
+	{
+		if (env_parse->contents)
+			*contents = ft_strdup(env_parse->contents);
+		else
+			*contents = NULL;
+		if (env_parse->equal == 1)
+			exec_env->equal = 1;
 	}
 }
 
@@ -56,6 +69,8 @@ int		name_search(t_env *env_parse, t_env *env_info)
 		ft_strlen(env_parse->name) : ft_strlen(exec_env->name);
 		if (!ft_strncmp(env_parse->name, exec_env->name, max))
 		{
+			if (env_parse->equal == 0)
+				return (1);
 			store_contents(&contents, env_parse, exec_env);
 			exec_env->contents = contents;
 			return (1);
@@ -67,10 +82,8 @@ int		name_search(t_env *env_parse, t_env *env_info)
 
 int		env_add(char *cmd, t_env *env_info)
 {
-	int		i;
 	t_env	*env_parse;
 
-	i = -1;
 	if (!(env_parse = (t_env *)malloc(sizeof(*env_parse))))
 		return (0);
 	save_env(env_parse, cmd, '=');

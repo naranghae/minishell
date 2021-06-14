@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_header.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:46:25 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:31:50 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <errno.h>
 # include <termios.h>
 # include <termcap.h>
+# include <string.h>
 # include "../libft/libft.h"
 
 # define BACKSPACE 127
@@ -74,7 +75,7 @@ t_env						*parsing_env(char **env);
 t_env						*new_env(void);
 void						signal_func(void);
 void						save_env(t_env *env_parse, char *str, int c);
-void						add_back_env(t_env **lst, t_env *new);
+void						add_back_env(t_env **lst, t_env *newenv);
 t_env						*new_env(void);
 t_env						*last_env(t_env *lst);
 void						init_termios(void);
@@ -94,7 +95,7 @@ char						*history_up(t_history **cmd, t_cursor **cursor);
 char						*history_down(t_history **cmd, t_cursor **cursor);
 t_history					*init_history(void);
 void						history_ht(t_history **head, t_history **tail);
-void						add_back_his(t_history **lst, t_history *new);
+void						add_back_his(t_history **lst, t_history *newhis);
 t_history					*new_his_buf(char *buf);
 t_history					*new_his(void);
 char						*append_char(t_cursor cursor);
@@ -115,5 +116,4 @@ void						now_input(t_cursor *cursor);
 void						history_future(t_cursor *cursor,
 								t_history **history);
 void						input_mode(t_cursor *cursor, t_history **history);
-
 #endif

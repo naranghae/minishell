@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:23:48 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:31:11 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 20:33:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,22 @@
 
 int		exec_cd(t_cmd *exec_cmd)
 {
-	char buf[1024];
+	char	buf[1024];
+	int		res;
 
+	res = 0;
 	if (exec_cmd->has_pip)
 		if (pipe(exec_cmd->fd) < 0)
 			exit(0);
 	getcwd(buf, 1024);
-	if (chdir(exec_cmd->cmd[1]) == -1)
-		printf("failed, cd\n");
+	res = chdir(exec_cmd->cmd[1]);
+	if (res == -1)
+	{
+		ft_putstr_fd("hyochanyoung: cd: ", 2);
+		ft_putstr_fd(exec_cmd->cmd[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (1);
+	}
 	return (0);
 }
 
@@ -33,7 +41,7 @@ int		pre_exec_cd(t_cmd *exec_cmd, pid_t *pid)
 
 	res = 0;
 	status = 0;
-	if (exec_cmd->has_pip)
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 	{
 		if (*pid == 0)
 		{

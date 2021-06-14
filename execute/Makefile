@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+         #
+#    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/11 13:53:33 by hyopark          ###   ########.fr        #
+#    Updated: 2021/06/14 20:52:29 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 
-CC				= gcc #-g3 -fsanitize=address
+CC				= gcc -g3 -fsanitize=address
 
 CFLAGS			= -Wall -Wextra -Werror -lncurses -ltermcap
 
@@ -62,7 +62,8 @@ SRC=	main.c\
 		termcap.c \
 		termcap2.c \
 		input_util.c \
-		input_util2.c
+		input_util2.c \
+		unset_except.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

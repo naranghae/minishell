@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 13:47:11 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:36:02 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		exec_built_in(t_cmd *exec_cmd, t_env **env_info)
 	int		re;
 
 	re = 0;
-	if (exec_cmd->has_pip)
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 		pipe_fork(exec_cmd, &pid);
 	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 2))
 		re = pre_exec_cd(exec_cmd, &pid);
@@ -109,6 +109,7 @@ int		exec(t_cmd **cmd, t_env **env_info)
 
 	i = -1;
 	set_termios(SIGON);
+	path = NULL;
 	exec_env = *env_info;
 	while (exec_env->next != NULL)
 	{
@@ -117,6 +118,7 @@ int		exec(t_cmd **cmd, t_env **env_info)
 			path = ft_split(exec_env->contents, ':');
 	}
 	pre_exec_cmd(cmd, env_info, path);
-	free_split(path);
+	if (path != NULL)
+		free_split(path);
 	return (0);
 }

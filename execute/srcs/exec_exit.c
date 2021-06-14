@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:24:02 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 15:31:04 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 20:33:58 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 int		ft_exit(int exitcode)
 {
 	write(1, "exit\n", 5);
+	g_errcode = exitcode;
 	exit(exitcode);
 }
 
@@ -55,7 +56,7 @@ int		pre_exec_exit(t_cmd *exec_cmd, pid_t *pid)
 
 	res = 0;
 	status = 0;
-	if (exec_cmd->has_pip)
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 	{
 		if (*pid == 0)
 		{

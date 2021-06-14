@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_parsing.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/12 15:05:46 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:32:20 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,8 @@ int						change_single_qute(t_cmd *tmp, int idx, int i);
 void					change_qute(t_cmd **list, t_env *env, int i);
 t_cmd					*parsing_cmd(char *buf);
 t_red					*last_red(t_red *lst);
-void					add_back_cmd(t_cmd **lst, t_cmd *new);
-void					add_back_red(t_red **lst, t_red *new);
+void					add_back_cmd(t_cmd **lst, t_cmd *newcmd);
+void					add_back_red(t_red **lst, t_red *newcmd);
 t_cmd					*new_cmd(char **cmd);
 t_red					*new_red(char *file_name, int type);
 void					init_cmd(t_cmd **head, t_cmd **tail, t_p_c *p_v);
@@ -184,4 +184,13 @@ void					exec_intro(t_cursor *cursor, t_cmd *cmd,\
 							t_env *env_info);
 void					env_clean(t_env *env_info);
 void					swaplist(t_env *env, t_env *env_next);
+int						except_unset(char *export_cmd);
+int						quo_mark(char *export_cmd, int i);
+int						cmd_error(char *cmd, int error);
+int						except_name(int str, int i);
+int						last_check(char *export_cmd, int i);
+int						unset_quo_mark(char *export_cmd, int i);
+int						unset_error(char *cmd, int error);
+int						special_string(char *export_cmd, int i);
+int						except_unset(char *export_cmd);
 #endif

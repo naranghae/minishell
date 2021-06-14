@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_unset.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:43:25 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:50:31 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 17:39:56 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		env_unset(char *cmd, t_env *env_info)
 	export_cmd = ft_split(tmp, ' ');
 	while (export_cmd[++i] != NULL)
 	{
-		if (except_check(export_cmd[i], 0))
+		if (except_unset(export_cmd[i]))
 			error = 1;
 		else
 			env_delete(export_cmd[i], env_info);
@@ -81,7 +81,7 @@ int		pre_exec_unset(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 
 	res = 0;
 	status = 0;
-	if (exec_cmd->has_pip)
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 	{
 		if (*pid == 0)
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 19:14:29 by hyopark           #+#    #+#             */
-/*   Updated: 2021/06/11 14:00:19 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 17:21:40 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void	pipe_fork(t_cmd *exec_cmd, pid_t *pid)
 {
+	g_errcode = 0;
 	if (pipe(exec_cmd->fd) < 0)
 		exit(0);
 	(*pid) = fork();
@@ -26,7 +27,10 @@ void	close_pipe(pid_t *pid, t_cmd *exec_cmd, int res, int status)
 {
 	waitpid(*pid, &status, 0);
 	if (WIFEXITED(status))
+	{
 		res = WEXITSTATUS(status);
+		g_errcode = res;
+	}
 	if (exec_cmd->has_pip)
 	{
 		close(exec_cmd->fd[1]);

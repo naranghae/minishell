@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 18:32:13 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 20:27:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,4 +177,13 @@ void					exec_intro(t_cursor *cursor, t_cmd *cmd,\
 							t_env *env_info);
 void					env_clean(t_env *env_info);
 void					swaplist(t_env *env, t_env *env_next);
+int						except_unset(char *export_cmd);
+int						quo_mark(char *export_cmd, int i);
+int						cmd_error(char *cmd, int error);
+int						except_name(int str, int i);
+int						last_check(char *export_cmd, int i);
+int						unset_quo_mark(char *export_cmd, int i);
+int						unset_error(char *cmd, int error);
+int						special_string(char *export_cmd, int i);
+int						except_unset(char *export_cmd);
 #endif

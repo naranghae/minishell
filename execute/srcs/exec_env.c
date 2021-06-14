@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:23:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 18:38:52 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 17:39:12 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 
 	res = 0;
 	status = 0;
-	if (exec_cmd->has_pip)
+	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 	{
 		if (*pid == 0)
 		{

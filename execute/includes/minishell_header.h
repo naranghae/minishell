@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 12:03:17 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 18:06:38 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 14:53:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <errno.h>
 # include <termios.h>
 # include <termcap.h>
+# include <string.h>
 # include "../libft/libft.h"
 
 # define BACKSPACE 127

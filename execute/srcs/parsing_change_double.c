@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 19:42:06 by hyopark           #+#    #+#             */
-/*   Updated: 2021/06/10 19:38:14 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 15:02:23 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,22 @@ void	change_double_qute_init(t_cmd **tmp, int *ix, int *i, t_st_end *st_end)
 {
 	(*tmp)->cmd[*ix][(*i)++] = '\0';
 	st_end->st = *i;
-	while ((*tmp)->cmd[*ix][*i] != '\0' && !((*tmp)->cmd[*ix][*i]
-		== '\"' && *i > 0 && (*tmp)->cmd[*ix][(*i) - 1] != '\\'))
+	// while ((*tmp)->cmd[*ix][*i] != '\0' && !((*tmp)->cmd[*ix][*i]
+	// 	== '\"' && *i > 0 && (*tmp)->cmd[*ix][(*i) - 1] != '\\'))
+	// {
+	// 	(*i)++;
+	// }
+	while ((*tmp)->cmd[*ix][*i] != '\0')
 	{
+		if ((*tmp)->cmd[*ix][*i] == '\\')
+		{
+			(*i)++;
+			if ((*tmp)->cmd[*ix][*i] != '\0')
+				(*i)++;
+			continue ;
+		}
+		if ((*tmp)->cmd[*ix][*i] == '"')
+			break;
 		(*i)++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/12 15:07:21 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 13:47:11 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path, t_io *std)
 		exec_redirection((*exec_cmd));
 	if (is_built_in((*exec_cmd)))
 		exec_built_in((*exec_cmd), env_set);
-	else
+	else if (ft_strncmp((*exec_cmd)->cmd[0], " ", 1))
 		exec_not_built_in((*exec_cmd), path, (*env_set)->envp);
 	if ((*exec_cmd)->red != NULL)
 	{

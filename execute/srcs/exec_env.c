@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:23:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/01 18:23:43 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 18:38:52 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,48 +15,42 @@
 
 int		listlen(t_env *env_info)
 {
-	t_env	*envCount;
-	int	i;
+	t_env	*envcount;
+	int		i;
 
 	i = 0;
-	envCount = env_info->next;
-	while (envCount != NULL)
+	envcount = env_info->next;
+	while (envcount != NULL)
 	{
-		if (envCount->equal)
+		if (envcount->equal)
 			i++;
-		envCount = envCount->next;
+		envcount = envcount->next;
 	}
 	return (i);
 }
 
-int		listlenAll(t_env *env_info)
+int		listlen_all(t_env *env_info)
 {
-	t_env	*envCount;
-	int	i;
+	t_env	*envcount;
+	int		i;
 
 	i = 0;
-	envCount = env_info->next;
-	while (envCount != NULL)
+	envcount = env_info->next;
+	while (envcount != NULL)
 	{
 		i++;
-		envCount = envCount->next;
+		envcount = envcount->next;
 	}
 	return (i);
 }
 
-void	write_env(t_env	*exec_env)
+void	write_env(t_env *exec_env)
 {
 	if (exec_env->equal)
-	{
-		//write(1, exec_env->name, ft_strlen(exec_env->name));
-		//write(1, "=", 1);
-		//write(1, exec_env->contents, ft_strlen(exec_env->contents));
-		//write(1, "\n", 1);
 		printf("%s=%s\n", exec_env->name, exec_env->contents);
-	}
 }
 
-int	exec_env(t_env *env_info)
+int		exec_env(t_env *env_info)
 {
 	t_env	*exec_env;
 
@@ -67,10 +61,9 @@ int	exec_env(t_env *env_info)
 		exec_env = exec_env->next;
 	}
 	return (0);
-
 }
 
-void		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env  *env_info)
+int		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 {
 	int status;
 	int res;
@@ -83,13 +76,15 @@ void		pre_exec_env(t_cmd *exec_cmd, pid_t *pid, t_env  *env_info)
 		{
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
 				exit(0);
-			if (exec_cmd->prev && exec_cmd->prev->has_pip && dup2(exec_cmd->prev->fd[0], 0) < 0)
+			if (exec_cmd->prev && exec_cmd->prev->has_pip &&
+				dup2(exec_cmd->prev->fd[0], 0) < 0)
 				exit(0);
 			exit(exec_env(env_info));
 		}
 		else if (*pid > 0)
 			close_pipe(pid, exec_cmd, res, status);
+		return (0);
 	}
 	else
-		exec_env(env_info);
+		return (exec_env(env_info));
 }

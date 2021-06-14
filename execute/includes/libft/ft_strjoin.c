@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/08 17:33:28 by chanykim          #+#    #+#             */
-/*   Updated: 2020/10/15 15:37:37 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 13:45:18 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	len2;
 	int		i;
 
+	if (!s1)
+		return (ft_strdup(s2));
 	if (!s1 || !s2)
 		return (NULL);
 	len1 = ft_strlen(s1);

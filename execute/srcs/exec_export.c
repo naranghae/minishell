@@ -3,39 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   exec_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/03 20:01:14 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/11 14:17:21 by hyopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int		parsingEnv(char *cmd, t_env *env_info)
+int		parsing_check_env(char *cmd, t_env *env_info)
 {
 	char			*tmp;
-	char			**exportCmd;
+	char			**export_cmd;
 	int				i;
 	int				error;
 
 	error = 0;
 	i = -1;
 	tmp = cmd;
-	exportCmd = ft_split(tmp, ' ');
-	while (exportCmd[++i] != NULL)
+	export_cmd = ft_split(tmp, ' ');
+	while (export_cmd[++i] != NULL)
 	{
-		if ((error = exceptCheck(exportCmd[i], 1)) > 0)
-		{
-			if (error == 2)
-				return (1);
-		}
-		else
-			envAdd(exportCmd[i], env_info);
+		error = except_check(export_cmd[i], 1);
+		if (error == 0)
+			env_add(export_cmd[i], env_info);
 	}
-	free_split(exportCmd);
-	if (error == 1)
+	free_split(export_cmd);
+	if (error > 0)
 		return (1);
 	return (0);
 }
@@ -44,22 +40,22 @@ int		exec_export(t_cmd *exec_cmd, t_env *env_info)
 {
 	if (exec_cmd->cmd[1] == NULL)
 	{
-		envSort_print(env_info);
+		envsort_print(env_info->envp);
 		return (0);
 	}
 	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)
 		return (1);
 	if ((exec_cmd->cmd[1] != NULL) && exec_cmd->prev->has_pip)
 		return (1);
-	if (parsingEnv(exec_cmd->cmd[1], env_info))
-		return (0);
+	if (parsing_check_env(exec_cmd->cmd[1], env_info))
+		return (1);
 	return (0);
 }
 
-void	pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
+int		pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 {
-	int status;
-	int res;
+	int	status;
+	int	res;
 
 	res = 0;
 	status = 0;
@@ -68,14 +64,16 @@ void	pre_exec_export(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 		if (*pid == 0)
 		{
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-				exit(0);
-			if (exec_cmd->prev && exec_cmd->prev->has_pip && dup2(exec_cmd->prev->fd[0], 0) < 0)
-				exit(0);
+				exit(1);
+			if (exec_cmd->prev && exec_cmd->prev->has_pip &&
+				dup2(exec_cmd->prev->fd[0], 0) < 0)
+				exit(1);
 			exit(exec_export(exec_cmd, env_info));
 		}
 		else if (*pid > 0)
 			close_pipe(pid, exec_cmd, res, status);
+		return (0);
 	}
 	else
-		exec_export(exec_cmd, env_info);
+		return (exec_export(exec_cmd, env_info));
 }

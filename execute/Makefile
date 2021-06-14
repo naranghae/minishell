@@ -6,13 +6,13 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/01 18:24:30 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/11 18:38:11 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 
-CC				= gcc -g3 -fsanitize=address
+CC				= gcc #-g3 -fsanitize=address
 
 CFLAGS			= -Wall -Wextra -Werror -lncurses -ltermcap
 
@@ -23,29 +23,46 @@ LIBFT = libft.a
 SRCD = ./srcs/
 
 SRC=	main.c\
+		main_util.c \
 		env.c\
 		prompt.c\
 		signal.c\
 		parsing_change.c\
+		parsing_change_env.c\
+		parsing_change_double.c\
+		parsing_change_single.c\
+		parsing_change_esc.c\
 		parsing_utill_free.c\
 		parsing_utill_inquote.c\
-		parsing_utill_list.c\
+		parsing_utill_list_cmd.c\
+		parsing_utill_list_red.c\
 		parsing_utill_str.c\
 		parsing_save_redirection.c\
+		parsing_util_pre.c\
+		parsing_util.c\
 		parsing.c\
 		exec.c\
+		exec_red.c\
 		exec_cd.c\
 		exec_echo.c\
 		exec_export.c\
 		exec_env.c\
 		exec_not_built_in.c\
 		exec_util.c \
+		exec_exit_code.c\
 		export_add.c \
 		export_swap.c \
 		export_except.c \
 		exec_unset.c \
 		exec_pwd.c \
-		exec_exit.c
+		exec_exit.c \
+		termi.c \
+		history.c \
+		history_util.c \
+		termcap.c \
+		termcap2.c \
+		input_util.c \
+		input_util2.c
 
 SRCM = $(addprefix $(SRCD), $(SRC))
 

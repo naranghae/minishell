@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 19:21:24 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:33:30 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 21:10:58 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		pre_exec_echo(t_cmd *exec_cmd, pid_t *pid)
 			exit(exec_echo(exec_cmd));
 		}
 		else if (*pid > 0)
-			close_pipe(pid, exec_cmd, res, status);
+			close_pipe(pid, exec_cmd, status);
 		return (0);
 	}
 	else

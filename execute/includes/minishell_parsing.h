@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:32:20 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 21:09:26 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void					pipe_fork(t_cmd *exec_cmd, pid_t *pid);
 int						pre_exec_echo(t_cmd *exec_cmd,
 	pid_t *pid);
 void					close_pipe(pid_t *pid, t_cmd *exec_cmd,
-	int res, int status);
+	int status);
 int						in_singlequote(char *buf, int end, int single_q,
 	int double_q);
 int						in_doublequote(char *buf, int end, int single_q,

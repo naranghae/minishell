@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:56:58 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 21:11:40 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int		pre_exec_pwd(t_cmd *exec_cmd, pid_t *pid)
 		if (*pid == 0)
 		{
 			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-				exit(0);
+				exit(1);
 			if (exec_cmd->prev && exec_cmd->prev->has_pip &&
 				dup2(exec_cmd->prev->fd[0], 0) < 0)
-				exit(0);
+				exit(1);
 			exit(exec_pwd());
 		}
 		else if (*pid > 0)
-			close_pipe(pid, exec_cmd, res, status);
+			close_pipe(pid, exec_cmd, status);
 		return (0);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 19:42:06 by hyopark           #+#    #+#             */
-/*   Updated: 2021/06/14 20:37:51 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 21:23:50 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ void	change_qute(t_cmd **list, t_env *env, int i)
 			if (ix == 0 && !ft_strncmp(tmp->cmd[ix], "$?", 2))
 				break ;
 			i = 0;
-			printf("1:%s\n",tmp->cmd[ix]);
+			//printf("1:%s\n",tmp->cmd[ix]);
 			change_env(tmp, env, ix, i);
-			printf("2:%s\n",tmp->cmd[ix]);
+			//printf("2:%s\n",tmp->cmd[ix]);
 			change_double_qute(tmp, ix, i, &st_end);
-			printf("3:%s\n",tmp->cmd[ix]);
+			//printf("3:%s\n",tmp->cmd[ix]);
 			change_escape(&tmp, ix, i);
-			printf("4:%s\n",tmp->cmd[ix]);
+			//printf("4:%s\n",tmp->cmd[ix]);
 			ix++;
 		}
 		tmp = tmp->next;

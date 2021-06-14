@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:43:25 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:57:03 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 22:02:33 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	env_delete(char *cmd, t_env *env_info)
 	}
 }
 
-int		env_unset(char *cmd, t_env *env_info)
+int		env_unset(t_cmd *cmd, t_env *env_info)
 {
 	char			*tmp;
 	char			**export_cmd;
@@ -50,13 +50,17 @@ int		env_unset(char *cmd, t_env *env_info)
 
 	error = 0;
 	i = -1;
-	tmp = cmd;
+	tmp = cmd->cmd[1];
 	export_cmd = ft_split(tmp, ' ');
 	while (export_cmd[++i] != NULL)
 	{
 		if (except_unset(export_cmd[i]))
 			error = 1;
-		else
+		if ((cmd->cmd[1] != NULL) && cmd->has_pip)
+			return (1);
+		else if ((cmd->cmd[1] != NULL) && cmd->prev->has_pip)
+			return (1);
+		if (error == 1)
 			env_delete(export_cmd[i], env_info);
 	}
 	free_split(export_cmd);
@@ -67,10 +71,8 @@ int		exec_unset(t_cmd *exec_cmd, t_env *env_info)
 {
 	if (exec_cmd->cmd[1] == NULL)
 		return (0);
-	else if ((exec_cmd->cmd[1] != NULL) && exec_cmd->has_pip)
-		return (1);
 	else
-		return (env_unset(exec_cmd->cmd[1], env_info));
+		return (env_unset(exec_cmd, env_info));
 	return (0);
 }
 
@@ -93,7 +95,7 @@ int		pre_exec_unset(t_cmd *exec_cmd, pid_t *pid, t_env *env_info)
 			exit(exec_unset(exec_cmd, env_info));
 		}
 		else if (*pid > 0)
-			close_pipe(pid, exec_cmd, res, status);
+			close_pipe(pid, exec_cmd, status);
 		return (0);
 	}
 	else

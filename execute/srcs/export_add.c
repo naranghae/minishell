@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:36:25 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 21:27:07 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,6 @@ int		env_add(char *cmd, t_env *env_info)
 		return (0);
 	}
 	else
-	{
-		printf("%s, %d\n", env_parse->name, env_parse->equal);
 		add_back_env(&env_info, env_parse);
-	}
 	return (0);
 }

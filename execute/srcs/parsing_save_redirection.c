@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_save_redirection.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:34:37 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 16:46:37 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:38:04 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,21 @@ void	tokenize_red(t_cmd **tmp, int i, int idx, char *free_p)
 	}
 	while ((*tmp)->cmd[idx][i] != '\0')
 	{
-		while ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i]
-			!= '<' && (*tmp)->cmd[idx][i] != '\0')
+		while (((*tmp)->cmd[idx][i] != '\0' && is_inquote((*tmp)->cmd[idx], i))
+			|| ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i] != '<'
+				&& (*tmp)->cmd[idx][i] != '\0'))
 			i++;
 		(*tmp)->cmd[idx][i] = '\0';
-		if (i == 0)
-		{
-			free((*tmp)->cmd[idx]);
-			break ;
-		}
 		free_p = (*tmp)->cmd[idx];
 		(*tmp)->cmd[idx] = ft_strtrim(free_p, " ");
 		free(free_p);
 		break ;
 	}
 	if (ft_strlen((*tmp)->cmd[idx]) == 0)
+	{
+		free((*tmp)->cmd[idx]);
 		(*tmp)->cmd[idx] = NULL;
+	}
 }
 
 void	init_r_v(t_save_red *r_v)
@@ -64,13 +63,14 @@ void	save_red_cmd_add(t_cmd **tmp, int *i, int *idx, t_save_red *r_v)
 
 void	save_red_cmd(t_cmd **tmp, int i, int idx)
 {
-	t_save_red  r_v;
+	t_save_red	r_v;
 	char		free_p;
 
 	while ((*tmp)->cmd[idx][i] != '\0')
 	{
 		init_r_v(&r_v);
-		while (((*tmp)->cmd[idx][i] != '\0' && is_inquote((*tmp)->cmd[idx], ft_strlen((*tmp)->cmd[idx])))
+		while (((*tmp)->cmd[idx][i] != '\0' &&
+			is_inquote((*tmp)->cmd[idx], i))
 			|| ((*tmp)->cmd[idx][i] != '>' &&
 				(*tmp)->cmd[idx][i] != '<' && (*tmp)->cmd[idx][i] != '\0'))
 			i++;

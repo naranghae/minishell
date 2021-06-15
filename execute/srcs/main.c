@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 19:42:49 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 20:37:26 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ int		main(int argc, char **argv, char **envp)
 		input_mode(&cursor, &history);
 		exec_intro(&cursor, cmd, env_info);
 	}
-	return (121);
+	return (0);
 }

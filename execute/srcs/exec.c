@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:27:53 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 20:36:02 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,26 +63,19 @@ int		is_built_in(t_cmd *exec_cmd)
 		return (0);
 }
 
-void	exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path)
+void	exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path, t_io *std)
 {
-	int		tmp_in;
-	int		tmp_out;
-	t_cmd	*exec_cmd_a;
-
-	tmp_in = dup(0);
-	tmp_out = dup(1);
-	exec_cmd_a = *exec_cmd;
 	change_qute(exec_cmd, *env_set, 0);
 	if ((*exec_cmd)->red != NULL)
 		exec_redirection((*exec_cmd));
 	if (is_built_in((*exec_cmd)))
 		exec_built_in((*exec_cmd), env_set);
-	else
+	else if (ft_strncmp((*exec_cmd)->cmd[0], " ", 1))
 		exec_not_built_in((*exec_cmd), path, (*env_set)->envp);
 	if ((*exec_cmd)->red != NULL)
 	{
-		dup2(tmp_out, 1);
-		dup2(tmp_in, 0);
+		dup2(std->tmp_out, 1);
+		dup2(std->tmp_in, 0);
 		close_fd((*exec_cmd)->red);
 	}
 }
@@ -90,7 +83,10 @@ void	exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path)
 void	pre_exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 {
 	t_cmd	*exec_cmd;
+	t_io	std;
 
+	std.tmp_in = dup(0);
+	std.tmp_out = dup(1);
 	exec_cmd = (*cmd)->next;
 	if ((*env_set)->envp)
 		free_split((*env_set)->envp);
@@ -100,7 +96,7 @@ void	pre_exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 		return ;
 	while (exec_cmd != (*cmd)->tail)
 	{
-		exec_cmd_sur(&exec_cmd, env_set, path);
+		exec_cmd_sur(&exec_cmd, env_set, path, &std);
 		exec_cmd = exec_cmd->next;
 	}
 }

@@ -6,13 +6,13 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/14 19:33:42 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/15 14:16:05 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 
-CC				= gcc -g3 -fsanitize=address
+CC				= gcc #-g3 -fsanitize=address
 
 CFLAGS			= -Wall -Wextra -Werror -lncurses -ltermcap
 

@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_util_pre.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:11 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/10 19:36:25 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/14 20:38:14 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_parsing.h"
+
+char	*remove_empty_red(char *buf)
+{
+	char	*re;
+	int		re_i;
+	int		i;
+
+	re_i = 0;
+	re = buf;
+	i = 0;
+	while (buf[i] != '\0')
+	{
+		if (!is_inquote(buf, i) && buf[i] == ' ')
+		{
+			if(i > 0 && (buf[i - 1] == '>' || buf[i - 1] == '<'))
+				while (buf[i] == ' ' && buf[i] != '\0')
+					i++;
+			else
+				re[re_i++] = buf[i++];
+			continue ;
+		}
+		else
+			re[re_i++] = buf[i];
+		i++;
+	}
+	re[re_i] = '\0';
+	return (re);
+}
 
 char	*remove_empty(char *buf, int start)
 {
@@ -33,6 +61,7 @@ char	*remove_empty(char *buf, int start)
 		start++;
 	}
 	re[re_i] = '\0';
+	re = remove_empty_red(re);
 	return (re);
 }
 

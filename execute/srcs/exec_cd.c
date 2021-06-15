@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:23:48 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 16:46:27 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 21:11:03 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,8 @@ int		exec_cd(t_cmd *exec_cmd)
 	if (exec_cmd->has_pip)
 		if (pipe(exec_cmd->fd) < 0)
 			exit(0);
-	//if (exec_cmd->prev->has_pip == 0)
-	//{
-		getcwd(buf, 1024);
-		res = chdir(exec_cmd->cmd[1]);
-	//}
+	getcwd(buf, 1024);
+	res = chdir(exec_cmd->cmd[1]);
 	if (res == -1)
 	{
 		ft_putstr_fd("hyochanyoung: cd: ", 2);
@@ -56,7 +53,7 @@ int		pre_exec_cd(t_cmd *exec_cmd, pid_t *pid)
 			exit(exec_cd(exec_cmd));
 		}
 		else if (*pid > 0)
-			close_pipe(pid, exec_cmd, res, status);
+			close_pipe(pid, exec_cmd, status);
 		return (0);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 19:36:43 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/14 21:29:04 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,17 @@ int		quo_mark(char *export_cmd, int i)
 int		cmd_error(char *cmd, int error)
 {
 	if (error == 1)
-		printf("hyochanyoung: export: '%s': not a valid identifier\n", cmd);
+	{
+		ft_putstr_fd("hyochanyoung: export: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
+	}
 	else if (error == 2)
-		printf("hyochanyoung: %s: event not found\n", cmd);
+	{
+		ft_putstr_fd("hyochanyoung: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": event not found\n", 2);
+	}
 	return (1);
 }
 

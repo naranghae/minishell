@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:31:42 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 22:02:26 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 16:15:26 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,19 +68,25 @@ void	command_error(char *cmd, char **path, int type)
 	}
 }
 
-void	command_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
+void	command_not_built_in(t_cmd *exec_cmd, char **path, char **envp, int i)
 {
-	int		i;
 	char	*pjoin;
 	char	*pathjoin;
 
-	i = 0;
 	while (path[i] != NULL)
 	{
 		pjoin = ft_strjoin(path[i], "/");
 		pathjoin = ft_strjoin(pjoin, exec_cmd->cmd[0]);
-		if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-			exit(write(2, "error\n", 6) * 0);
+		if (exec_cmd->red == NULL)
+		{
+			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
+				exit(write(2, "error\n", 6) * 0);
+		}
+		else
+		{
+			if (exec_cmd->has_pip && dup2(exec_cmd->red->fd, 1) < 0)
+				exit(write(2, "error\n", 6) * 0);
+		}
 		if (i == 0)
 			execve(exec_cmd->cmd[0], exec_cmd->cmd, envp);
 		else
@@ -111,7 +117,7 @@ void	exec_not_built_in(t_cmd *exec_cmd, char **path, char **envp)
 			dup2(exec_cmd->prev->fd[0], 0) < 0)
 			exit(1);
 		command_error(exec_cmd->cmd[0], path, 1);
-		command_not_built_in(exec_cmd, path, envp);
+		command_not_built_in(exec_cmd, path, envp, 0);
 		command_error(exec_cmd->cmd[0], path, 0);
 	}
 	else if (pid > 0)

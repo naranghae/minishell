@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:34:37 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:38:04 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 15:03:15 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	save_red_cmd_add(t_cmd **tmp, int *i, int *idx, t_save_red *r_v)
 	}
 	add_back_red(&((*tmp)->red),
 	new_red(ft_substr((*tmp)->cmd[*idx], r_v->start, r_v->len), r_v->type));
+	while ((*tmp)->cmd[*idx][*i] == ' ' && (*tmp)->cmd[*idx][*i] != '\0')
+		(*i)++;
 }
 
 void	save_red_cmd(t_cmd **tmp, int i, int idx)

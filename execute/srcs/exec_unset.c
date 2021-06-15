@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:43:25 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 22:02:33 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 14:12:49 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		env_unset(t_cmd *cmd, t_env *env_info)
 			return (1);
 		else if ((cmd->cmd[1] != NULL) && cmd->prev->has_pip)
 			return (1);
-		if (error == 1)
+		if (error == 0)
 			env_delete(export_cmd[i], env_info);
 	}
 	free_split(export_cmd);

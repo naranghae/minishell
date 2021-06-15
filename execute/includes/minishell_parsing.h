@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 21:09:26 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 15:25:38 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ typedef struct			s_io
 	int					tmp_out;
 }						t_io;
 
-void					exec_redirection(t_cmd *exec_cmd);
+int						exec_redirection(t_cmd *exec_cmd);
 void					close_fd(t_red *red);
 char					*remove_escape(char *buf, int start);
 int						check_syntax(char *buf, int i, int len, int istoken);

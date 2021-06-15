@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:56:59 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 16:13:11 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,23 @@ int		exec_redirection_in_out(t_red **tmp)
 {
 	if ((*tmp)->type == IN)
 	{
-		if (!((*tmp)->fd = open((*tmp)->file_name, O_RDONLY, 0644)))
+		if (((*tmp)->fd = open((*tmp)->file_name, O_RDONLY, 0644)) == -1)
 			return (0);
 		if (dup2((*tmp)->fd, 0) < 0)
 			return (-1);
 	}
 	else if ((*tmp)->type == OUT)
 	{
-		if (!((*tmp)->fd = open((*tmp)->file_name,
-			O_CREAT | O_WRONLY | O_TRUNC, 0644)))
+		if (((*tmp)->fd = open((*tmp)->file_name,
+			O_CREAT | O_WRONLY | O_TRUNC, 0644))  == -1)
 			return (0);
 		if (dup2((*tmp)->fd, 1) < 0)
 			return (-1);
 	}
 	else if ((*tmp)->type == APPEND)
 	{
-		if (!((*tmp)->fd = open((*tmp)->file_name,
-			O_CREAT | O_WRONLY | O_APPEND, 0644)))
+		if (((*tmp)->fd = open((*tmp)->file_name,
+			O_CREAT | O_WRONLY | O_APPEND, 0644))  == -1)
 			return (0);
 		if (dup2((*tmp)->fd, 1) < 0)
 			return (-1);
@@ -41,7 +41,7 @@ int		exec_redirection_in_out(t_red **tmp)
 	return (1);
 }
 
-void	exec_redirection(t_cmd *exec_cmd)
+int		exec_redirection(t_cmd *exec_cmd)
 {
 	t_red	*tmp;
 	int		re;
@@ -50,10 +50,15 @@ void	exec_redirection(t_cmd *exec_cmd)
 	while (tmp != NULL)
 	{
 		re = exec_redirection_in_out(&tmp);
-		if (re == 0)
-			return ;
-		else if (re == -1)
-			exit(1);
+		if (re == 0 || re == -1)
+		{
+			ft_putstr_fd("hyochanyoung: ", 2);
+			ft_putstr_fd(tmp->file_name, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			close(tmp->fd);
+			return (0);
+		}
 		tmp = tmp->next;
 	}
+	return (1);
 }

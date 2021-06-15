@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:36:02 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 15:46:24 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,21 @@ int		exec_built_in(t_cmd *exec_cmd, t_env **env_info)
 	re = 0;
 	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
 		pipe_fork(exec_cmd, &pid);
-	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 2))
+	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 3))
 		re = pre_exec_cd(exec_cmd, &pid);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 5))
 		re = pre_exec_echo(exec_cmd, &pid);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 4))
 		re = pre_exec_env(exec_cmd, &pid, *env_info);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 5))
 		re = pre_exec_exit(exec_cmd, &pid);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "export", 7))
 		re = pre_exec_export(exec_cmd, &pid, *env_info);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 6))
 		re = pre_exec_unset(exec_cmd, &pid, *env_info);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 4))
 		re = pre_exec_pwd(exec_cmd, &pid);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "$?", 2))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "$?", 3))
 		re = pre_exec_exit_code(exec_cmd, &pid);
 	g_errcode = re;
 	return (re);
@@ -43,31 +43,37 @@ int		exec_built_in(t_cmd *exec_cmd, t_env **env_info)
 
 int		is_built_in(t_cmd *exec_cmd)
 {
-	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 2))
+	if (!ft_strncmp(exec_cmd->cmd[0], "cd", 3))
 		return (1);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 4))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "echo", 5))
 		return (1);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 3))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "env", 4))
 		return (1);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 4))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "exit", 5))
 		return (1);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "export", 6))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "export", 7))
 		return (1);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 5))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "unset", 6))
 		return (1);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 3))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "pwd", 4))
 		return (1);
-	else if (!ft_strncmp(exec_cmd->cmd[0], "$?", 2))
+	else if (!ft_strncmp(exec_cmd->cmd[0], "$?", 3))
 		return (1);
 	else
 		return (0);
 }
 
-void	exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path, t_io *std)
+int		exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path, t_io *std)
 {
 	change_qute(exec_cmd, *env_set, 0);
 	if ((*exec_cmd)->red != NULL)
-		exec_redirection((*exec_cmd));
+	{
+		if (!exec_redirection((*exec_cmd)))
+		{
+			printf("rrrreeee\n");
+			return (0);
+		}
+	}
 	if (is_built_in((*exec_cmd)))
 		exec_built_in((*exec_cmd), env_set);
 	else if (ft_strncmp((*exec_cmd)->cmd[0], " ", 1))
@@ -78,6 +84,7 @@ void	exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path, t_io *std)
 		dup2(std->tmp_in, 0);
 		close_fd((*exec_cmd)->red);
 	}
+	return (1);
 }
 
 void	pre_exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
@@ -96,7 +103,11 @@ void	pre_exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 		return ;
 	while (exec_cmd != (*cmd)->tail)
 	{
-		exec_cmd_sur(&exec_cmd, env_set, path, &std);
+		if (!exec_cmd_sur(&exec_cmd, env_set, path, &std))
+		{
+			printf("하이\n");
+			return ;
+		}
 		exec_cmd = exec_cmd->next;
 	}
 }

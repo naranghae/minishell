@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:43:25 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 14:12:49 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 15:24:19 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ int		env_unset(t_cmd *cmd, t_env *env_info)
 
 	error = 0;
 	i = -1;
-	tmp = cmd->cmd[1];
-	export_cmd = ft_split(tmp, ' ');
+	tmp = cmd->buf;
+	export_cmd = ft_export_split(tmp, ' ');
+	export_cmd = delete_quot(export_cmd);
 	while (export_cmd[++i] != NULL)
 	{
 		if (except_unset(export_cmd[i]))

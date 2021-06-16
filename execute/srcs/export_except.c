@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 19:44:01 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 15:19:29 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int		cmd_error(char *cmd, int error)
 	if (error == 1)
 	{
 		ft_putstr_fd("hyochanyoung: export: ", 2);
+		ft_putstr_fd("\'", 2);
 		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd("\'", 2);
 		ft_putstr_fd(": not a valid identifier\n", 2);
 	}
 	else if (error == 2)
@@ -47,10 +49,14 @@ int		cmd_error(char *cmd, int error)
 
 int		except_name(int str, int i)
 {
-	if ((i == 0) && (ft_isalpha(str) < 1) && (str != '_') && (str != '"'))
+	if ((i == 0) && (ft_isalpha(str) < 1) && (str != '_'))
 		return (1);
-	else if ((i >= 1) && (ft_isalpha(str) < 1) && (str != '"')
+	else if ((i == 0) && ((str == '=') || (str == ' ')))
+		return (1);
+	else if ((i >= 1) && (ft_isalpha(str) < 1)
 		&& (str != '_') && (ft_isdigit(str) < 1) && (str == '!'))
+		return (1);
+	else if ((i >= 1) && (str == ' '))
 		return (1);
 	return (0);
 }

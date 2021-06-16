@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:54 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 19:22:48 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:15:54 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ t_cmd	*new_cmd(char **cmd)
 	if (!new)
 		return (0);
 	new->cmd = cmd;
+	new->flag = 0;
 	new->has_pip = 0;
+	new->buf = NULL;
 	new->red = NULL;
 	new->next = NULL;
 	new->prev = NULL;

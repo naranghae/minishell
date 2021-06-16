@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/16 14:50:08 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 15:35:04 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*remove_quot(char *s)
 	re = s;
 	while (s[i] != '\0')
 	{
-		if (!is_inquote(s, i) && s[i] == '"')
+		if (s[i] == '\'' || s[i] == '"')
 		{
 			i++;
 			continue ;
@@ -33,15 +33,6 @@ char	*remove_quot(char *s)
 			re[re_i++] = s[i];
 		i++;
 	}
-	// while (s[i] != '\0')
-	// {
-	// 	if (is_inquote(s, i))
-	// 	{
-	// 		re[re_i++] = s[i++];
-	// 		continue ;
-	// 	}
-	// 	i++;
-	// }
 	re[re_i] = '\0';
 	return (re);
 }
@@ -53,7 +44,7 @@ char	**delete_quot(char **export_cmd)
 	i = 0;
 	while (export_cmd[i])
 	{
-		if (ft_strchr(export_cmd[i], '"'))
+		if (ft_strchr(export_cmd[i], '"') || ft_strchr(export_cmd[i], '\''))
 			export_cmd[i] = remove_quot(export_cmd[i]);
 		i++;
 	}

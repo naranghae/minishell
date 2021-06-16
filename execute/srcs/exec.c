@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/16 14:36:56 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:19:41 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path, t_io *std)
 	}
 	if (is_built_in((*exec_cmd)))
 		exec_built_in((*exec_cmd), env_set);
-	else if (ft_strncmp((*exec_cmd)->cmd[0], " ", 2))
+	else if (ft_strncmp((*exec_cmd)->cmd[0], " ", 2) || (*exec_cmd)->flag == 0)
 		exec_not_built_in((*exec_cmd), path, (*env_set)->envp);
 	if ((*exec_cmd)->red != NULL)
 	{

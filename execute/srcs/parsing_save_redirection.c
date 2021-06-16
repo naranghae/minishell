@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/07 15:34:37 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 15:03:15 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:15:14 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	tokenize_red(t_cmd **tmp, int i, int idx, char *free_p)
 		|| ((*tmp)->cmd[idx][i] != '>' && (*tmp)->cmd[idx][i + 1] != '>')))
 	{
 		free((*tmp)->cmd[idx]);
+		(*tmp)->flag = 1;
 		(*tmp)->cmd[idx] = ft_strdup(" ");
 		return ;
 	}

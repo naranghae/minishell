@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 16:55:26 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 15:24:34 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int		unset_error(char *cmd, int error)
 	if (error == 1)
 	{
 		ft_putstr_fd("hyochanyoung: unset: ", 2);
+		ft_putstr_fd("\'", 2);
 		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd("\'", 2);
 		ft_putstr_fd(": not a valid identifier\n", 2);
 	}
 	else if (error == 2)

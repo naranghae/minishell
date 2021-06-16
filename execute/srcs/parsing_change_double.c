@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 19:42:06 by hyopark           #+#    #+#             */
-/*   Updated: 2021/06/16 14:38:38 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:11:46 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	change_double_qute_init(t_cmd **tmp, int *ix, int *i, t_st_end *st_end)
 
 void	buf_dup(t_cmd **tmp, int ix)
 {
-	if (ix == 1)
+	if ((*tmp)->buf != NULL)
 		free((*tmp)->buf);
 	(*tmp)->buf = ft_strdup((*tmp)->cmd[ix]);
 }

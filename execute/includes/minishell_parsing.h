@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 19:29:16 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:15:36 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct			s_red
 
 typedef struct			s_cmd
 {
+	int					flag;
 	char				*buf;
 	char				**cmd;
 	int					has_pip;
@@ -195,4 +196,5 @@ int						special_string(char *export_cmd, int i);
 int						except_unset(char *export_cmd);
 char					*remove_empty_red(char *buf);
 char					**ft_export_split(char const *s, char c);
+char					**delete_quot(char **export_cmd);
 #endif

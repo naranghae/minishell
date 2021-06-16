@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:49 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 20:38:36 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 14:43:00 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		in_singlequote(char *buf, int end, int single_q, int double_q)
 	int	i;
 
 	i = 0;
-	while (buf[i] != '\0' && i < end)
+	while (buf[i] != '\0' && i <= end)
 	{
 		if ((!single_q && buf[i] == '\"' && (i > 0 &&
 			buf[i - 1] != '\\')) || (i == 0 && buf[0] == '\"'))
@@ -73,7 +73,7 @@ int		in_doublequote(char *buf, int end, int single_q, int double_q)
 	int	i;
 
 	i = 0;
-	while (buf[i] != '\0' && i < end)
+	while (buf[i] != '\0' && i <= end)
 	{
 		if ((!single_q && buf[i] == '\"' && (i > 0 &&
 			buf[i - 1] != '\\')) || (i == 0 && buf[0] == '\"'))

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 19:42:06 by hyopark           #+#    #+#             */
-/*   Updated: 2021/06/15 21:02:30 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/16 14:02:49 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,6 @@ int		find_end(t_cmd *cmd, int ix, int i)
 	return (re);
 }
 
-int		env_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t i;
-
-	if (ft_strlen(s1) < n || ft_strlen(s2) < n)
-		return (1);
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i] && i < n - 1)
-		i++;
-	return ((int)((unsigned char)s1[i] - (unsigned char)s2[i]));
-}
-
-
 char	*find_env(t_cmd *cmd, t_env *env, int ix, int *i)
 {
 	t_env	*tmp;
@@ -53,12 +38,11 @@ char	*find_env(t_cmd *cmd, t_env *env, int ix, int *i)
 	st = *i + 1;
 	end = find_end(cmd, ix, *i);
 	tmp = env->next;
-	printf("%d\n", end - st + 1);
 	while (tmp != NULL)
 	{
-			max = ft_strlen(&cmd->cmd[ix][*i]) > ft_strlen(tmp->name) ?
-			ft_strlen(&cmd->cmd[ix][*i]) : ft_strlen(tmp->name);
-		if (!ft_strncmp(&cmd->cmd[ix][*i], tmp->name, max))//end - st + 1))
+		max = (end - st + 1) > (int)ft_strlen(tmp->name) ?
+			(end - st + 1) : (int)ft_strlen(tmp->name);
+		if (!ft_strncmp(&cmd->cmd[ix][*i], tmp->name, max))
 		{
 			*i += ft_strlen(tmp->name);
 			return (tmp->contents);

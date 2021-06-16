@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utill_free.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyopark <hyopark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:32:44 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/11 13:52:29 by hyopark          ###   ########.fr       */
+/*   Updated: 2021/06/15 19:50:13 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	free_cmd(t_cmd **cmd)
 		}
 		if ((*cmd)->cmd)
 			free_split((*cmd)->cmd);
+		if ((*cmd)->buf)
+			free((*cmd)->buf);
 		free((*cmd));
 		(*cmd) = next;
 	}

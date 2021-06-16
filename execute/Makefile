@@ -6,13 +6,13 @@
 #    By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/07 18:09:35 by chanykim          #+#    #+#              #
-#    Updated: 2021/06/15 15:18:15 by chanykim         ###   ########.fr        #
+#    Updated: 2021/06/15 20:15:17 by chanykim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
 
-CC				= gcc #-g3 -fsanitize=address
+CC				= gcc -g3 -fsanitize=address
 
 CFLAGS			= -Wall -Wextra -Werror -lncurses -ltermcap
 
@@ -36,7 +36,6 @@ SRC=	main.c\
 		parsing_utill_inquote.c\
 		parsing_utill_list_cmd.c\
 		parsing_utill_list_red.c\
-		parsing_utill_str.c\
 		parsing_save_redirection.c\
 		parsing_util_pre.c\
 		parsing_util.c\
@@ -46,6 +45,7 @@ SRC=	main.c\
 		exec_cd.c\
 		exec_echo.c\
 		exec_export.c\
+		exec_export_split.c\
 		exec_env.c\
 		exec_not_built_in.c\
 		exec_util.c \

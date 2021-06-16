@@ -1,50 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pwd.c                                         :+:      :+:    :+:   */
+/*   exec_export_split.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 16:48:09 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 19:57:49 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_header.h"
 #include "minishell_parsing.h"
 
-int		exec_pwd(void)
+static void		sub_sp(char const *s, char c, char **new_str)
 {
-	char buf[1024];
+	int i;
+	int j;
+	int k;
 
-	if (!getcwd(buf, 1024))
-		return (1);
-	printf("%s\n", buf);
-	return (0);
+	i = 0;
+	j = 0;
+	k = 0;
+	while (s[i])
+	{
+		if (is_inquote((char *)s, i))
+			{
+				i++;
+				continue ;
+			}
+		if (s[i] == c && k == i)
+			k++;
+		else if (s[i] == c)
+		{
+			new_str[j] = ft_substr(s, k, (i - k));
+			j++;
+			k = i + 1;
+		}
+		i++;
+	}
+	if (i != k)
+		new_str[j++] = ft_substr(s, k, (i - k));
+	new_str[j] = 0;
 }
 
-int		pre_exec_pwd(t_cmd *exec_cmd, pid_t *pid)
+char			**ft_export_split(char const *s, char c)
 {
-	int	status;
-	int	res;
+	char		**new_str;
 
-	res = 0;
-	status = 0;
-	if (exec_cmd->has_pip || exec_cmd->prev->has_pip)
-	{
-		if (*pid == 0)
-		{
-			if (exec_cmd->has_pip && dup2(exec_cmd->fd[1], 1) < 0)
-				exit(1);
-			if (exec_cmd->prev && exec_cmd->prev->has_pip &&
-				dup2(exec_cmd->prev->fd[0], 0) < 0)
-				exit(1);
-			exit(exec_pwd());
-		}
-		else if (*pid > 0)
-			close_pipe(pid, exec_cmd, status);
-		return (0);
-	}
-	else
-		return (exec_pwd());
+	if (!s)
+		return (NULL);
+	if (!(new_str = (char **)malloc(sizeof(char *) * (1 + ft_strlen(s)))))
+		return (NULL);
+	sub_sp(s, c, new_str);
+	return (new_str);
 }

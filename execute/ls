@@ -1,0 +1,13 @@
+USER=chanykim
+PATH=/Users/chanykim/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Users/chanykim/.brew/bin
+LOGNAME=chanykim
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.YaN2waw8Ed/Listeners
+HOME=/Users/chanykim
+TMPDIR=/var/folders/zz/zyxvpxvq6csfxvn_n000cdth0033fm/T/
+HOMEBREW_CACHE=/tmp/chanykim/Homebrew/Caches
+HOMEBREW_TEMP=/tmp/chanykim/Homebrew/Temp
+LSCOLORS=Gxfxcxdxbxegedabagacad
+OLDPWD=/Users/chanykim/three_circle/merge_error_code/execute
+PWD=/Users/chanykim/three_circle/merge_error_code/execute
+ZSH=/Users/chanykim/.oh-my-zsh
+_=/Users/chanykim/three_circle/merge_error_code/execute/./minishell

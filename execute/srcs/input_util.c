@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/07 18:12:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 16:09:54 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 16:36:13 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	exec_intro(t_cursor *cursor, t_cmd *cmd, t_env *env_info)
 		cmd = parsing_cmd(cursor->buf);
 		if (cmd)
 		{
-			write(1, "aa\n", 3);
 			exec(&cmd, &env_info);
 			free_cmd(&cmd);
 		}

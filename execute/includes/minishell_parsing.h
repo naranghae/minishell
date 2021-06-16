@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/11 17:33:23 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 15:25:38 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 19:29:16 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,4 +193,6 @@ int						unset_quo_mark(char *export_cmd, int i);
 int						unset_error(char *cmd, int error);
 int						special_string(char *export_cmd, int i);
 int						except_unset(char *export_cmd);
+char					*remove_empty_red(char *buf);
+char					**ft_export_split(char const *s, char c);
 #endif

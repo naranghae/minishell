@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 16:13:11 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 16:43:15 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		exec_redirection_in_out(t_red **tmp)
 	else if ((*tmp)->type == OUT)
 	{
 		if (((*tmp)->fd = open((*tmp)->file_name,
-			O_CREAT | O_WRONLY | O_TRUNC, 0644))  == -1)
+			O_CREAT | O_WRONLY | O_TRUNC, 0644)) == -1)
 			return (0);
 		if (dup2((*tmp)->fd, 1) < 0)
 			return (-1);
@@ -33,7 +33,7 @@ int		exec_redirection_in_out(t_red **tmp)
 	else if ((*tmp)->type == APPEND)
 	{
 		if (((*tmp)->fd = open((*tmp)->file_name,
-			O_CREAT | O_WRONLY | O_APPEND, 0644))  == -1)
+			O_CREAT | O_WRONLY | O_APPEND, 0644)) == -1)
 			return (0);
 		if (dup2((*tmp)->fd, 1) < 0)
 			return (-1);
@@ -55,7 +55,6 @@ int		exec_redirection(t_cmd *exec_cmd)
 			ft_putstr_fd("hyochanyoung: ", 2);
 			ft_putstr_fd(tmp->file_name, 2);
 			ft_putstr_fd(": No such file or directory\n", 2);
-			close(tmp->fd);
 			return (0);
 		}
 		tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 12:26:22 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/15 15:46:24 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 20:33:05 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ int		exec_cmd_sur(t_cmd **exec_cmd, t_env **env_set, char **path, t_io *std)
 	{
 		if (!exec_redirection((*exec_cmd)))
 		{
-			printf("rrrreeee\n");
+			dup2(std->tmp_out, 1);
+			dup2(std->tmp_in, 0);
+			close_fd((*exec_cmd)->red);
 			return (0);
 		}
 	}
@@ -104,10 +106,7 @@ void	pre_exec_cmd(t_cmd **cmd, t_env **env_set, char **path)
 	while (exec_cmd != (*cmd)->tail)
 	{
 		if (!exec_cmd_sur(&exec_cmd, env_set, path, &std))
-		{
-			printf("하이\n");
-			return ;
-		}
+			break ;
 		exec_cmd = exec_cmd->next;
 	}
 }

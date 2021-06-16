@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 19:27:51 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 21:29:04 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 19:44:01 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ int		cmd_error(char *cmd, int error)
 
 int		except_name(int str, int i)
 {
-	if ((i == 0) && (ft_isalpha(str) < 1) && (str != '_'))
+	if ((i == 0) && (ft_isalpha(str) < 1) && (str != '_') && (str != '"'))
 		return (1);
-	else if ((i >= 1) && (ft_isalpha(str) < 1)
+	else if ((i >= 1) && (ft_isalpha(str) < 1) && (str != '"')
 		&& (str != '_') && (ft_isdigit(str) < 1) && (str == '!'))
 		return (1);
 	return (0);

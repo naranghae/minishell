@@ -6,7 +6,7 @@
 /*   By: chanykim <chanykim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 18:23:48 by chanykim          #+#    #+#             */
-/*   Updated: 2021/06/14 21:11:03 by chanykim         ###   ########.fr       */
+/*   Updated: 2021/06/15 19:54:51 by chanykim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int		exec_cd(t_cmd *exec_cmd)
 		if (pipe(exec_cmd->fd) < 0)
 			exit(0);
 	getcwd(buf, 1024);
+	if (exec_cmd->cmd[1] == NULL)
+		return (0);
 	res = chdir(exec_cmd->cmd[1]);
 	if (res == -1)
 	{
